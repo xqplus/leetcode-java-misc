@@ -1,35 +1,43 @@
 package com.github.xqplus.sample.common;
 
-import com.vmware.vim25.VirtualDeviceBackingInfo;
-import com.vmware.vim25.VirtualDiskFlatVer2BackingInfo;
-
 import java.io.IOException;
-import java.lang.reflect.Field;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class Process {
 
     public static void main(String[] args) throws IOException, NoSuchFieldException, IllegalAccessException {
-//        Path randomPath = Paths.get("E:\\" + UUID.randomUUID());
-//        System.out.println(randomPath);
-//
-//        //Path file = Files.createFile(randomPath);
-//
-//        List<String> list = new ArrayList<>();
-//        list.add("vixDiskLib.transport.san.blacklist = all");
-//        list.add("vixDiskLib.transport.san.whitelist = /dev/sdd,/dev/sdf");
-//        Path write = Files.write(randomPath, list);
-//        System.out.println(write);
+//        Path path = Paths.get("E:\\a");
+//        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(path)) {
+//            for (Path path1 : directoryStream) {
+//                Files.delete(path1);
+//            }
+//        }
 
-//        Integer a = 4;
-//        System.out.println(TransportMethod.SAN.equals(a));
+        Socket socket = new Socket();
+        socket.setKeepAlive(true);
+        socket.connect(new InetSocketAddress("192.168.8.151", 1999), 5000);
+        OutputStream outputStream = socket.getOutputStream();
+        InputStream inputStream = socket.getInputStream();
+        byte[] head = new byte[]{0, 0, 0, 0, 0, 0, 2, 0}; // REMOVE_DISK
 
-        VirtualDiskFlatVer2BackingInfo backingInfo = new VirtualDiskFlatVer2BackingInfo();
-        backingInfo.uuid = "asjdkhaskjdh";
 
-        VirtualDeviceBackingInfo refBackingInfo = backingInfo;
-        Field uuid = refBackingInfo.getClass().getField("uuid");
-        System.out.println(uuid);
-        System.out.println(uuid.getName());
-        System.out.println(uuid.get(refBackingInfo));
+        String disk = "/c71c52bd-d7c9-4962-97cd-8f4de459f04d/image_2000-flat.vmdk";
+        byte[] bytes = disk.getBytes(StandardCharsets.UTF_8);
+        LenUtils.intToBytes(bytes.length, head);
+        outputStream.write(head);
+        outputStream.flush();
+        outputStream.write(bytes);
+        outputStream.flush();
+        byte[] buf = new byte[8];
+        inputStream.read(buf);
+        if (0 != LenUtils.bytesToInt(buf, 0)) {
+            byte[] errBuf = new byte[LenUtils.bytesToInt(buf, 0)];
+            inputStream.read(errBuf);
+            System.err.println("xxx");
+        }
     }
 }
