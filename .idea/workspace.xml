@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mybatis-flex-demo/mybatis-flex-demo.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mybatis-flex-demo/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mybatis-flex-demo/sql/helloworld.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mybatis-flex-demo/src/main/java/io/github/xqplus/mybatisflex/MybatisFlexDemoApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mybatis-flex-demo/src/main/java/io/github/xqplus/mybatisflex/entity/Account.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mybatis-flex-demo/src/main/java/io/github/xqplus/mybatisflex/mapper/AccountMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mybatis-flex-demo/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mybatis-flex-demo/src/test/java/io/github/xqplus/mybatisflex/MybatisFlexDemoApplicationTests.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/casuis/CreateVirtualMachine.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/fusioncompute/Fuse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/fusioncompute/TrustAllTrustManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/fusioncompute/VirtualMachineOperation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/resources/log4j.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/virt-demo.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/SampleApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/VirtDemoApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/common/BigDecimalUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/common/LenUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/common/Process.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/common/Process1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/common/R.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/common/TransportMethod.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/common/exception/ManagedEntityNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/controller/SampleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/h3c/QueryVirtualMachine.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/casuis/QueryVirtualMachine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/httpcomponents531/HttpClientQuickStart.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/lucene/Demo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/mongodb/CRUD.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/oceanbase/CreateTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/reflect/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/reflect/Person.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/vmware/CreateVM.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/vmware/DiskOpByFuse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/vmware/QueryVM.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/vmware/QueryVMDiskInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/vmware/SocketRemoveFuse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/vmware/UpdateDisk.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/vmware/VirtualMachineConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/github/xqplus/sample/vmware/VirtualMachineInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/github/xqplus/sample/SampleApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/test/java/io/github/xqplus/virt/VirtDemoApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\Program Files\Maven\apache-maven-3.6.3\repository" />
+        <option name="mavenHome" value="D:/Program Files/Maven/apache-maven-3.6.3" />
+        <option name="useMavenConfig" value="true" />
+        <option name="userSettingsFile" value="D:\Program Files\Maven\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2uU6xu4OF91sTRVGoE4HPYhupzK" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.format.on.save.advertiser.fired" value="true" />
+    <property name="go.formatter.settings.were.checked" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/mybatis-flex-demo/src/main/java/io/github/xqplus/mybatisflex/entity/table" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.30689654" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
+    <property name="show.run.dashboard.notification" value="false" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\code\github\sample\mybatis-flex-demo\src\main\java\io\github\xqplus\mybatisflex\entity\table" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.MybatisFlexDemoApplicationTests.contextLoads">
+    <configuration name="VirtualMachineOperation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.virt.vsphere.VirtualMachineOperation" />
+      <module name="virt-demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.xqplus.virt.vsphere.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MybatisFlexDemoApplicationTests.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mybatis-flex-demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.xqplus.mybatisflex.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="io.github.xqplus.mybatisflex" />
+      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.mybatisflex.MybatisFlexDemoApplicationTests" />
+      <option name="METHOD_NAME" value="contextLoads" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MybatisFlexDemoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="mybatis-flex-demo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="io.github.xqplus.mybatisflex.MybatisFlexDemoApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VirtDemoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="virt-demo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="io.github.xqplus.virt.VirtDemoApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.MybatisFlexDemoApplicationTests.contextLoads" />
+        <item itemvalue="Application.VirtualMachineOperation" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="" />
+      <created>1742291056028</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742291056028</updated>
+      <workItem from="1742291057961" duration="2068000" />
+      <workItem from="1742293164643" duration="503000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+</project>
