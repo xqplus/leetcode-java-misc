@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/mybatis-flex-demo/pom.xml" />
         <option value="$PROJECT_DIR$/virt-demo/pom.xml" />
+        <option value="$PROJECT_DIR$/leetcode/pom.xml" />
       </list>
     </option>
   </component>

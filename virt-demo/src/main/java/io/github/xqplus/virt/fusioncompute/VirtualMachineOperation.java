@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class VirtualMachineOperation {
 
-    private static final String TOKEN = "2A3AC995-1305-46F9-8CBA-2371787E76F80";
+    private static final String TOKEN = "994CEE52-DA12-42FF-A74F-29A4569F1D5E0";
     private static final String SITE_URI = "/service/sites/367C0709";
     private static final String HOST_URN = "urn:sites:367C0709:hosts:105";
 
@@ -51,11 +51,26 @@ public class VirtualMachineOperation {
 //        delete("/service/sites/367C0709/datastores/87/disconnect?hostUrn=urn:sites:367C0709:hosts:105");
 
 
-        String datastoreUrn = createDatastore(
-                "urn:sites:367C0709:storageunits:2CA8C46C3AD34240B4F394B6556371BA",
-                "VBP_ARV_192.168.8.151"
-        );
-        createVm(datastoreUrn);
+//        String datastoreUrn = createDatastore(
+//                "urn:sites:367C0709:storageunits:2CA8C46C3AD34240B4F394B6556371BA",
+//                "VBP_ARV_192.168.8.151"
+//        );
+//        createVm(datastoreUrn);
+
+        // 删除虚拟机和数据存储
+//        String result = delete(SITE_URI + "/vms/i-000003EF");
+//        pollingTask(JSON.parseObject(result).getString("taskUri"));
+//
+//        get(SITE_URI + "/vms?limit=1&offset=0&scope=urn:sites:367C0709:datastores:91");
+//
+//        Thread.sleep(5000);
+//        result = delete(SITE_URI + "/datastores/91/disconnect?hostUrn=" + HOST_URN);
+//        pollingTask(JSON.parseObject(result).getString("taskUri"));
+//
+//        result = delete("/service/sites/367C0709/datastores/91/delete");
+//        pollingTask(JSON.parseObject(result).getString("taskUri"));
+
+        get(SITE_URI + "/vms?name=centos7-11");
     }
 
     private static void powerOffVm() throws IOException, NoSuchAlgorithmException, KeyManagementException {
@@ -241,7 +256,7 @@ public class VirtualMachineOperation {
         return result;
     }
 
-    public static void delete(String uri) throws IOException, NoSuchAlgorithmException, KeyManagementException {
+    public static String delete(String uri) throws IOException, NoSuchAlgorithmException, KeyManagementException {
         trustAllManager();
         URL url = new URL("https://192.168.8.238:7443" + uri);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -258,8 +273,10 @@ public class VirtualMachineOperation {
         while ((line = reader.readLine()) != null) {
             stringBuilder.append(line);
         }
-        JSONObject jsonObject = JSON.parseObject(stringBuilder.toString());
+        String result = stringBuilder.toString();
+        JSONObject jsonObject = JSON.parseObject(result);
         System.out.println(JSON.toJSONString(jsonObject, SerializerFeature.PrettyFormat));
+        return result;
     }
 
     private static void trustAllManager() throws NoSuchAlgorithmException, KeyManagementException {

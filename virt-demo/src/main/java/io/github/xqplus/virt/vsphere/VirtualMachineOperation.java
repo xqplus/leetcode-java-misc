@@ -1,6 +1,7 @@
 package io.github.xqplus.virt.vsphere;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.vmware.vim25.*;
 import com.vmware.vim25.mo.*;
@@ -8,8 +9,7 @@ import org.springframework.lang.Nullable;
 
 import java.net.URL;
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 public class VirtualMachineOperation {
 
@@ -24,40 +24,32 @@ public class VirtualMachineOperation {
 //                "administrator@vsphere.local", "Dsg_123456!", true);
         inventoryNavigator = new InventoryNavigator(serviceInstance.getRootFolder());
 
-        long t1 = System.currentTimeMillis();
         try {
-            VirtualMachine vm = findVirtualMachine("c7-153");
-            System.out.println(vm.getConfig().uuid);
-
-//            Task task = vm.createSnapshot_Task("t1", null, true, false);
-//
-//            long b = System.currentTimeMillis();
-//            while (true) {
-//                Thread.sleep(20 * 1000);
-//                System.err.println(task.getTaskInfo().state);
-//                System.err.println(System.currentTimeMillis() - b);
-//            }
-
-//            TaskInfoState state;
-//            int allowedMaxWaitTimeMillis = 2 * 1000;
-//
-//            long begin = System.currentTimeMillis();
-//            do {
-//                state = task.getTaskInfo().state;
-//                Thread.sleep(1000);
-//            } while ((state == null || state == TaskInfoState.running)
-//                    && System.currentTimeMillis() - begin <= allowedMaxWaitTimeMillis);
-//
-//            System.out.println(state);
-//
-//            if (state == null || state == TaskInfoState.running) {
-//                begin = System.currentTimeMillis();
-//                task.cancelTask();
-//                System.out.println("cancelTask: " + (System.currentTimeMillis() - begin));
-//            }
+            ManagedEntity[] managedEntities = inventoryNavigator.searchManagedEntities("VirtualMachine");
+            for (ManagedEntity managedEntity : managedEntities) {
+                VirtualMachine vm = (VirtualMachine) managedEntity;
+                if (vm.getSnapshot() != null) {
+                    List<VirtualMachineSnapshotTree> snapshotTrees = new ArrayList<>();
+                    collectVbpSnapshotTree(snapshotTrees, vm.getSnapshot().rootSnapshotList);
+                    for (VirtualMachineSnapshotTree snapshotTree : snapshotTrees) {
+                        System.out.println(vm.getName() + " -- " + snapshotTree.name);
+                    }
+                }
+            }
         } finally {
-            System.out.println(System.currentTimeMillis() - t1);
             serviceInstance.getServerConnection().logout();
+        }
+    }
+
+    private static void collectVbpSnapshotTree(List<VirtualMachineSnapshotTree> vbpSnapshotTrees,
+                                               VirtualMachineSnapshotTree[] snapshotTrees) {
+        if (snapshotTrees != null && snapshotTrees.length > 0) {
+            for (VirtualMachineSnapshotTree snapshotTree : snapshotTrees) {
+                if (snapshotTree.name.startsWith("VBP") || snapshotTree.name.startsWith("BDMP")) { // 以 VBP 开头则认为是我们平台打的快照
+                    vbpSnapshotTrees.add(snapshotTree);
+                }
+                collectVbpSnapshotTree(vbpSnapshotTrees, snapshotTree.childSnapshotList);
+            }
         }
     }
 
@@ -493,8 +485,7 @@ public class VirtualMachineOperation {
         Task task = datacenter.getVmFolder().createVM_Task(configSpec, resourcePool, hostSystem);
         if (!Task.SUCCESS.equals(task.waitForTask())) {
             System.err.println(task.getTaskInfo().error.localizedMessage);
-        }
-        else {
+        } else {
             System.out.println(JSON.toJSONString(task.getTaskInfo(), SerializerFeature.PrettyFormat));
             System.out.println(task.getTaskInfo().result.getClass().getName());
         }

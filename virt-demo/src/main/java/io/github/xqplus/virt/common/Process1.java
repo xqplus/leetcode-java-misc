@@ -4,20 +4,35 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.vmware.vim25.VirtualMachineSnapshotTree;
+import com.vmware.vim25.mo.VirtualMachine;
+import org.apache.commons.lang3.StringUtils;
+import sun.java2d.loops.ProcessPath;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Process1 {
 
     public static void main(String[] args) throws Exception {
-//        testEthReadWrite();
-        System.out.println("/service/sites/367C0709/folders/223823".replaceAll("folders", "folder"));
+        System.out.println(1 ^ 1);
+        System.out.println((1 & 1) << 1);
+    }
+
+    private void printPID() {
+        // 获取 JVM 的运行时名称（格式：pid@hostname）
+        String runtimeName = ManagementFactory.getRuntimeMXBean().getName();
+        System.out.println(runtimeName);
+        // 解析 PID
+        long pid = Long.parseLong(runtimeName.split("@")[0]);
+        System.out.println("当前进程 PID: " + pid);
     }
 
     private static void writeToFile() throws IOException {
