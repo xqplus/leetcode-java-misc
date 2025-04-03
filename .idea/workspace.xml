@@ -4,20 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="2025/3/21">
-      <change afterPath="$PROJECT_DIR$/leetcode/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/InterviewClassic150.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/LeetcodeApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/test/java/io/github/xqplus/leetcode/LeetcodeApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="2025/3/31">
+      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/ListNode.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Node.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/TreeNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/InterviewClassic150.java" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/InterviewClassic150.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/common/Process1.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/common/Process1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/fusioncompute/VirtualMachineOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/fusioncompute/VirtualMachineOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/resources/log4j.properties" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/resources/log4j.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/virt-demo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/virt-demo.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +87,7 @@
       <recent name="E:\code\github\sample\mybatis-flex-demo\src\main\java\io\github\xqplus\mybatisflex\entity\table" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.Process1">
+  <component name="RunManager" selected="Application.InterviewClassic150">
     <configuration name="InterviewClassic150" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="io.github.xqplus.leetcode.InterviewClassic150" />
       <module name="leetcode" />
@@ -186,8 +179,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Process1" />
         <item itemvalue="Application.InterviewClassic150" />
+        <item itemvalue="Application.Process1" />
         <item itemvalue="Application.VirtualMachineOperation" />
         <item itemvalue="Application.VirtualMachineOperation (1)" />
         <item itemvalue="JUnit.MybatisFlexDemoApplicationTests.contextLoads" />
@@ -210,7 +203,9 @@
       <workItem from="1742895605955" duration="11736000" />
       <workItem from="1743056467158" duration="12966000" />
       <workItem from="1743391066587" duration="1261000" />
-      <workItem from="1743412486177" duration="3568000" />
+      <workItem from="1743412486177" duration="3886000" />
+      <workItem from="1743471944110" duration="30161000" />
+      <workItem from="1743581869056" duration="10325000" />
     </task>
     <task id="LOCAL-00001" summary="common">
       <created>1742294570762</created>
@@ -226,7 +221,14 @@
       <option name="project" value="LOCAL" />
       <updated>1742555060248</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="2025/3/31">
+      <created>1743416358786</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1743416358786</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,7 +249,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="common" />
     <MESSAGE value="2025/3/21" />
-    <option name="LAST_COMMIT_MESSAGE" value="2025/3/21" />
+    <MESSAGE value="2025/3/31" />
+    <option name="LAST_COMMIT_MESSAGE" value="2025/3/31" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

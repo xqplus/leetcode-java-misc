@@ -22,8 +22,8 @@ import java.util.*;
 public class Process1 {
 
     public static void main(String[] args) throws Exception {
-        System.out.println(1 ^ 1);
-        System.out.println((1 & 1) << 1);
+        int i = (1 << 4) - 1;
+        System.out.println(Integer.toBinaryString(i));
     }
 
     private void printPID() {
