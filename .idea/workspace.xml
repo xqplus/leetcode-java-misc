@@ -4,13 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="2025/3/31">
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/ListNode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Node.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/TreeNode.java" afterDir="false" />
+    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="2025/4/3">
+      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem1.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/InterviewClassic150.java" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/InterviewClassic150.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/common/Process1.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/common/Process1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,13 +48,16 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
+        <option name="customMavenHome" value="D:/Program Files/Maven/apache-maven-3.6.3" />
         <option name="localRepository" value="D:\Program Files\Maven\apache-maven-3.6.3\repository" />
-        <option name="mavenHome" value="D:/Program Files/Maven/apache-maven-3.6.3" />
-        <option name="useMavenConfig" value="true" />
+        <option name="mavenHomeTypeForPersistence" value="CUSTOM" />
         <option name="userSettingsFile" value="D:\Program Files\Maven\apache-maven-3.6.3\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
   <component name="ProjectId" id="2uU6xu4OF91sTRVGoE4HPYhupzK" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -64,30 +65,36 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="go.format.on.save.advertiser.fired" value="true" />
-    <property name="go.formatter.settings.were.checked" value="true" />
-    <property name="go.import.settings.migrated" value="true" />
-    <property name="jdk.selected.JAVA_MODULE" value="1.8" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../DSG/git/virt-routing-station" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.30689654" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
-    <property name="show.run.dashboard.notification" value="false" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\code\github\sample\mybatis-flex-demo\src\main\java\io\github\xqplus\mybatisflex\entity\table" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.InterviewClassic150">
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="JUnit.MybatisFlexDemoApplicationTests.contextLoads">
     <configuration name="InterviewClassic150" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="io.github.xqplus.leetcode.InterviewClassic150" />
       <module name="leetcode" />
@@ -179,13 +186,17 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.InterviewClassic150" />
-        <item itemvalue="Application.Process1" />
-        <item itemvalue="Application.VirtualMachineOperation" />
-        <item itemvalue="Application.VirtualMachineOperation (1)" />
         <item itemvalue="JUnit.MybatisFlexDemoApplicationTests.contextLoads" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.26053.27" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.26053.27" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -205,7 +216,10 @@
       <workItem from="1743391066587" duration="1261000" />
       <workItem from="1743412486177" duration="3886000" />
       <workItem from="1743471944110" duration="30161000" />
-      <workItem from="1743581869056" duration="10325000" />
+      <workItem from="1743581869056" duration="10964000" />
+      <workItem from="1743991213361" duration="16713000" />
+      <workItem from="1744101230887" duration="11000" />
+      <workItem from="1744351853536" duration="7470000" />
     </task>
     <task id="LOCAL-00001" summary="common">
       <created>1742294570762</created>
@@ -228,7 +242,14 @@
       <option name="project" value="LOCAL" />
       <updated>1743416358786</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="2025/4/3">
+      <created>1743652947333</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1743652947333</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -250,7 +271,8 @@
     <MESSAGE value="common" />
     <MESSAGE value="2025/3/21" />
     <MESSAGE value="2025/3/31" />
-    <option name="LAST_COMMIT_MESSAGE" value="2025/3/31" />
+    <MESSAGE value="2025/4/3" />
+    <option name="LAST_COMMIT_MESSAGE" value="2025/4/3" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>

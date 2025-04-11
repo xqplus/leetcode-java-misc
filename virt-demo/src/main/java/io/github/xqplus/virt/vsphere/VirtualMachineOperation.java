@@ -25,16 +25,22 @@ public class VirtualMachineOperation {
         inventoryNavigator = new InventoryNavigator(serviceInstance.getRootFolder());
 
         try {
-            ManagedEntity[] managedEntities = inventoryNavigator.searchManagedEntities("VirtualMachine");
-            for (ManagedEntity managedEntity : managedEntities) {
-                VirtualMachine vm = (VirtualMachine) managedEntity;
-                if (vm.getSnapshot() != null) {
-                    List<VirtualMachineSnapshotTree> snapshotTrees = new ArrayList<>();
-                    collectVbpSnapshotTree(snapshotTrees, vm.getSnapshot().rootSnapshotList);
-                    for (VirtualMachineSnapshotTree snapshotTree : snapshotTrees) {
-                        System.out.println(vm.getName() + " -- " + snapshotTree.name);
-                    }
-                }
+//            ManagedEntity[] managedEntities = inventoryNavigator.searchManagedEntities("VirtualMachine");
+//            for (ManagedEntity managedEntity : managedEntities) {
+//                VirtualMachine vm = (VirtualMachine) managedEntity;
+//                if (vm.getSnapshot() != null) {
+//                    List<VirtualMachineSnapshotTree> snapshotTrees = new ArrayList<>();
+//                    collectVbpSnapshotTree(snapshotTrees, vm.getSnapshot().rootSnapshotList);
+//                    for (VirtualMachineSnapshotTree snapshotTree : snapshotTrees) {
+//                        System.out.println(vm.getName() + " -- " + snapshotTree.name);
+//                    }
+//                }
+//            }
+            VirtualMachine vm = findVirtualMachine("centos7.9");
+            for (VirtualMachineSnapshotTree snapshotTree : vm.getSnapshot().rootSnapshotList) {
+                System.out.println(snapshotTree.name);
+                System.out.println(snapshotTree.createTime.getTimeInMillis());
+                System.out.println(System.currentTimeMillis());
             }
         } finally {
             serviceInstance.getServerConnection().logout();

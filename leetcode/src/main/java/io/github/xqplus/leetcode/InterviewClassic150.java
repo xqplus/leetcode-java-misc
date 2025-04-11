@@ -461,6 +461,213 @@ public class InterviewClassic150 {
     }
 
     /**
+     * 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+     * 有效字符串需满足：
+     * 左括号必须用相同类型的右括号闭合。
+     * 左括号必须以正确的顺序闭合。
+     * 每个右括号都有一个对应的相同类型的左括号。
+     * 示例 1：
+     * 输入：s = "()"
+     * 输出：true
+     * 示例 2：
+     * 输入：s = "()[]{}"
+     * 输出：true
+     * 示例 3：
+     * 输入：s = "(]"
+     * 输出：false
+     * 示例 4：
+     * 输入：s = "([])"
+     * 输出：true
+     * 提示：
+     * 1 <= s.length <= 104
+     * s 仅由括号 '()[]{}' 组成
+     * 栈、字符串
+     */
+    public static boolean isValid(String s) {
+        if ((s.length() & 1) == 1) {
+            return false;
+        }
+        List<Character> list = new ArrayList<>();
+        int half = s.length() >> 1;
+        for (char c : s.toCharArray()) {
+            // 剪枝
+            if (list.size() > half) {
+                return false;
+            }
+            if (list.isEmpty()) {
+                list.add(c);
+                continue;
+            }
+            int sub = c - list.get(list.size() - 1);
+            if (sub == 1 || sub == 2) {
+                list.remove(list.size() - 1);
+            } else {
+                list.add(c);
+            }
+        }
+        return list.isEmpty();
+    }
+
+    /**
+     * 七个不同的符号代表罗马数字，其值如下：
+     * 符号	值
+     * I	1
+     * V	5
+     * X	10
+     * L	50
+     * C	100
+     * D	500
+     * M	1000
+     * 罗马数字是通过添加从最高到最低的小数位值的转换而形成的。将小数位值转换为罗马数字有以下规则：
+     * 如果该值不是以 4 或 9 开头，请选择可以从输入中减去的最大值的符号，将该符号附加到结果，减去其值，然后将其余部分转换为罗马数字。
+     * 如果该值以 4 或 9 开头，使用 减法形式，表示从以下符号中减去一个符号，例如 4 是 5 (V) 减 1 (I): IV ，9 是 10 (X) 减 1 (I)：IX。
+     * 仅使用以下减法形式：4 (IV)，9 (IX)，40 (XL)，90 (XC)，400 (CD) 和 900 (CM)。
+     * 只有 10 的次方（I, X, C, M）最多可以连续附加 3 次以代表 10 的倍数。你不能多次附加 5 (V)，50 (L) 或 500 (D)。
+     * 如果需要将符号附加4次，请使用 减法形式。
+     * 给定一个整数，将其转换为罗马数字。
+     * 示例 1：
+     * 输入：num = 3749
+     * 输出： "MMMDCCXLIX"
+     * 解释：
+     * 3000 = MMM 由于 1000 (M) + 1000 (M) + 1000 (M)
+     * 700 = DCC 由于 500 (D) + 100 (C) + 100 (C)
+     * 40 = XL 由于 50 (L) 减 10 (X)
+     * 9 = IX 由于 10 (X) 减 1 (I)
+     * 注意：49 不是 50 (L) 减 1 (I) 因为转换是基于小数位
+     * 示例 2：
+     * 输入：num = 58
+     * 输出："LVIII"
+     * 解释：
+     * 50 = L
+     * 8 = VIII
+     * 示例 3：
+     * 输入：num = 1994
+     * 输出："MCMXCIV"
+     * 解释：
+     * 1000 = M
+     * 900 = CM
+     * 90 = XC
+     * 4 = IV
+     * 提示：
+     * 1 <= num <= 3999
+     */
+    public static String intToRoman(int num) {
+        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < values.length; i++) {
+            if (num == 0) {
+                break;
+            }
+            int value = values[i];
+            String symbol = symbols[i];
+            while (num >= value) {
+                sb.append(symbol);
+                num -= value;
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。
+     * 这一数据结构有相当多的应用情景，例如自动补全和拼写检查。
+     * 请你实现 Trie 类：
+     * Trie() 初始化前缀树对象。
+     * void insert(String word) 向前缀树中插入字符串 word 。
+     * boolean search(String word) 如果字符串 word 在前缀树中，返回 true（即，在检索之前已经插入）；否则，返回 false 。
+     * boolean startsWith(String prefix) 如果之前已经插入的字符串 word 的前缀之一为 prefix ，返回 true ；否则，返回 false 。
+     * 示例：
+     * 输入
+     * ["Trie", "insert", "search", "search", "startsWith", "insert", "search"]
+     * [[], ["apple"], ["apple"], ["app"], ["app"], ["app"], ["app"]]
+     * 输出
+     * [null, null, true, false, true, null, true]
+     * 解释
+     * Trie trie = new Trie();
+     * trie.insert("apple");
+     * trie.search("apple");   // 返回 True
+     * trie.search("app");     // 返回 False
+     * trie.startsWith("app"); // 返回 True
+     * trie.insert("app");
+     * trie.search("app");     // 返回 True
+     * 提示：
+     * 1 <= word.length, prefix.length <= 2000
+     * word 和 prefix 仅由小写英文字母组成
+     * insert、search 和 startsWith 调用次数 总计 不超过 3 * 104 次
+     */
+    private static class Trie {
+        private final Trie[] children;
+        private boolean isEnd;
+
+        public Trie() {
+            children = new Trie[26];
+        }
+
+        public void insert(String word) {
+            Trie trie = this;
+            for (int i = 0; i < word.length(); i++) {
+                int index = word.charAt(i) - 'a';
+                if (trie.children[index] == null) {
+                    trie.children[index] = new Trie();
+                }
+                trie = trie.children[index];
+            }
+            trie.isEnd = true;
+        }
+
+        public boolean search(String word) {
+            Trie trie = searchTrie(word);
+            return trie != null && trie.isEnd;
+        }
+
+        public boolean startsWith(String prefix) {
+            return searchTrie(prefix) != null;
+        }
+
+        private Trie searchTrie(String word) {
+            Trie trie = this;
+            for (int i = 0; i < word.length(); i++) {
+                int index = word.charAt(i) - 'a';
+                if (trie.children[index] == null) {
+                    return null;
+                }
+                trie = trie.children[index];
+            }
+            return trie;
+        }
+    }
+
+    /**
+     * 给你一个整数数组 citations ，其中 citations[i] 表示研究者的第 i 篇论文被引用的次数。计算并返回该研究者的 h 指数。
+     * 根据维基百科上 h 指数的定义：h 代表“高引用次数” ，一名科研人员的 h 指数 是指他（她）至少发表了 h 篇论文，
+     * 并且 至少 有 h 篇论文被引用次数大于等于 h 。如果 h 有多种可能的值，h 指数 是其中最大的那个。
+     * 示例 1：
+     * 输入：citations = [3,0,6,1,5]
+     * 输出：3
+     * 解释：给定数组表示研究者总共有 5 篇论文，每篇论文相应的被引用了 3, 0, 6, 1, 5 次。
+     * 由于研究者有 3 篇论文每篇 至少 被引用了 3 次，其余两篇论文每篇被引用 不多于 3 次，所以她的 h 指数是 3。
+     * 示例 2：
+     * 输入：citations = [1,3,1]
+     * 输出：1
+     * 提示：
+     * n == citations.length
+     * 1 <= n <= 5000
+     * 0 <= citations[i] <= 1000
+     */
+    public static int hIndex(int[] citations) {
+        Arrays.sort(citations);
+        int h = 1;
+        for (int i = citations.length - 1; i >= 0; i--) {
+            if (citations[i] < h) {
+                break;
+            }
+            h++;
+        }
+        return --h;
+    }
+
+    /**
      * main
      *
      * @param args
@@ -499,9 +706,18 @@ public class InterviewClassic150 {
 
         int[] nums = {1, 2, 3};
         System.out.println(permute(nums));
-         */
 
         int[][] intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
         System.out.println(merge(intervals));
+
+        System.out.println(isValid("[]{}(("));
+
+        System.out.println(intToRoman(3749));
+        System.out.println(intToRoman(58));
+        System.out.println(intToRoman(1994));
+         */
+
+        int[] citations = {1, 1, 1, 1, 1};
+        System.out.println(hIndex(citations));
     }
 }
