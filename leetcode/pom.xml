@@ -53,10 +53,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-<!--                <configuration>-->
-<!--                    <mainClass>io.github.xqplus.leetcode.LeetcodeApplication</mainClass>-->
-<!--                    <skip>true</skip>-->
-<!--                </configuration>-->
                 <executions>
                     <execution>
                         <id>repackage</id>

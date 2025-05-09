@@ -11,19 +11,19 @@ import sun.java2d.loops.ProcessPath;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Process1 {
 
     public static void main(String[] args) throws Exception {
-        int i = (1 << 4) - 1;
-        System.out.println(Integer.toBinaryString(i));
     }
 
     private void printPID() {

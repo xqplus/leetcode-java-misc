@@ -15,62 +15,15 @@ import java.security.NoSuchAlgorithmException;
 
 public class VirtualMachineOperation {
 
-    private static final String TOKEN = "994CEE52-DA12-42FF-A74F-29A4569F1D5E0";
+    private static final String TOKEN = "352732EE-173C-4428-AE41-54D449DED2FD0";
     private static final String SITE_URI = "/service/sites/367C0709";
     private static final String HOST_URN = "urn:sites:367C0709:hosts:105";
 
     public static void main(String[] args) throws Exception {
 //        System.out.println(getToken());
 
-        // 查询指定数据存储
-//        get(SITE_URI + "/datastores/85");
-        // 分页查询数据存储下的虚拟机
-//        get(SITE_URI + "/vms?limit=5&offset=0&scope=urn:sites:367C0709:datastores:85");
-        // 分页查询数据存储下的卷
-//        get(SITE_URI + "/volumes/querydatastorevolumes?limit=1&offset=0&dsUrn=urn:sites:367C0709:datastores:85");
-        // 分页查新数据存储下的文件
-//        get(SITE_URI + "/datastores/85/file?limit=1&offset=0");
-        // 解关联数据存储和主机
-//        delete(SITE_URI + "/datastores/84/disconnect?hostUrn=" + HOST_URN);
-        // 删除指定数据存储
-//        delete(SITE_URI + "/datastores/84/delete");
-
-        // 查询所有端口组
 //        get(SITE_URI + "/portgroups");
-        // 查询指定端口组
-//        get(SITE_URI + "/dvswitchs/6/portgroups/8");
-        // 分页查询端口组关联的虚拟机
-//        get(SITE_URI + "/vms?limit=1&offset=0&scope=urn:sites:367C0709:dvswitchs:6:portgroups:7");
-        // 删除指定端口组
-//        delete(SITE_URI + "/dvswitchs/6/portgroups/8");
-
-//        get(SITE_URI + "/vms?limit=1&offset=0&scope=urn:sites:367C0709:folders:223757");
-//        get(SITE_URI + "/folder?type=1&parentObjUrn=urn:sites:367C0709:folders:223757");
-//        get("/service/sites/367C0709/folder/223823");
-
-//        delete("/service/sites/367C0709/datastores/87/disconnect?hostUrn=urn:sites:367C0709:hosts:105");
-
-
-//        String datastoreUrn = createDatastore(
-//                "urn:sites:367C0709:storageunits:2CA8C46C3AD34240B4F394B6556371BA",
-//                "VBP_ARV_192.168.8.151"
-//        );
-//        createVm(datastoreUrn);
-
-        // 删除虚拟机和数据存储
-//        String result = delete(SITE_URI + "/vms/i-000003EF");
-//        pollingTask(JSON.parseObject(result).getString("taskUri"));
-//
-//        get(SITE_URI + "/vms?limit=1&offset=0&scope=urn:sites:367C0709:datastores:91");
-//
-//        Thread.sleep(5000);
-//        result = delete(SITE_URI + "/datastores/91/disconnect?hostUrn=" + HOST_URN);
-//        pollingTask(JSON.parseObject(result).getString("taskUri"));
-//
-//        result = delete("/service/sites/367C0709/datastores/91/delete");
-//        pollingTask(JSON.parseObject(result).getString("taskUri"));
-
-        get(SITE_URI + "/vms?name=centos7-11");
+        get("/service/sites/367C0709/dvswitchs/7/portgroups/20");
     }
 
     private static void powerOffVm() throws IOException, NoSuchAlgorithmException, KeyManagementException {
@@ -322,16 +275,14 @@ public class VirtualMachineOperation {
                     return null;
 //                    throw new ServiceException("login to huawei fusion compute fail, receive response code : "
 //                            + responseCode + ", reason : " + result);
-                }
-                else {
+                } else {
                     String token = connection.getHeaderField("X-Auth-Token");
                     if (null == token || "".equals(token)) {
                         return null;
                     }
                     return token;
                 }
-            }
-            else {
+            } else {
                 in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                 String result = "";
                 String line;

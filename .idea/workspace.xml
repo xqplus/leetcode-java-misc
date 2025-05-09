@@ -4,11 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="2025/4/3">
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem1.java" afterDir="false" />
+    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="2025/4/11">
+      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/casuis/CasUisDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/configuration/AppConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/controller/MainController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/sangfor/SangforDemo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/InterviewClassic150.java" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/InterviewClassic150.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/LeetcodeApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem1.java" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/src/test/java/io/github/xqplus/leetcode/LeetcodeApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virt-demo/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/casuis/CreateVirtualMachine.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/casuis/QueryVirtualMachine.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/common/Process1.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/common/Process1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/fusioncompute/VirtualMachineOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/fusioncompute/VirtualMachineOperation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,9 +69,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2uU6xu4OF91sTRVGoE4HPYhupzK" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -67,6 +81,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.virt-demo [clean,package].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
@@ -75,8 +91,17 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "模块",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "run.configurations.included.in.services": "true",
-    "vue.rearranger.settings.migration": "true"
+    "vue.rearranger.settings.migration": "true",
+    "应用程序.CasUisDemo.executor": "Run",
+    "应用程序.Process1.executor": "Run",
+    "应用程序.QueryVirtualMachine.executor": "Run",
+    "应用程序.RandomProblem1.executor": "Debug",
+    "应用程序.RandomProblem2.executor": "Debug",
+    "应用程序.VirtualMachineOperation (1).executor": "Run"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -94,13 +119,13 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.MybatisFlexDemoApplicationTests.contextLoads">
-    <configuration name="InterviewClassic150" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.leetcode.InterviewClassic150" />
-      <module name="leetcode" />
+  <component name="RunManager" selected="应用程序.CasUisDemo">
+    <configuration name="CasUisDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.virt.casuis.CasUisDemo" />
+      <module name="virt-demo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.github.xqplus.leetcode.*" />
+          <option name="PATTERN" value="io.github.xqplus.virt.casuis.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -121,12 +146,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VirtualMachineOperation (1)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.virt.fusioncompute.VirtualMachineOperation" />
+    <configuration name="QueryVirtualMachine" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.virt.casuis.QueryVirtualMachine" />
       <module name="virt-demo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.github.xqplus.virt.fusioncompute.*" />
+          <option name="PATTERN" value="io.github.xqplus.virt.casuis.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -134,12 +159,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VirtualMachineOperation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.virt.vsphere.VirtualMachineOperation" />
-      <module name="virt-demo" />
+    <configuration name="RandomProblem1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.leetcode.RandomProblem1" />
+      <module name="leetcode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.github.xqplus.virt.vsphere.*" />
+          <option name="PATTERN" value="io.github.xqplus.leetcode.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -147,18 +172,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MybatisFlexDemoApplicationTests.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="mybatis-flex-demo" />
+    <configuration name="RandomProblem2" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.leetcode.RandomProblem2" />
+      <module name="leetcode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.github.xqplus.mybatisflex.*" />
+          <option name="PATTERN" value="io.github.xqplus.leetcode.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="io.github.xqplus.mybatisflex" />
-      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.mybatisflex.MybatisFlexDemoApplicationTests" />
-      <option name="METHOD_NAME" value="contextLoads" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -186,7 +208,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MybatisFlexDemoApplicationTests.contextLoads" />
+        <item itemvalue="应用程序.CasUisDemo" />
+        <item itemvalue="应用程序.Process1" />
+        <item itemvalue="应用程序.RandomProblem2" />
+        <item itemvalue="应用程序.RandomProblem1" />
+        <item itemvalue="应用程序.QueryVirtualMachine" />
       </list>
     </recent_temporary>
   </component>
@@ -199,6 +225,9 @@
     </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="StructureViewState">
+    <option name="selectedTab" value="实体" />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="" />
@@ -219,7 +248,23 @@
       <workItem from="1743581869056" duration="10964000" />
       <workItem from="1743991213361" duration="16713000" />
       <workItem from="1744101230887" duration="11000" />
-      <workItem from="1744351853536" duration="7470000" />
+      <workItem from="1744351853536" duration="7529000" />
+      <workItem from="1744597108590" duration="28687000" />
+      <workItem from="1744787496460" duration="17000" />
+      <workItem from="1744787570684" duration="4638000" />
+      <workItem from="1744874551365" duration="74000" />
+      <workItem from="1744874683935" duration="91000" />
+      <workItem from="1744948474886" duration="3722000" />
+      <workItem from="1745201595502" duration="1803000" />
+      <workItem from="1745222817318" duration="11909000" />
+      <workItem from="1745301812184" duration="21000" />
+      <workItem from="1745305158364" duration="7801000" />
+      <workItem from="1745378847221" duration="11774000" />
+      <workItem from="1745397277640" duration="43396000" />
+      <workItem from="1745719257093" duration="21000" />
+      <workItem from="1745719327048" duration="11055000" />
+      <workItem from="1745806002636" duration="29951000" />
+      <workItem from="1746496607373" duration="60463000" />
     </task>
     <task id="LOCAL-00001" summary="common">
       <created>1742294570762</created>
@@ -249,7 +294,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743652947333</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="2025/4/11">
+      <option name="closed" value="true" />
+      <created>1744367069909</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1744367069909</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,7 +325,8 @@
     <MESSAGE value="2025/3/21" />
     <MESSAGE value="2025/3/31" />
     <MESSAGE value="2025/4/3" />
-    <option name="LAST_COMMIT_MESSAGE" value="2025/4/3" />
+    <MESSAGE value="2025/4/11" />
+    <option name="LAST_COMMIT_MESSAGE" value="2025/4/11" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
