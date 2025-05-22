@@ -10,6 +10,7 @@ import org.springframework.lang.Nullable;
 import java.net.URL;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class VirtualMachineOperation {
 
@@ -25,8 +26,11 @@ public class VirtualMachineOperation {
         inventoryNavigator = new InventoryNavigator(serviceInstance.getRootFolder());
 
         try {
-            VirtualMachine vm = findVirtualMachine("redhat9.3");
-            vm.createSnapshot_Task("s1", "", false, false);
+            ManagedEntity[] managedEntities = inventoryNavigator.searchManagedEntities("VirtualMachine");
+            List<VirtualMachine> vms = Arrays.stream(managedEntities)
+                    .map(managedEntity -> (VirtualMachine) managedEntity)
+                    .collect(Collectors.toList());
+            System.out.println(vms.size());
         } finally {
             serviceInstance.getServerConnection().logout();
         }

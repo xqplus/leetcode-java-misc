@@ -683,7 +683,7 @@ public class CasUisDemo {
 //        modifyVm();
 //        delete("/cas/casrs/vm/delete/36");
 //        put("/cas/casrs/vm/start/1", "{}");
-//        put("/cas/casrs/vm/stop/1", "{}");
+//        put("/cas/casrs/vm/stop/41", "{}");
 
         // 查询任务详细信息
 //        get("/cas/casrs/message/1745313615736");
