@@ -139,22 +139,110 @@ public class Simple1 {
     }
 
     /**
+     * 14. 最长公共前缀
+     * 编写一个函数来查找字符串数组中的最长公共前缀。
+     * 如果不存在公共前缀，返回空字符串 ""。
+     * 示例 1：
+     * 输入：strs = ["flower","flow","flight"]
+     * 输出："fl"
+     * 示例 2：
+     * 输入：strs = ["dog","racecar","car"]
+     * 输出：""
+     * 解释：输入不存在公共前缀。
+     * 提示：
+     * 1 <= strs.length <= 200
+     * 0 <= strs[i].length <= 200
+     * strs[i] 如果非空，则仅由小写英文字母组成
+     */
+    public String longestCommonPrefix(String[] strs) {
+        StringBuffer sb = new StringBuffer();
+        int n0 = strs[0].length(), n = strs.length;
+        for (int i = 0; i < n0; i++) {
+            char c = strs[0].charAt(i);
+            boolean b = false;
+            for (int j = 1; j < n; j++) {
+                if (i >= strs[j].length() || c != strs[j].charAt(i)) {
+                    b = true;
+                    break;
+                }
+            }
+            if (b) {
+                break;
+            }
+            sb.append(c);
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 26. 删除有序数组中的重复项
+     * 给你一个 非严格递增排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。
+     * 元素的 相对顺序 应该保持 一致 。然后返回 nums 中唯一元素的个数。
+     * 考虑 nums 的唯一元素的数量为 k ，你需要做以下事情确保你的题解可以被通过：
+     * 更改数组 nums ，使 nums 的前 k 个元素包含唯一元素，并按照它们最初在 nums 中出现的顺序排列。nums 的其余元素与 nums 的大小不重要。
+     * 返回 k 。
+     * 判题标准:
+     * 系统会用下面的代码来测试你的题解:
+     * int[] nums = [...]; // 输入数组
+     * int[] expectedNums = [...]; // 长度正确的期望答案
+     * int k = removeDuplicates(nums); // 调用
+     * assert k == expectedNums.length;
+     * for (int i = 0; i < k; i++) {
+     *     assert nums[i] == expectedNums[i];
+     * }
+     * 如果所有断言都通过，那么您的题解将被 通过。
+     * 示例 1：
+     * 输入：nums = [1,1,2]
+     * 输出：2, nums = [1,2,_]
+     * 解释：函数应该返回新的长度 2 ，并且原数组 nums 的前两个元素被修改为 1, 2 。不需要考虑数组中超出新长度后面的元素。
+     * 示例 2：
+     * 输入：nums = [0,0,1,1,1,2,2,3,3,4]
+     * 输出：5, nums = [0,1,2,3,4]
+     * 解释：函数应该返回新的长度 5 ， 并且原数组 nums 的前五个元素被修改为 0, 1, 2, 3, 4 。不需要考虑数组中超出新长度后面的元素。
+     * 提示：
+     * 1 <= nums.length <= 3 * 10^4
+     * -10^4 <= nums[i] <= 10^4
+     * nums 已按 非严格递增 排列
+     */
+    public static int removeDuplicates(int[] nums) {
+        int idx = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[idx] && i > ++idx) {
+                nums[idx] = nums[i];
+            }
+        }
+        return idx + 1;
+    }
+
+    /**
+     * 1025. 除数博弈
+     * 爱丽丝和鲍勃一起玩游戏，他们轮流行动。爱丽丝先手开局。
+     * 最初，黑板上有一个数字 n 。在每个玩家的回合，玩家需要执行以下操作：
+     * 选出任一 x，满足 0 < x < n 且 n % x == 0 。
+     * 用 n - x 替换黑板上的数字 n 。
+     * 如果玩家无法执行这些操作，就会输掉游戏。
+     * 只有在爱丽丝在游戏中取得胜利时才返回 true 。假设两个玩家都以最佳状态参与游戏。
+     * 示例 1：
+     * 输入：n = 2
+     * 输出：true
+     * 解释：爱丽丝选择 1，鲍勃无法进行操作。
+     * 示例 2：
+     * 输入：n = 3
+     * 输出：false
+     * 解释：爱丽丝选择 1，鲍勃也选择 1，然后爱丽丝无法进行操作。
+     * 提示：
+     * 1 <= n <= 1000
+     */
+    public boolean divisorGame(int n) {
+        // 一直选1，回合数就是 n-1, 回合数奇数次先手赢
+        return (n - 1) % 2 == 1; //
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        // ('I', 'V', 'X', 'L', 'C', 'D', 'M')
-        System.out.println((int) 'I' - 'A');
-        System.out.println((int) 'V' - 'A');
-        System.out.println((int) 'X' - 'A');
-        System.out.println((int) 'L' - 'A');
-        System.out.println((int) 'C' - 'A');
-        System.out.println((int) 'D' - 'A');
-        System.out.println((int) 'M' - 'A');
-        System.out.println((int) 'I' + 'V' - 'A');
-        System.out.println((int) 'I' + 'X' - 'A');
-        System.out.println((int) 'X' + 'L' - 'A');
-        System.out.println((int) 'X' + 'C' - 'A');
-        System.out.println((int) 'C' + 'D' - 'A');
-        System.out.println((int) 'C' + 'M' - 'A');
+        int[] nums = {0,0,1,1,1,2,2,3,3,4};
+        System.out.println(removeDuplicates(nums));
     }
 }

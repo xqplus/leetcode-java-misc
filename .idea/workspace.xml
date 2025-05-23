@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="2025/4/11">
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Difficult1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Medium1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem5.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Simple1.java" afterDir="false" />
+    <list default="true" id="d66cf958-a8e8-4e19-9061-7869e08d1086" name="Changes" comment="2025/5/22">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem2.java" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/RandomProblem2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/casuis/CasUisDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/casuis/CasUisDemo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/common/Process1.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/common/Process1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" beforeDir="false" afterPath="$PROJECT_DIR$/virt-demo/src/main/java/io/github/xqplus/virt/vsphere/VirtualMachineOperation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Difficult1.java" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Difficult1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Medium1.java" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Medium1.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Simple1.java" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode/src/main/java/io/github/xqplus/leetcode/Simple1.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,13 +86,15 @@
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true",
     "应用程序.CasUisDemo.executor": "Run",
+    "应用程序.Difficult1.executor": "Run",
+    "应用程序.Medium1.executor": "Debug",
     "应用程序.Process1.executor": "Run",
     "应用程序.QueryVirtualMachine.executor": "Run",
     "应用程序.RandomProblem1.executor": "Debug",
     "应用程序.RandomProblem2.executor": "Run",
     "应用程序.RandomProblem3.executor": "Run",
     "应用程序.RandomProblem5.executor": "Debug",
-    "应用程序.Simple1.executor": "Run",
+    "应用程序.Simple1.executor": "Debug",
     "应用程序.VirtualMachineOperation (1).executor": "Run",
     "应用程序.VirtualMachineOperation.executor": "Run"
   }
@@ -117,13 +114,26 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="应用程序.Simple1">
-    <configuration name="CasUisDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.virt.casuis.CasUisDemo" />
-      <module name="virt-demo" />
+  <component name="RunManager" selected="应用程序.Difficult1">
+    <configuration name="Difficult1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.leetcode.Difficult1" />
+      <module name="leetcode" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.github.xqplus.virt.casuis.*" />
+          <option name="PATTERN" value="io.github.xqplus.leetcode.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Medium1" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.leetcode.Medium1" />
+      <module name="leetcode" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.xqplus.leetcode.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -137,19 +147,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="io.github.xqplus.virt.common.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RandomProblem3" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.github.xqplus.leetcode.RandomProblem3" />
-      <module name="leetcode" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.github.xqplus.leetcode.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -200,19 +197,19 @@
     <list>
       <item itemvalue="Spring Boot.MybatisFlexDemoApplication" />
       <item itemvalue="Spring Boot.VirtDemoApplication" />
-      <item itemvalue="应用程序.CasUisDemo" />
+      <item itemvalue="应用程序.Difficult1" />
+      <item itemvalue="应用程序.Medium1" />
       <item itemvalue="应用程序.RandomProblem5" />
       <item itemvalue="应用程序.Simple1" />
       <item itemvalue="应用程序.Process1" />
-      <item itemvalue="应用程序.RandomProblem3" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="应用程序.Difficult1" />
+        <item itemvalue="应用程序.Medium1" />
         <item itemvalue="应用程序.Simple1" />
         <item itemvalue="应用程序.RandomProblem5" />
         <item itemvalue="应用程序.Process1" />
-        <item itemvalue="应用程序.CasUisDemo" />
-        <item itemvalue="应用程序.RandomProblem3" />
       </list>
     </recent_temporary>
   </component>
@@ -275,7 +272,7 @@
       <workItem from="1747276404208" duration="32289000" />
       <workItem from="1747620681722" duration="14000" />
       <workItem from="1747620705575" duration="17707000" />
-      <workItem from="1747646691814" duration="52933000" />
+      <workItem from="1747646691814" duration="73381000" />
     </task>
     <task id="LOCAL-00001" summary="common">
       <created>1742294570762</created>
@@ -313,7 +310,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744367069909</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="2025/5/22">
+      <option name="closed" value="true" />
+      <created>1747901134679</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1747901134679</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -337,7 +342,8 @@
     <MESSAGE value="2025/3/31" />
     <MESSAGE value="2025/4/3" />
     <MESSAGE value="2025/4/11" />
-    <option name="LAST_COMMIT_MESSAGE" value="2025/4/11" />
+    <MESSAGE value="2025/5/22" />
+    <option name="LAST_COMMIT_MESSAGE" value="2025/5/22" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
