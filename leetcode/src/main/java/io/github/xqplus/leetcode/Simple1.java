@@ -1,5 +1,11 @@
 package io.github.xqplus.leetcode;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -188,7 +194,7 @@ public class Simple1 {
      * int k = removeDuplicates(nums); // 调用
      * assert k == expectedNums.length;
      * for (int i = 0; i < k; i++) {
-     *     assert nums[i] == expectedNums[i];
+     * assert nums[i] == expectedNums[i];
      * }
      * 如果所有断言都通过，那么您的题解将被 通过。
      * 示例 1：
@@ -239,10 +245,132 @@ public class Simple1 {
     }
 
     /**
+     * 2409. 统计共同度过的日子数
+     * Alice 和 Bob 计划分别去罗马开会。
+     * 给你四个字符串 arriveAlice ，leaveAlice ，arriveBob 和 leaveBob 。
+     * Alice 会在日期 arriveAlice 到 leaveAlice 之间在城市里（日期为闭区间），
+     * 而 Bob 在日期 arriveBob 到 leaveBob 之间在城市里（日期为闭区间）。
+     * 每个字符串都包含 5 个字符，格式为 "MM-DD" ，对应着一个日期的月和日。
+     * 请你返回 Alice和 Bob 同时在罗马的天数。
+     * 你可以假设所有日期都在 同一个 自然年，而且 不是 闰年。每个月份的天数分别为：[31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] 。
+     * 示例 1：
+     * 输入：arriveAlice = "08-15", leaveAlice = "08-18", arriveBob = "08-16", leaveBob = "08-19"
+     * 输出：3
+     * 解释：Alice 从 8 月 15 号到 8 月 18 号在罗马。Bob 从 8 月 16 号到 8 月 19 号在罗马，他们同时在罗马的日期为 8 月 16、17 和 18 号。所以答案为 3 。
+     * 示例 2：
+     * 输入：arriveAlice = "10-01", leaveAlice = "10-31", arriveBob = "11-01", leaveBob = "12-31"
+     * 输出：0
+     * 解释：Alice 和 Bob 没有同时在罗马的日子，所以我们返回 0 。
+     * 提示：
+     * 所有日期的格式均为 "MM-DD" 。
+     * Alice 和 Bob 的到达日期都 早于或等于 他们的离开日期。
+     * 题目测试用例所给出的日期均为 非闰年 的有效日期。
+     */
+    public static int countDaysTogether(String arriveAlice, String leaveAlice, String arriveBob, String leaveBob) {
+        int[] datesOfMonths = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        int[] prefixSum = new int[13];
+        for (int i = 0; i < 12; i++) {
+            prefixSum[i + 1] = prefixSum[i] + datesOfMonths[i];
+        }
+
+        int arriveAliceDay = calculateDayOfYear(arriveAlice, prefixSum);
+        int leaveAliceDay = calculateDayOfYear(leaveAlice, prefixSum);
+        int arriveBobDay = calculateDayOfYear(arriveBob, prefixSum);
+        int leaveBobDay = calculateDayOfYear(leaveBob, prefixSum);
+        return Math.max(0, Math.min(leaveAliceDay, leaveBobDay) - Math.max(arriveAliceDay, arriveBobDay) + 1);
+    }
+
+    public static int calculateDayOfYear(String day, int[] prefixSum) {
+        int month = Integer.parseInt(day.substring(0, 2));
+        int date = Integer.parseInt(day.substring(3));
+        return prefixSum[month - 1] + date;
+    }
+
+    /**
+     * 2437. 有效时间的数目
+     * 给你一个长度为 5 的字符串 time ，表示一个电子时钟当前的时间，格式为 "hh:mm" 。最早 可能的时间是 "00:00" ，最晚 可能的时间是 "23:59" 。
+     * 在字符串 time 中，被字符 ? 替换掉的数位是 未知的 ，被替换的数字可能是 0 到 9 中的任何一个。
+     * 请你返回一个整数 answer ，将每一个 ? 都用 0 到 9 中一个数字替换后，可以得到的有效时间的数目。
+     * 示例 1：
+     * 输入：time = "?5:00"
+     * 输出：2
+     * 解释：我们可以将 ? 替换成 0 或 1 ，得到 "05:00" 或者 "15:00" 。注意我们不能替换成 2 ，因为时间 "25:00" 是无效时间。所以我们有两个选择。
+     * 示例 2：
+     * 输入：time = "0?:0?"
+     * 输出：100
+     * 解释：两个 ? 都可以被 0 到 9 之间的任意数字替换，所以我们总共有 100 种选择。
+     * 示例 3：
+     * 输入：time = "??:??"
+     * 输出：1440
+     * 解释：小时总共有 24 种选择，分钟总共有 60 种选择。所以总共有 24 * 60 = 1440 种选择。
+     * 提示：
+     * time 是一个长度为 5 的有效字符串，格式为 "hh:mm" 。
+     * "00" <= hh <= "23"
+     * "00" <= mm <= "59"
+     * 字符串中有的数位是 '?' ，需要用 0 到 9 之间的数字替换。
+     */
+    public static int countTime(String time) {
+        // 012 10 + 10 + 4= 24
+        char c1 = time.charAt(0);
+        char c2 = time.charAt(1);
+        int h1 = c1 == '?' ? (c2 != '?' && c2 > '3' ? 2 : 3) : 1;
+        int h2 = c2 == '?' ? (h1 == 3 ? 8 : (c1 == '2' ? 4 : 10)) : 1;
+        int m1 = time.charAt(3) == '?' ? 6 : 1;
+        int m2 = time.charAt(4) == '?' ? 10 : 1;
+        return h1 * h2 * m1 * m2;
+    }
+
+    /**
+     * 2810. 故障键盘
+     * 你的笔记本键盘存在故障，每当你在上面输入字符 'i' 时，它会反转你所写的字符串。而输入其他字符则可以正常工作。
+     * 给你一个下标从 0 开始的字符串 s ，请你用故障键盘依次输入每个字符。
+     * 返回最终笔记本屏幕上输出的字符串。
+     * 示例 1：
+     * 输入：s = "string"
+     * 输出："rtsng"
+     * 解释：
+     * 输入第 1 个字符后，屏幕上的文本是："s" 。
+     * 输入第 2 个字符后，屏幕上的文本是："st" 。
+     * 输入第 3 个字符后，屏幕上的文本是："str" 。
+     * 因为第 4 个字符是 'i' ，屏幕上的文本被反转，变成 "rts" 。
+     * 输入第 5 个字符后，屏幕上的文本是："rtsn" 。
+     * 输入第 6 个字符后，屏幕上的文本是： "rtsng" 。
+     * 因此，返回 "rtsng" 。
+     * 示例 2：
+     * 输入：s = "poiinter"
+     * 输出："ponter"
+     * 解释：
+     * 输入第 1 个字符后，屏幕上的文本是："p" 。
+     * 输入第 2 个字符后，屏幕上的文本是："po" 。
+     * 因为第 3 个字符是 'i' ，屏幕上的文本被反转，变成 "op" 。
+     * 因为第 4 个字符是 'i' ，屏幕上的文本被反转，变成 "po" 。
+     * 输入第 5 个字符后，屏幕上的文本是："pon" 。
+     * 输入第 6 个字符后，屏幕上的文本是："pont" 。
+     * 输入第 7 个字符后，屏幕上的文本是："ponte" 。
+     * 输入第 8 个字符后，屏幕上的文本是："ponter" 。
+     * 因此，返回 "ponter" 。
+     * 提示：
+     * 1 <= s.length <= 100
+     * s 由小写英文字母组成
+     * s[0] != 'i'
+     */
+    public String finalString(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == 'i') {
+                sb.reverse();
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[] nums = {0,0,1,1,1,2,2,3,3,4};
-        System.out.println(removeDuplicates(nums));
+        System.out.println(countTime("?5:00"));
     }
 }
