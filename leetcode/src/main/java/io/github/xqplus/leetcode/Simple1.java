@@ -5,9 +5,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Simple1 {
 
@@ -368,9 +366,185 @@ public class Simple1 {
     }
 
     /**
+     * LCP 44. 开幕式焰火
+     * 「力扣挑战赛」开幕式开始了，空中绽放了一颗二叉树形的巨型焰火。
+     * 给定一棵二叉树 root 代表焰火，节点值表示巨型焰火这一位置的颜色种类。请帮小扣计算巨型焰火有多少种不同的颜色。
+     * 示例 1：
+     * 输入：root = [1,3,2,1,null,2]
+     * 输出：3
+     * 解释：焰火中有 3 个不同的颜色，值分别为 1、2、3
+     * 示例 2：
+     * 输入：root = [3,3,3]
+     * 输出：1
+     * 解释：焰火中仅出现 1 个颜色，值为 3
+     * 提示：
+     * 1 <= 节点个数 <= 1000
+     * 1 <= Node.val <= 1000
+     */
+    int ans = 0;
+    boolean[] arr = new boolean[1001];
+    public int numColor(TreeNode root) {
+        dfs(root);
+        return ans;
+    }
+
+    private void dfs(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        if (!arr[node.val]) {
+            ans++;
+            arr[node.val] = true;
+        }
+        dfs(node.left);
+        dfs(node.right);
+    }
+
+    /**
+     * 3411. 最长乘积等价子数组
+     * 给你一个由 正整数 组成的数组 nums。
+     * 如果一个数组 arr 满足 prod(arr) == lcm(arr) * gcd(arr)，则称其为 乘积等价数组 ，其中：
+     * prod(arr) 表示 arr 中所有元素的乘积。
+     * gcd(arr) 表示 arr 中所有元素的最大公因数 (GCD)。
+     * lcm(arr) 表示 arr 中所有元素的最小公倍数 (LCM)。
+     * 返回数组 nums 的 最长 乘积等价 子数组 的长度。
+     * 示例 1：
+     * 输入： nums = [1,2,1,2,1,1,1]
+     * 输出： 5
+     * 解释：
+     * 最长的乘积等价子数组是 [1, 2, 1, 1, 1]，其中 prod([1, 2, 1, 1, 1]) = 2， gcd([1, 2, 1, 1, 1]) = 1，以及 lcm([1, 2, 1, 1, 1]) = 2。
+     * 示例 2：
+     * 输入： nums = [2,3,4,5,6]
+     * 输出： 3
+     * 解释：
+     * 最长的乘积等价子数组是 [3, 4, 5]。
+     * 示例 3：
+     * 输入： nums = [1,2,3,1,4,5,1]
+     * 输出： 5
+     * 提示：
+     * 2 <= nums.length <= 100
+     * 1 <= nums[i] <= 10
+     */
+    public static int maxLength(int[] nums) {
+        // 暴力
+        int n = nums.length, ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+                long prod = nums[i];
+                int gcd = nums[i];
+                for (int k = i + 1; k <= j; k++) {
+                    prod *= nums[k];
+                    gcd = getGCD(gcd, nums[k]);
+                }
+                int lcm = getLCM(nums, i, j);
+                if (prod == (long) gcd * lcm) {
+                    int num = j - i + 1;
+                    if (num > ans) {
+                        ans = num;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    private static int getGCD(int m, int n) {
+        // 辗转相除法求最大公因数
+        if (m > n) {
+            return getGCD(n, m);
+        }
+        while (n != 0) {
+            int tmp = m;
+            m = n;
+            n = tmp % n;
+        }
+        return m;
+    }
+
+    private static int getLCM(int[] nums, int i, int j) {
+        // 试乘法求最小公倍数
+        int m = nums[i];
+        while (true) {
+            boolean find = true;
+            for (int k = i + 1; k <= j; k++) {
+                if (m % nums[k] > 0) {
+                    find = false;
+                    break;
+                }
+            }
+            if (find) {
+                return m;
+            }
+            m += nums[i];
+        }
+    }
+
+    /**
+     * 202. 快乐数
+     * 编写一个算法来判断一个数 n 是不是快乐数。
+     * 「快乐数」 定义为：
+     * 对于一个正整数，每一次将该数替换为它每个位置上的数字的平方和。
+     * 然后重复这个过程直到这个数变为 1，也可能是 无限循环 但始终变不到 1。
+     * 如果这个过程 结果为 1，那么这个数就是快乐数。
+     * 如果 n 是 快乐数 就返回 true ；不是，则返回 false 。
+     * 示例 1：
+     * 输入：n = 19
+     * 输出：true
+     * 解释：
+     * 1^2 + 9^2 = 82
+     * 8^2 + 2^2 = 68
+     * 6^2 + 8^2 = 100
+     * 1^2 + 0^2 + 0^2 = 1
+     * 示例 2：
+     * 输入：n = 2
+     * 输出：false
+     * 提示：
+     * 1 <= n <= 2^31 - 1
+     */
+    public static boolean isHappy(int n) {
+        // 只要变换到路径上的元素就会发生循环，不一定非得从第一个循环
+//        Map<Integer, Boolean> processed = new HashMap<>();
+//        processed.put(n, true);
+//        while (n != 1) {
+//            int k = 0;
+//            while (n > 0) {
+//                int digit = n % 10;
+//                k += digit * digit;
+//                n /= 10;
+//            }
+//            if (processed.containsKey(k)) return false;
+//            processed.put(k, true);
+//            n = k;
+//        }
+//        return true;
+
+        // 快慢指针优化（快指针两步，慢指针一步，相等时即一个循环周期）
+        int slow = n, fast = n;
+        do {
+            slow = process1(slow);
+            fast = process1(fast);
+            if (fast == 1) { // 快指针先到1
+                return true;
+            }
+            fast = process1(fast);
+        } while (slow != fast);
+        return slow == 1;
+    }
+
+    private static int process1(int n) {
+        int k = 0;
+        while (n > 0) {
+            int digit = n % 10;
+            k += digit * digit;
+            n /= 10;
+        }
+        return k;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println(countTime("?5:00"));
+        System.out.println(isHappy(33));
     }
 }
