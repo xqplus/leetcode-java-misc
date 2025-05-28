@@ -1,6 +1,6 @@
 package io.github.xqplus.leetcode;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class Medium1 {
 
@@ -111,42 +111,221 @@ public class Medium1 {
      */
     public static int findMaxForm(String[] strs, int m, int n) {
         int ans = 0;
-        int[][] dp = new int[m + 1][n + 1]; // dp[i][j] 表示有i个0，j个1时最大子集个数
-        for (int i = 0; i < strs.length; i++) {
+        // dp[i][j]表示累计i个0,j个1时最大子集数量
+        int[][] dp = new int[m + 1][n + 1];
+        for (String str : strs) {
             int n0 = 0, n1 = 0;
-            for (int j = 0; j < strs[i].length(); j++) {
-                if (strs[i].charAt(j) == '0') {
+            for (int i = 0; i < str.length(); i++) {
+                if (str.charAt(i) == '0') {
                     n0++;
                 } else {
                     n1++;
                 }
             }
-            if (i == 0) {
-                dp[n0][n1] = 1;
-                ans = 1;
-                continue;
-            }
             if (n0 > m || n1 > n) {
                 continue;
             }
-            for (int j = 0; j <= m - n0; j++) {
-                for (int k = 0; k <= n - n1; k++) {
-                    if (dp[j][k] > 0) {
-                        dp[j + n0][k + n1] = dp[j][k] + 1;
-                        ans = Math.max(ans, dp[j + n0][k + n1]);
+            for (int i = m - n0; i >= 0; i--) {
+                for (int j = n - n1; j >= 0; j--) {
+                    if (dp[i][j] > 0 || (i == 0 && j == 0)) {
+                        dp[i + n0][j + n1] = Math.max(dp[i + n0][j + n1], dp[i][j] + 1);
+                        ans = Math.max(ans, dp[i + n0][j + n1]);
                     }
                 }
             }
-            // TODO
         }
         return ans;
+    }
+
+    /**
+     * LCR 107. 01 矩阵
+     * 给定一个由 0 和 1 组成的矩阵 mat ，请输出一个大小相同的矩阵，其中每一个格子是 mat 中对应位置元素到最近的 0 的距离。
+     * 两个相邻元素间的距离为 1 。
+     * 示例 1：
+     * 0 0 0
+     * 0 1 0
+     * 0 0 0
+     * 输入：mat = [[0,0,0],[0,1,0],[0,0,0]]
+     * 输出：[[0,0,0],[0,1,0],[0,0,0]]
+     * 示例 2：
+     * 0 0 0
+     * 0 1 0
+     * 1 1 1
+     * 输入：mat = [[0,0,0],[0,1,0],[1,1,1]]
+     * 输出：[[0,0,0],[0,1,0],[1,2,1]]
+     * 提示：
+     * m == mat.length
+     * n == mat[i].length
+     * 1 <= m, n <= 10^4
+     * 1 <= m * n <= 10^4
+     * mat[i][j] is either 0 or 1.
+     * mat 中至少有一个 0
+     */
+    static int[][] dirs = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+    public static int[][] updateMatrix(int[][] mat) {
+        int m = mat.length, n = mat[0].length;
+        int[][] ans = new int[m][n];
+        Queue<int[]> queue = new LinkedList<>();
+        boolean[][] visited = new boolean[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (mat[i][j] == 0) {
+                    queue.offer(new int[]{i, j});
+                    visited[i][j] = true;
+                }
+            }
+        }
+        while (!queue.isEmpty()) {
+            int[] cur = queue.poll();
+            for (int d = 0; d < 4; d++) {
+                int x = cur[0] + dirs[d][0];
+                int y = cur[1] + dirs[d][1];
+                if (x >= 0 && x < m && y >= 0 && y < n && !visited[x][y]) {
+                    ans[x][y] = ans[cur[0]][cur[1]] + 1;
+                    queue.offer(new int[]{x, y});
+                    visited[x][y] = true;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 3067. 在带权树网络中统计可连接服务器对数目
+     * 给你一棵无根带权树，树中总共有 n 个节点，分别表示 n 个服务器，服务器从 0 到 n - 1 编号。
+     * 同时给你一个数组 edges ，其中 edges[i] = [ai, bi, weighti] 表示节点 ai 和 bi 之间有一条双向边，边的权值为 weighti 。
+     * 再给你一个整数 signalSpeed 。
+     * 如果两台服务器 a 和 b 是通过服务器 c 可连接的，则：
+     * a < b ，a != c 且 b != c 。
+     * // a < b < c | c < a < b | a < c < b
+     * 从 c 到 a 的距离是可以被 signalSpeed 整除的。
+     * 从 c 到 b 的距离是可以被 signalSpeed 整除的。
+     * 从 c 到 b 的路径与从 c 到 a 的路径没有任何公共边。
+     * 请你返回一个长度为 n 的整数数组 count ，其中 count[i] 表示通过服务器 i 可连接 的服务器对的 数目 。
+     * 示例 1：
+     * 0 --1-- 1 --5-- 2 --13-- 3 --9-- 4 --2-- 5
+     * 输入：edges = [[0,1,1],[1,2,5],[2,3,13],[3,4,9],[4,5,2]], signalSpeed = 1
+     * 输出：[0,4,6,6,4,0]
+     * 解释：由于 signalSpeed 等于 1 ，count[c] 等于所有从 c 开始且没有公共边的路径对数目。
+     * 在输入图中，count[c] 等于服务器 c 左边服务器数目乘以右边服务器数目。
+     * 示例 2：
+     * 输入：edges = [[0,6,3],[6,5,3],[0,3,1],[3,2,7],[3,1,6],[3,4,2]], signalSpeed = 3
+     * 输出：[2,0,0,0,0,0,2]
+     * 解释：通过服务器 0 ，有 2 个可连接服务器对(4, 5) 和 (4, 6) 。
+     * 通过服务器 6 ，有 2 个可连接服务器对 (4, 5) 和 (0, 5) 。
+     * 所有服务器对都必须通过服务器 0 或 6 才可连接，所以其他服务器对应的可连接服务器对数目都为 0 。
+     * 提示：
+     * 2 <= n <= 1000
+     * edges.length == n - 1
+     * edges[i].length == 3
+     * 0 <= ai, bi < n
+     * edges[i] = [ai, bi, weighti]
+     * 1 <= weighti <= 106
+     * 1 <= signalSpeed <= 106
+     * 输入保证 edges 构成一棵合法的树。
+     */
+    public static int[] countPairsOfConnectableServers(int[][] edges, int signalSpeed) {
+        int n = edges.length + 1;
+        List<int[]>[] graph = new ArrayList[n];
+
+        // 先构造图结构
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1], w = edge[2];
+
+            List<int[]> ues = graph[u];
+            if (ues == null) {
+                ues = new ArrayList<>();
+                graph[u] = ues;
+            }
+            ues.add(new int[]{v, w});
+
+            List<int[]> ves = graph[v];
+            if (ves == null) {
+                ves = new ArrayList<>();
+                graph[v] = ves;
+            }
+            ves.add(new int[]{u, w});
+        }
+
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            // 跳过顶点邻接带权边只有一条情况
+            if (graph[i].size() > 1) {
+                // 计算出所有方向满足条件的顶点数量
+                int nes = graph[i].size();
+                int[] cnt = new int[nes];
+                for (int j = 0; j < nes; j++) {
+                    int[] e = graph[i].get(j);
+                    cnt[j] = dfs(graph, e[0], e[1], signalSpeed, i);
+                }
+                // 再求乘积和
+                for (int j = 0; j < nes - 1; j++) {
+                    for (int k = j + 1; k < nes; k++) {
+                        ans[i] += cnt[j] * cnt[k];
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    private static int dfs(List<int[]>[] graph, int i, int totalWeight, int signalSpeed, int from) {
+        // 无环图边界顶点只有一条边
+        int cnt = totalWeight % signalSpeed == 0 ? 1 : 0;
+        if (graph[i].size() == 1) {
+            return cnt;
+        }
+        for (int[] e : graph[i]) {
+            if (e[0] != from) {
+                cnt += dfs(graph, e[0], totalWeight + e[1], signalSpeed, i);
+            }
+        }
+        return cnt;
     }
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        String[] strs = {"10","0001","111001","1","0"};
-        System.out.println(findMaxForm(strs, 4, 3));
+        // [[0,6,3],[6,5,3],[0,3,1],[3,2,7],[3,1,6],[3,4,2]]
+//        List<int[]>[] graph = new ArrayList[7];
+//        List<int[]> edges = new ArrayList<>();
+//        edges.add(new int[]{6, 3});
+//        edges.add(new int[]{3, 1});
+//        graph[0] = edges;
+//
+//        edges = new ArrayList<>();
+//        edges.add(new int[]{3, 6});
+//        graph[1] = edges;
+//
+//        edges = new ArrayList<>();
+//        edges.add(new int[]{3, 7});
+//        graph[2] = edges;
+//
+//        edges = new ArrayList<>();
+//        edges.add(new int[]{0, 1});
+//        edges.add(new int[]{2, 7});
+//        edges.add(new int[]{1, 6});
+//        edges.add(new int[]{4, 2});
+//        graph[3] = edges;
+//
+//        edges = new ArrayList<>();
+//        edges.add(new int[]{3, 2});
+//        graph[4] = edges;
+//
+//        edges = new ArrayList<>();
+//        edges.add(new int[]{6, 3});
+//        graph[5] = edges;
+//
+//        edges = new ArrayList<>();
+//        edges.add(new int[]{0, 3});
+//        edges.add(new int[]{5, 3});
+//        graph[6] = edges;
+//
+//        System.out.println(dfs(graph, 6, 3, 3, 0));
+
+        int[][] edges = {{0,6,3},{6,5,3},{0,3,1},{3,2,7},{3,1,6},{3,4,2}};
+        System.out.println(Arrays.toString(countPairsOfConnectableServers(edges, 3)));
     }
 }

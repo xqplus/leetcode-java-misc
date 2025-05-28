@@ -383,6 +383,7 @@ public class Simple1 {
      */
     int ans = 0;
     boolean[] arr = new boolean[1001];
+
     public int numColor(TreeNode root) {
         dfs(root);
         return ans;
@@ -542,9 +543,259 @@ public class Simple1 {
     }
 
     /**
+     * 3545. 不同字符数量最多为 K 时的最少删除数
+     * 给你一个字符串 s（由小写英文字母组成）和一个整数 k。
+     * 你的任务是删除字符串中的一些字符（可以不删除任何字符），使得结果字符串中的 不同字符数量 最多为 k。
+     * 返回为达到上述目标所需删除的 最小 字符数量。
+     * 示例 1：
+     * 输入： s = "abc", k = 2
+     * 输出： 1
+     * 解释：
+     * s 有三个不同的字符：'a'、'b' 和 'c'，每个字符的出现频率为 1。
+     * 由于最多只能有 k = 2 个不同字符，需要删除某一个字符的所有出现。
+     * 例如，删除所有 'c' 后，结果字符串中的不同字符数最多为 k。因此，答案是 1。
+     * 示例 2：
+     * 输入： s = "aabb", k = 2
+     * 输出： 0
+     * 解释：
+     * s 有两个不同的字符（'a' 和 'b'），它们的出现频率分别为 2 和 2。
+     * 由于最多可以有 k = 2 个不同字符，不需要删除任何字符。因此，答案是 0。
+     * 示例 3：
+     * 输入： s = "yyyzz", k = 1
+     * 输出： 2
+     * 解释：
+     * s 有两个不同的字符（'y' 和 'z'），它们的出现频率分别为 3 和 2。
+     * 由于最多只能有 k = 1 个不同字符，需要删除某一个字符的所有出现。
+     * 删除所有 'z' 后，结果字符串中的不同字符数最多为 k。因此，答案是 2。
+     * 提示：
+     * 1 <= s.length <= 16
+     * 1 <= k <= 16
+     * s 仅由小写英文字母组成。
+     */
+    public int minDeletion(String s, int k) {
+        int[] arr = new int[26];
+        int cnt = 0, ans = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int idx = s.charAt(i) - 'a';
+            arr[idx]++;
+            if (arr[idx] == 1) {
+                cnt++;
+            }
+        }
+        if (cnt > k) {
+            Arrays.sort(arr);
+            for (int i = 26 - cnt; i < 26 - k; i++) {
+                ans += arr[i];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2335. 装满杯子需要的最短总时长
+     * 现有一台饮水机，可以制备冷水、温水和热水。每秒钟，可以装满 2 杯 不同 类型的水或者 1 杯任意类型的水。
+     * 给你一个下标从 0 开始、长度为 3 的整数数组 amount ，
+     * 其中 amount[0]、amount[1] 和 amount[2] 分别表示需要装满冷水、温水和热水的杯子数量。返回装满所有杯子所需的 最少 秒数。
+     * 示例 1：
+     * 输入：amount = [1,4,2]
+     * 输出：4
+     * 解释：下面给出一种方案：
+     * 第 1 秒：装满一杯冷水和一杯温水。
+     * 第 2 秒：装满一杯温水和一杯热水。
+     * 第 3 秒：装满一杯温水和一杯热水。
+     * 第 4 秒：装满一杯温水。
+     * 可以证明最少需要 4 秒才能装满所有杯子。
+     * 示例 2：
+     * 输入：amount = [5,4,4]
+     * 输出：7
+     * 解释：下面给出一种方案：
+     * 第 1 秒：装满一杯冷水和一杯热水。
+     * 第 2 秒：装满一杯冷水和一杯温水。
+     * 第 3 秒：装满一杯冷水和一杯温水。
+     * 第 4 秒：装满一杯温水和一杯热水。
+     * 第 5 秒：装满一杯冷水和一杯热水。
+     * 第 6 秒：装满一杯冷水和一杯温水。
+     * 第 7 秒：装满一杯热水。
+     * 示例 3：
+     * 输入：amount = [5,0,0]
+     * 输出：5
+     * 解释：每秒装满一杯冷水。
+     * 提示：
+     * amount.length == 3
+     * 0 <= amount[i] <= 100
+     */
+    public static int fillCups(int[] amount) {
+        int ans = 0;
+        while (amount[0] > 0 || amount[1] > 0 || amount[2] > 0) {
+            if (amount[0] > amount[1]) {
+                amount[0]--;
+                if (amount[1] > amount[2]) {
+                    amount[1]--;
+                } else {
+                    amount[2]--;
+                }
+            } else {
+                amount[1]--;
+                if (amount[0] > amount[2]) {
+                    amount[0]--;
+                } else {
+                    amount[2]--;
+                }
+            }
+            ans++;
+        }
+        return ans;
+    }
+
+    /**
+     * LCP 39. 无人机方阵
+     * 在 「力扣挑战赛」 开幕式的压轴节目 「无人机方阵」中，每一架无人机展示一种灯光颜色。 无人机方阵通过两种操作进行颜色图案变换：
+     * 调整无人机的位置布局
+     * 切换无人机展示的灯光颜色
+     * 给定两个大小均为 N*M 的二维数组 source 和 target 表示无人机方阵表演的两种颜色图案，
+     * 由于无人机切换灯光颜色的耗能很大，请返回从 source 到 target 最少需要多少架无人机切换灯光颜色。
+     * 注意： 调整无人机的位置布局时无人机的位置可以随意变动。
+     * 示例 1：
+     * 输入：source = [[1,3],[5,4]], target = [[3,1],[6,5]]
+     * 输出：1
+     * 解释： 最佳方案为 将 [0,1] 处的无人机移动至 [0,0] 处； 将 [0,0] 处的无人机移动至 [0,1] 处；
+     * 将 [1,0] 处的无人机移动至 [1,1] 处； 将 [1,1] 处的无人机移动至 [1,0] 处，其灯光颜色切换为颜色编号为 6 的灯光；
+     * 因此从source 到 target 所需要的最少灯光切换次数为 1。
+     * 示例 2：
+     * 输入：source = [[1,2,3],[3,4,5]], target = [[1,3,5],[2,3,4]]
+     * 输出：0 解释： 仅需调整无人机的位置布局，便可完成图案切换。因此不需要无人机切换颜色
+     * 提示：
+     * n == source.length == target.length
+     * m == source[i].length == target[i].length
+     * 1 <= n, m <=100
+     * 1 <= source[i][j], target[i][j] <=10^4
+     */
+    public static int minimumSwitchingTimes(int[][] source, int[][] target) {
+        // 调整位置不算次数，则只统计target中存在，且source中不存在的即可
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int[] row : source) {
+            for (int i : row) {
+                map.put(i, map.getOrDefault(i, 0) + 1);
+            }
+        }
+        int ans = 0;
+        for (int[] row : target) {
+            for (int i : row) {
+                Integer val = map.get(i);
+                if (val == null || val == 0) {
+                    ans++;
+                } else {
+                    map.put(i, val - 1);
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2788. 按分隔符拆分字符串
+     * 给你一个字符串数组 words 和一个字符 separator ，请你按 separator 拆分 words 中的每个字符串。
+     * 返回一个由拆分后的新字符串组成的字符串数组，不包括空字符串 。
+     * 注意
+     * separator 用于决定拆分发生的位置，但它不包含在结果字符串中。
+     * 拆分可能形成两个以上的字符串。
+     * 结果字符串必须保持初始相同的先后顺序。
+     * 示例 1：
+     * 输入：words = ["one.two.three","four.five","six"], separator = "."
+     * 输出：["one","two","three","four","five","six"]
+     * 解释：在本示例中，我们进行下述拆分：
+     * "one.two.three" 拆分为 "one", "two", "three"
+     * "four.five" 拆分为 "four", "five"
+     * "six" 拆分为 "six"
+     * 因此，结果数组为 ["one","two","three","four","five","six"] 。
+     * 示例 2：
+     * 输入：words = ["$easy$","$problem$"], separator = "$"
+     * 输出：["easy","problem"]
+     * 解释：在本示例中，我们进行下述拆分：
+     * "$easy$" 拆分为 "easy"（不包括空字符串）
+     * "$problem$" 拆分为 "problem"（不包括空字符串）
+     * 因此，结果数组为 ["easy","problem"] 。
+     * 示例 3：
+     * 输入：words = ["|||"], separator = "|"
+     * 输出：[]
+     * 解释：在本示例中，"|||" 的拆分结果将只包含一些空字符串，所以我们返回一个空数组 [] 。
+     * 提示：
+     * 1 <= words.length <= 100
+     * 1 <= words[i].length <= 20
+     * words[i] 中的字符要么是小写英文字母，要么就是字符串 ".,|$#@" 中的字符（不包括引号）
+     * separator 是字符串 ".,|$#@" 中的某个字符（不包括引号）
+     */
+    public static List<String> splitWordsBySeparator(List<String> words, char separator) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for (String word : words) {
+            for (int i = 0; i < word.length(); i++) {
+                char c = word.charAt(i);
+                if (c != separator) {
+                    sb.append(c);
+                    continue;
+                }
+                if (sb.length() > 0) {
+                    ans.add(sb.toString());
+                    sb.delete(0, sb.length());
+                }
+            }
+            if (sb.length() > 0) {
+                ans.add(sb.toString());
+                sb.delete(0, sb.length());
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 面试题 02.01. 移除重复节点
+     * 编写代码，移除未排序链表中的重复节点。保留最开始出现的节点。
+     * 示例1：
+     * 输入：[1, 2, 3, 3, 2, 1]
+     * 输出：[1, 2, 3]
+     * 示例2：
+     * 输入：[1, 1, 1, 1, 2]
+     * 输出：[1, 2]
+     * 提示：
+     * 链表长度在[0, 20000]范围内。
+     * 链表元素在[0, 20000]范围内。
+     * 进阶：
+     * 如果不得使用临时缓冲区，该怎么解决？
+     */
+    public ListNode removeDuplicateNodes(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(), prev;
+        dummy.next = head;
+        while (head.next != null) {
+            boolean exist = false;
+            prev = dummy.next;
+            while (prev != head.next) {
+                if (prev.val == head.next.val) {
+                    exist = true;
+                    break;
+                }
+                prev = prev.next;
+            }
+
+            if (exist) {
+                ListNode tmp = head.next;
+                head.next = head.next.next;
+                tmp.next = null;
+            } else {
+                head = head.next;
+            }
+        }
+        return dummy.next;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println(isHappy(33));
+        List<String> words = Arrays.asList("|||");
+        System.out.println(splitWordsBySeparator(words, '|'));
     }
 }
