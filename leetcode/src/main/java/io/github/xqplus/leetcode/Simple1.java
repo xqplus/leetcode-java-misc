@@ -792,10 +792,239 @@ public class Simple1 {
     }
 
     /**
+     * 1379. 找出克隆二叉树中的相同节点
+     * 给你两棵二叉树，原始树 original 和克隆树 cloned，以及一个位于原始树 original 中的目标节点 target。
+     * 其中，克隆树 cloned 是原始树 original 的一个 副本 。
+     * 请找出在树 cloned 中，与 target 相同 的节点，并返回对该节点的引用（在 C/C++ 等有指针的语言中返回 节点指针，其他语言返回节点本身）。
+     * 注意：你 不能 对两棵二叉树，以及 target 节点进行更改。只能 返回对克隆树 cloned 中已有的节点的引用。
+     * 示例 1:
+     * 输入: tree = [7,4,3,null,null,6,19], target = 3
+     * 输出: 3
+     * 解释: 上图画出了树 original 和 cloned。target 节点在树 original 中，用绿色标记。答案是树 cloned 中的黄颜色的节点（其他示例类似）。
+     * 示例 2:
+     * 输入: tree = [7], target =  7
+     * 输出: 7
+     * 示例 3:
+     * 输入: tree = [8,null,6,null,5,null,4,null,3,null,2,null,1], target = 4
+     * 输出: 4
+     * 提示：
+     * 树中节点的数量范围为 [1, 10^4] 。
+     * 同一棵树中，没有值相同的节点。
+     * target 节点是树 original 中的一个节点，并且不会是 null 。
+     * 进阶：如果树中允许出现值相同的节点，将如何解答？
+     */
+    public final TreeNode getTargetCopy(final TreeNode original, final TreeNode cloned, final TreeNode target) {
+        return dfs1(cloned, target.val);
+        // 进阶：对于浅克隆，只需要通过节点的left right跟 target比较即可，因为引用对象相等
+        // 深克隆：需要搜索target在original中的位置，再从cloned相应位置返回即可,
+        // original可统计递归的次数，然后cloned每递归一次，次数-1,到0时指向的节点即为答案
+    }
+
+    private TreeNode dfs1(TreeNode node, int targetVal) {
+        if (node == null || node.val == targetVal) {
+            return node;
+        }
+        TreeNode left = dfs1(node.left, targetVal);
+        if (left != null) {
+            return left;
+        }
+        return dfs1(node.right, targetVal);
+    }
+
+    /**
+     * 2210. 统计数组中峰和谷的数量
+     * 给你一个下标从 0 开始的整数数组 nums 。如果两侧距 i 最近的不相等邻居的值均小于 nums[i] ，则下标 i 是 nums 中，某个峰的一部分。
+     * 类似地，如果两侧距 i 最近的不相等邻居的值均大于 nums[i] ，则下标 i 是 nums 中某个谷的一部分。
+     * 对于相邻下标 i 和 j ，如果 nums[i] == nums[j] ， 则认为这两下标属于 同一个 峰或谷。
+     * 注意，要使某个下标所做峰或谷的一部分，那么它左右两侧必须 都 存在不相等邻居。
+     * 返回 nums 中峰和谷的数量。
+     * 示例 1：
+     * 输入：nums = [2,4,1,1,6,5]  242215
+     * 输出：3
+     * 解释：
+     * 在下标 0 ：由于 2 的左侧不存在不相等邻居，所以下标 0 既不是峰也不是谷。
+     * 在下标 1 ：4 的最近不相等邻居是 2 和 1 。由于 4 > 2 且 4 > 1 ，下标 1 是一个峰。
+     * 在下标 2 ：1 的最近不相等邻居是 4 和 6 。由于 1 < 4 且 1 < 6 ，下标 2 是一个谷。
+     * 在下标 3 ：1 的最近不相等邻居是 4 和 6 。由于 1 < 4 且 1 < 6 ，下标 3 符合谷的定义，但需要注意它和下标 2 是同一个谷的一部分。
+     * 在下标 4 ：6 的最近不相等邻居是 1 和 5 。由于 6 > 1 且 6 > 5 ，下标 4 是一个峰。
+     * 在下标 5 ：由于 5 的右侧不存在不相等邻居，所以下标 5 既不是峰也不是谷。
+     * 共有 3 个峰和谷，所以返回 3 。
+     * 示例 2：
+     * 输入：nums = [6,6,5,5,4,1]
+     * 输出：0
+     * 解释：
+     * 在下标 0 ：由于 6 的左侧不存在不相等邻居，所以下标 0 既不是峰也不是谷。
+     * 在下标 1 ：由于 6 的左侧不存在不相等邻居，所以下标 1 既不是峰也不是谷。
+     * 在下标 2 ：5 的最近不相等邻居是 6 和 4 。由于 5 < 6 且 5 > 4 ，下标 2 既不是峰也不是谷。
+     * 在下标 3 ：5 的最近不相等邻居是 6 和 4 。由于 5 < 6 且 5 > 4 ，下标 3 既不是峰也不是谷。
+     * 在下标 4 ：4 的最近不相等邻居是 5 和 1 。由于 4 < 5 且 4 > 1 ，下标 4 既不是峰也不是谷。
+     * 在下标 5 ：由于 1 的右侧不存在不相等邻居，所以下标 5 既不是峰也不是谷。
+     * 共有 0 个峰和谷，所以返回 0 。
+     * 提示：
+     * 3 <= nums.length <= 100
+     * 1 <= nums[i] <= 100
+     */
+    public static int countHillValley(int[] nums) {
+//        int n = nums.length, ans = 0;
+//        boolean prev = false;
+//        for (int i = 1; i < n - 1; i++) {
+//            int cur = nums[i], prevNe = 0, nextNe = 0;
+//            for (int j = i - 1; j >= 0; j--) {
+//                if (nums[j] != cur) {
+//                    prevNe = nums[j];
+//                    break;
+//                }
+//            }
+//            if (prevNe > 0) {
+//                for (int j = i + 1; j < n; j++) {
+//                    if (nums[j] != cur) {
+//                        nextNe = nums[j];
+//                        break;
+//                    }
+//                }
+//            }
+//            if (prevNe > 0 && nextNe > 0
+//                    && ((cur > prevNe && cur > nextNe) || (cur < prevNe && cur < nextNe))) {
+//                if (!prev || cur != nums[i - 1]) { // 前一个相邻不为峰谷 || 是峰谷但是不相等
+//                    ans++;
+//                }
+//                prev = true;
+//            } else {
+//                prev = false;
+//            }
+//        }
+//        return ans;
+
+        // 只需要维护之前的单调性，就能判断当前是否存在峰谷
+        int ans = 0;
+        boolean prevUp = nums[0] < nums[1];
+        boolean prevDown = nums[0] > nums[1];
+        for (int i = 2; i < nums.length; i++) {
+            if (nums[i - 1] < nums[i]) { // 当前递增
+                if (prevDown) { // 之前递减
+                    // 存在谷
+                    ans++;
+                }
+                prevUp = true;
+                prevDown = false;
+            } else if (nums[i - 1] > nums[i]) {
+                if (prevUp) {
+                    ans++;
+                }
+                prevUp = false;
+                prevDown = true;
+            } // nums[i - 1] == nums[i] 不影响之前的单调性
+        }
+        return ans;
+    }
+
+    /**
+     * 3492. 船上可以装载的最大集装箱数量
+     * 给你一个正整数 n，表示船上的一个 n x n 的货物甲板。甲板上的每个单元格可以装载一个重量 恰好 为 w 的集装箱。
+     * 然而，如果将所有集装箱装载到甲板上，其总重量不能超过船的最大承载重量 maxWeight。
+     * 请返回可以装载到船上的 最大 集装箱数量。
+     * 示例 1：
+     * 输入： n = 2, w = 3, maxWeight = 15
+     * 输出： 4
+     * 解释：
+     * 甲板有 4 个单元格，每个集装箱的重量为 3。将所有集装箱装载后，总重量为 12，未超过 maxWeight。
+     * 示例 2：
+     * 输入： n = 3, w = 5, maxWeight = 20
+     * 输出： 4
+     * 解释：
+     * 甲板有 9 个单元格，每个集装箱的重量为 5。可以装载的最大集装箱数量为 4，此时总重量不超过 maxWeight。
+     * 提示：
+     * 1 <= n <= 1000
+     * 1 <= w <= 1000
+     * 1 <= maxWeight <= 10^9
+     */
+    public int maxContainers(int n, int w, int maxWeight) {
+        n = n * n;
+        return n * w <= maxWeight ? n : maxWeight / w;
+    }
+
+    /**
+     * 696. 计数二进制子串
+     * 给定一个字符串 s，统计并返回具有相同数量 0 和 1 的非空（连续）子字符串的数量，并且这些子字符串中的所有 0 和所有 1 都是成组连续的。
+     * 重复出现（不同位置）的子串也要统计它们出现的次数。
+     * 示例 1：
+     * 输入：s = "00110011"
+     * 输出：6
+     * 解释：6 个子串满足具有相同数量的连续 1 和 0 ："0011"、"01"、"1100"、"10"、"0011" 和 "01" 。
+     * 注意，一些重复出现的子串（不同位置）要统计它们出现的次数。
+     * 另外，"00110011" 不是有效的子串，因为所有的 0（还有 1 ）没有组合在一起。
+     * 示例 2：
+     * 输入：s = "10101"
+     * 输出：4
+     * 解释：有 4 个子串："10"、"01"、"10"、"01" ，具有相同数量的连续 1 和 0 。
+     * 提示：
+     * 1 <= s.length <= 10^5
+     * s[i] 为 '0' 或 '1'
+     */
+    public static int countBinarySubstrings(String s) {
+        // 依次找01或10，找到后向两边扩展
+        char[] cs = s.toCharArray();
+        int n = cs.length, ans = 0;
+        for (int i = 1; i < n; i++) {
+            if (cs[i] == cs[i - 1]) {
+                continue;
+            }
+            ans++;
+            int l = i - 2, r = i + 1;
+            while (l >= 0 && r < n && cs[l] == cs[i - 1] && cs[r] == cs[i]) {
+                ans++;
+                l--;
+                r++;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 1763. 最长的美好子字符串
+     * 当一个字符串 s 包含的每一种字母的大写和小写形式 同时 出现在 s 中，就称这个字符串 s 是 美好 字符串。
+     * 比方说，"abABB" 是美好字符串，因为 'A' 和 'a' 同时出现了，且 'B' 和 'b' 也同时出现了。
+     * 然而，"abA" 不是美好字符串因为 'b' 出现了，而 'B' 没有出现。
+     * 给你一个字符串 s ，请你返回 s 最长的 美好子字符串 。如果有多个答案，请你返回 最早 出现的一个。如果不存在美好子字符串，请你返回一个空字符串。
+     * 示例 1：
+     * 输入：s = "YazaAay"
+     * 输出："aAa"
+     * 解释："aAa" 是一个美好字符串，因为这个子串中仅含一种字母，其小写形式 'a' 和大写形式 'A' 也同时出现了。
+     * "aAa" 是最长的美好子字符串。
+     * 示例 2：
+     * 输入：s = "Bb"
+     * 输出："Bb"
+     * 解释："Bb" 是美好字符串，因为 'B' 和 'b' 都出现了。整个字符串也是原字符串的子字符串。
+     * 示例 3：
+     * 输入：s = "c"
+     * 输出：""
+     * 解释：没有美好子字符串。
+     * 示例 4：
+     * 输入：s = "dDzeE"
+     * 输出："dD"
+     * 解释："dD" 和 "eE" 都是最长美好子字符串。
+     * 由于有多个美好子字符串，返回 "dD" ，因为它出现得最早。
+     * 提示：
+     * 1 <= s.length <= 100
+     * s 只包含大写和小写英文字母。
+     */
+    public String longestNiceSubstring(String s) {
+        char[] cs = s.toCharArray();
+        int n = cs.length;
+        String ans = "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+
+            }
+        }
+        return ans;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        List<String> words = Arrays.asList("|||");
-        System.out.println(splitWordsBySeparator(words, '|'));
+        System.out.println((int) 'z' - 'A');
     }
 }
