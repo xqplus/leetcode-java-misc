@@ -335,9 +335,196 @@ public class Medium1 {
     }
 
     /**
+     * 3164. 优质数对的总数 II
+     * 给你两个整数数组 nums1 和 nums2，长度分别为 n 和 m。同时给你一个正整数 k。
+     * 如果 nums1[i] 可以被 nums2[j] * k 整除，则称数对 (i, j) 为 优质数对（0 <= i <= n - 1, 0 <= j <= m - 1）。
+     * 返回 优质数对 的总数。
+     * 示例 1：
+     * 输入：nums1 = [1,3,4], nums2 = [1,3,4], k = 1
+     * 输出：5
+     * 解释：
+     * 5个优质数对分别是 (0, 0), (1, 0), (1, 1), (2, 0), 和 (2, 2)。
+     * 示例 2：
+     * 输入：nums1 = [1,2,4,12], nums2 = [2,4], k = 3
+     * 输出：2
+     * 解释：
+     * 2个优质数对分别是 (3, 0) 和 (3, 1)。
+     * 提示：
+     * 1 <= n, m <= 10^5
+     * 1 <= nums1[i], nums2[j] <= 10^6
+     * 1 <= k <= 10^3
+     */
+    public static long numberOfPairs(int[] nums1, int[] nums2, int k) {
+        Map<Integer, Integer> counts1 = new HashMap<>();
+        int max1 = 0;
+        for (int i : nums1) {
+            max1 = Math.max(max1, i);
+            counts1.put(i, counts1.getOrDefault(i, 0) + 1);
+        }
+        Map<Integer, Integer> counts2 = new HashMap<>();
+        int min2 = 1000000001;
+        for (int i : nums2) {
+            int key = i * k;
+            min2 = Math.min(min2, key);
+            counts2.put(key, counts2.getOrDefault(key, 0) + 1);
+        }
+        if (max1 < min2) {
+            return 0;
+        }
+        long ans = 0;
+        for (Map.Entry<Integer, Integer> entry1 : counts1.entrySet()) {
+            for (Map.Entry<Integer, Integer> entry2 : counts2.entrySet()) {
+                if (entry1.getKey() < entry2.getKey()) {
+                    continue;
+                }
+                if (entry1.getKey() % entry2.getKey() == 0) {
+                    ans += (long) entry1.getValue() * entry2.getValue();
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 129. 求根节点到叶节点数字之和
+     * 给你一个二叉树的根节点 root ，树中每个节点都存放有一个 0 到 9 之间的数字。
+     * 每条从根节点到叶节点的路径都代表一个数字：
+     * 例如，从根节点到叶节点的路径 1 -> 2 -> 3 表示数字 123 。
+     * 计算从根节点到叶节点生成的 所有数字之和 。
+     * 叶节点 是指没有子节点的节点。
+     * 示例 1：
+     * 输入：root = [1,2,3]
+     * 输出：25
+     * 解释：
+     * 从根到叶子节点路径 1->2 代表数字 12
+     * 从根到叶子节点路径 1->3 代表数字 13
+     * 因此，数字总和 = 12 + 13 = 25
+     * 示例 2：
+     * 输入：root = [4,9,0,5,1]
+     * 输出：1026
+     * 解释：
+     * 从根到叶子节点路径 4->9->5 代表数字 495
+     * 从根到叶子节点路径 4->9->1 代表数字 491
+     * 从根到叶子节点路径 4->0 代表数字 40
+     * 因此，数字总和 = 495 + 491 + 40 = 1026
+     * 提示：
+     * 树中节点的数目在范围 [1, 1000] 内
+     * 0 <= Node.val <= 9
+     * 树的深度不超过 10
+     */
+    public int sumNumbers(TreeNode root) {
+        return dfs1(root, 0);
+    }
+
+    private int dfs1(TreeNode node, int num) {
+        num = num * 10 + node.val;
+        if (node.left == null && node.right == null) {
+            return num;
+        }
+        int left = 0, right = 0;
+        if (node.left != null) {
+            left = dfs1(node.left, num);
+        }
+        if (node.right != null) {
+            right = dfs1(node.right, num);
+        }
+        return left + right;
+    }
+
+    /**
+     * 686. 重复叠加字符串匹配
+     * 给定两个字符串 a 和 b，寻找重复叠加字符串 a 的最小次数，使得字符串 b 成为叠加后的字符串 a 的子串，如果不存在则返回 -1。
+     * 注意：字符串 "abc" 重复叠加 0 次是 ""，重复叠加 1 次是 "abc"，重复叠加 2 次是 "abcabc"。
+     * 示例 1：
+     * 输入：a = "abcd", b = "cdabcdab"
+     * 输出：3
+     * 解释：a 重复叠加三遍后为 "abcdabcdabcd", 此时 b 是其子串。
+     * 示例 2：
+     * 输入：a = "a", b = "aa"
+     * 输出：2
+     * 示例 3：
+     * 输入：a = "a", b = "a"
+     * 输出：1
+     * 示例 4：
+     * 输入：a = "abc", b = "wxyz"
+     * 输出：-1
+     * 提示：
+     * 1 <= a.length <= 10^4
+     * 1 <= b.length <= 10^4
+     * a 和 b 由小写英文字母组成
+     */
+    public int repeatedStringMatch(String a, String b) {
+        int na = a.length(), nb = b.length();
+        // na >= nb, 那么可能的情况是 b是a或者两个a的字串
+        // na < nb, b中存在 nb / na个a, 最大加上前后各一个a的字串
+        // 所以 a的重复字串最大只能是 (nb/na+2)*na
+        int maxLen = (nb / na + 2) * na;
+        StringBuilder sb = new StringBuilder();
+        int ans = 0;
+        while (sb.length() < maxLen) {
+            sb.append(a);
+            ans++;
+            if (sb.indexOf(b) != -1) {
+                return ans;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 1171. 从链表中删去总和值为零的连续节点
+     * 给你一个链表的头节点 head，请你编写代码，反复删去链表中由 总和 值为 0 的连续节点组成的序列，直到不存在这样的序列为止。
+     * 删除完毕后，请你返回最终结果链表的头节点。
+     * 你可以返回任何满足题目要求的答案。
+     * （注意，下面示例中的所有序列，都是对 ListNode 对象序列化的表示。）
+     * 示例 1：
+     * 输入：head = [1,2,-3,3,1]
+     * 输出：[3,1]
+     * 提示：答案 [1,2,1] 也是正确的。
+     * 示例 2：
+     * 输入：head = [1,2,3,-3,4]
+     * 输出：[1,2,4]
+     * 示例 3：
+     * 输入：head = [1,2,3,-3,-2]
+     * 输出：[1]
+     * 提示：
+     * 给你的链表中可能有 1 到 1000 个节点。
+     * 对于链表中的每个节点，节点的值：-1000 <= node.val <= 1000.
+     */
+    public ListNode removeZeroSumSublists(ListNode head) {
+        // 1 2 -3 3 1
+        // 0 1 3 0 3 4
+        // 0 ->3 -> 1
+
+        //   1 2 3 -3 4
+        // 0 1 3 6 3 7
+        //
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        Map<Integer, ListNode> map = new HashMap<>();
+        ListNode cur = dummy;
+        int preSum = 0;
+        while (cur != null) {
+            preSum += cur.val;
+            map.put(preSum, cur);
+            cur = cur.next;
+        }
+        cur = dummy;
+        preSum = 0;
+        while (cur != null) {
+            preSum += cur.val;
+            if (cur != map.get(preSum)) {
+                cur.next = map.get(preSum).next;
+            }
+            cur = cur.next;
+        }
+        return dummy.next;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-
+        System.out.println(numberOfPairs(new int[]{1, 3, 4}, new int[]{1, 3, 4}, 1));
     }
 }

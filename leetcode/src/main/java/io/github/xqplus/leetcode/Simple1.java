@@ -1022,9 +1022,324 @@ public class Simple1 {
     }
 
     /**
+     * 1018. 可被 5 整除的二进制前缀
+     * 给定一个二进制数组 nums ( 索引从0开始 )。
+     * 我们将xi 定义为其二进制表示形式为子数组 nums[0..i] (从最高有效位到最低有效位)。
+     * 例如，如果 nums =[1,0,1] ，那么 x0 = 1, x1 = 2, 和 x2 = 5。
+     * 返回布尔值列表 answer，只有当 xi 可以被 5 整除时，答案 answer[i] 为 true，否则为 false。
+     * 示例 1：
+     * 输入：nums = [0,1,1]
+     * 输出：[true,false,false]
+     * 解释：
+     * 输入数字为 0, 01, 011；也就是十进制中的 0, 1, 3 。只有第一个数可以被 5 整除，因此 answer[0] 为 true 。
+     * 示例 2：
+     * 输入：nums = [1,1,1]
+     * 输出：[false,false,false]
+     * 提示：
+     * 1 <= nums.length <= 10^5
+     * nums[i] 仅为 0 或 1
+     */
+    public static List<Boolean> prefixesDivBy5(int[] nums) {
+        List<Boolean> ans = new ArrayList<>();
+        int n = 0;
+        for (int num : nums) {
+            n = ((n << 1) + num) % 5; // 防止结果溢出
+            ans.add(n == 0);
+        }
+        return ans;
+    }
+
+    /**
+     * 2180. 统计各位数字之和为偶数的整数个数
+     * 给你一个正整数 num ，请你统计并返回 小于或等于 num 且各位数字之和为 偶数 的正整数的数目。
+     * 正整数的 各位数字之和 是其所有位上的对应数字相加的结果。
+     * 示例 1：
+     * 输入：num = 4
+     * 输出：2
+     * 解释：
+     * 只有 2 和 4 满足小于等于 4 且各位数字之和为偶数。
+     * 示例 2：
+     * 输入：num = 30
+     * 输出：14
+     * 解释：
+     * 只有 14 个整数满足小于等于 30 且各位数字之和为偶数，分别是：
+     * 2、4、6、8、11、13、15、17、19、20、22、24、26 和 28 。
+     * 提示：
+     * 1 <= num <= 1000
+     */
+    public int countEven(int num) {
+        int m = num / 10, n = num % 10;
+        int s1 = m > 0 ? m * 5 - 1 : 0;
+        int i = m, k = 0;
+        while (i > 0) {
+            k += i % 10;
+            i /= 10;
+        }
+        int s2 = k % 2 == 0 ? n / 2 + 1 : n / 2 + n % 2;
+        return s1 + s2 - (m == 0 ? 1 : 0); // 个位数的话会多算0
+        // 2 4 6 8
+        // 11 13 15 17 19
+        // 20 22 24 26 28
+        // 31 33 35 37 39
+        // 40 42 44 46 48
+        // ...
+        // 91 93 95 97 99
+        // 100 103 105 107 109
+        // ...
+        // 110 112
+
+        // 0: 1 0  0/2=0+1=1 0
+        // 1: 1 1  1/2=0+1=1 1
+        // 2: 2 1  2/2=1+1=2 2
+        // 3: 2 2  3/2=1
+        // 4: 3 2
+        // 5: 3 3
+        // 6: 4 3
+        // 7: 4 4
+        // 8: 5 4
+        // 9: 5 5
+    }
+
+    /**
+     * 3340. 检查平衡字符串
+     * 给你一个仅由数字 0 - 9 组成的字符串 num。如果偶数下标处的数字之和等于奇数下标处的数字之和，则认为该数字字符串是一个 平衡字符串。
+     * 如果 num 是一个 平衡字符串，则返回 true；否则，返回 false。
+     * 示例 1：
+     * 输入：num = "1234"
+     * 输出：false
+     * 解释：
+     * 偶数下标处的数字之和为 1 + 3 = 4，奇数下标处的数字之和为 2 + 4 = 6。
+     * 由于 4 不等于 6，num 不是平衡字符串。
+     * 示例 2：
+     * 输入：num = "24123"
+     * 输出：true
+     * 解释：
+     * 偶数下标处的数字之和为 2 + 1 + 3 = 6，奇数下标处的数字之和为 4 + 2 = 6。
+     * 由于两者相等，num 是平衡字符串。
+     * 提示：
+     * 2 <= num.length <= 100
+     * num 仅由数字 0 - 9 组成。
+     */
+    public static boolean isBalanced(String num) {
+        int n = num.length(), es = 0, os = 0;
+        for (int i = 0; i < n; i += 2) {
+            es += num.charAt(i) - '0';
+        }
+        for (int i = 1; i < n; i += 2) {
+            os += num.charAt(i) - '0';
+        }
+        return es == os;
+    }
+
+    /**
+     * 2357. 使数组中所有元素都等于零
+     * 给你一个非负整数数组 nums 。在一步操作中，你必须：
+     * 选出一个正整数 x ，x 需要小于或等于 nums 中 最小 的 非零 元素。
+     * nums 中的每个正整数都减去 x。
+     * 返回使 nums 中所有元素都等于 0 需要的 最少 操作数。
+     * 示例 1：
+     * 输入：nums = [1,5,0,3,5]
+     * 输出：3
+     * 解释：
+     * 第一步操作：选出 x = 1 ，之后 nums = [0,4,0,2,4] 。
+     * 第二步操作：选出 x = 2 ，之后 nums = [0,2,0,0,2] 。
+     * 第三步操作：选出 x = 2 ，之后 nums = [0,0,0,0,0] 。
+     * 示例 2：
+     * 输入：nums = [0]
+     * 输出：0
+     * 解释：nums 中的每个元素都已经是 0 ，所以不需要执行任何操作。
+     * 提示：
+     * 1 <= nums.length <= 100
+     * 0 <= nums[i] <= 100
+     */
+    public int minimumOperations(int[] nums) {
+        // 1 18 2 30 7
+        // 0 17 1 29 6
+        // 0 16 0 28 5
+        // 0 11 0 23 0
+        // 0 0 0 12 0
+        // 0 0 0 0 0
+
+        // 0 1 3 5 5
+        // max 5 n = 3
+        // 0 1 3 5 6
+        // 0 0 2 4 5
+        // 0 0 0 2 3
+        // 0 0 0 0 1
+
+        boolean[] types = new boolean[101];
+        int ans = 0;
+        for (int num : nums) {
+            if (num > 0 && !types[num]) {
+                types[num] = true;
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 1528. 重新排列字符串
+     * 给你一个字符串 s 和一个 长度相同 的整数数组 indices 。
+     * 请你重新排列字符串 s ，其中第 i 个字符需要移动到 indices[i] 指示的位置。
+     * 返回重新排列后的字符串。
+     * 示例 1：
+     * 输入：s = "codeleet", indices = [4,5,6,7,0,2,1,3]
+     * 输出："leetcode"
+     * 解释：如图所示，"codeleet" 重新排列后变为 "leetcode" 。
+     * 示例 2：
+     * 输入：s = "abc", indices = [0,1,2]
+     * 输出："abc"
+     * 解释：重新排列后，每个字符都还留在原来的位置上。
+     * 提示：
+     * s.length == indices.length == n
+     * 1 <= n <= 100
+     * s 仅包含小写英文字母
+     * 0 <= indices[i] < n
+     * indices 的所有的值都是 唯一 的
+     */
+    public static String restoreString(String s, int[] indices) {
+        char[] cs = s.toCharArray();
+        char[] cs2 = new char[cs.length];
+        for (int i = 0; i < indices.length; i++) {
+            cs2[indices[i]] = cs[i];
+        }
+        return new String(cs2);
+    }
+
+    /**
+     * 653. 两数之和 IV - 输入二叉搜索树
+     * 给定一个二叉搜索树 root 和一个目标结果 k，如果二叉搜索树中存在两个元素且它们的和等于给定的目标结果，则返回 true。
+     * 示例 1：
+     *      5
+     *    3  6
+     * 2  4  n 7
+     * 输入: root = [5,3,6,2,4,null,7], k = 9
+     * 输出: true
+     * 示例 2：
+     * 输入: root = [5,3,6,2,4,null,7], k = 28
+     * 输出: false
+     * 提示:
+     * 二叉树的节点个数的范围是  [1, 10^4].
+     * -10^4 <= Node.val <= 10^4
+     * 题目数据保证，输入的 root 是一棵 有效 的二叉搜索树
+     * -10^5 <= k <= 10^5
+     */
+    public boolean findTarget(TreeNode root, int k) {
+        Map<Integer, Boolean> map = new HashMap<>();
+        return dfs2(root, map, k);
+    }
+
+    private boolean dfs2(TreeNode node, Map<Integer, Boolean> map, int k) {
+        if (node == null) {
+            return false;
+        }
+        if (map.containsKey(k - node.val)) {
+            return true;
+        }
+        map.put(node.val, true);
+        if (dfs2(node.left, map, k)) {
+            return true;
+        }
+        return dfs2(node.right, map, k);
+    }
+
+    /**
+     * 806. 写字符串需要的行数
+     * 我们要把给定的字符串 S 从左到右写到每一行上，每一行的最大宽度为100个单位，
+     * 如果我们在写某个字母的时候会使这行超过了100 个单位，那么我们应该把这个字母写到下一行。
+     * 我们给定了一个数组 widths ，这个数组 widths[0] 代表 'a' 需要的单位，
+     * widths[1] 代表 'b' 需要的单位，...， widths[25] 代表 'z' 需要的单位。
+     * 现在回答两个问题：至少多少行能放下S，以及最后一行使用的宽度是多少个单位？将你的答案作为长度为2的整数列表返回。
+     * 示例 1:
+     * 输入:
+     * widths = [10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]
+     * S = "abcdefghijklmnopqrstuvwxyz"
+     * 输出: [3, 60]
+     * 解释:
+     * 所有的字符拥有相同的占用单位10。所以书写所有的26个字母，
+     * 我们需要2个整行和占用60个单位的一行。
+     * 示例 2:
+     * 输入:
+     * widths = [4,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]
+     * S = "bbbcccdddaaa"
+     * 输出: [2, 4]
+     * 解释:
+     * 除去字母'a'所有的字符都是相同的单位10，并且字符串 "bbbcccdddaa" 将会覆盖 9 * 10 + 2 * 4 = 98 个单位.
+     * 最后一个字母 'a' 将会被写到第二行，因为第一行只剩下2个单位了。
+     * 所以，这个答案是2行，第二行有4个单位宽度。
+     * 注:
+     * 字符串 S 的长度在 [1, 1000] 的范围。
+     * S 只包含小写字母。
+     * widths 是长度为 26的数组。
+     * widths[i] 值的范围在 [2, 10]。
+     */
+    public int[] numberOfLines(int[] widths, String s) {
+        int[] ans = new int[2];
+        for (int i = 0; i < s.length(); i++) {
+            int cLen = widths[s.charAt(i) - 'a'];
+            if (ans[1] + cLen > 100) {
+                ans[0]++;
+                ans[1] = cLen;
+            } else {
+                ans[1] += cLen;
+            }
+        }
+        ans[0]++;
+        return ans;
+    }
+
+    /**
+     * 1351. 统计有序矩阵中的负数
+     * 给你一个 m * n 的矩阵 grid，矩阵中的元素无论是按行还是按列，都以非严格递减顺序排列。 请你统计并返回 grid 中 负数 的数目。
+     * 示例 1：
+     *  4  3  2 -1
+     *  3  2  1 -1
+     *  1  1 -1 -2
+     * -1 -1 -2 -3
+     * 输入：grid = [[4,3,2,-1],[3,2,1,-1],[1,1,-1,-2],[-1,-1,-2,-3]]
+     * 输出：8
+     * 解释：矩阵中共有 8 个负数。
+     * 示例 2：
+     * 输入：grid = [[3,2],[1,0]]
+     * 输出：0
+     * 提示：
+     * m == grid.length
+     * n == grid[i].length
+     * 1 <= m, n <= 100
+     * -100 <= grid[i][j] <= 100
+     * 进阶：你可以设计一个时间复杂度为 O(n + m) 的解决方案吗？
+     */
+    public static int countNegatives(int[][] grid) {
+        int m = grid.length, n = grid[0].length;
+        if (grid[0][0] < 0) {
+            return m * n;
+        }
+        int ans = 0, idx = -1;
+        // 二分查找第一个负数，且根据有序原则更新右边界
+        for (int[] row : grid) {
+            int l = 0, r = idx == -1 ? n -1 : idx;
+            while (l <= r) {
+                int mid = l + (r - l) / 2;
+                if (row[mid] < 0) {
+                    idx = mid;
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            }
+            if (idx != -1) {
+                ans += n - idx;
+            }
+        }
+        return ans;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println((int) 'z' - 'A');
+        int[][] nums = {{5,1,0},{-5,-5,-5}};
+        System.out.println(countNegatives(nums));
     }
 }
