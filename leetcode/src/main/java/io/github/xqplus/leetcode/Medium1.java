@@ -522,9 +522,241 @@ public class Medium1 {
     }
 
     /**
+     * 62. 不同路径
+     * 一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
+     * 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
+     * 问总共有多少条不同的路径？
+     * 示例 1：
+     * 输入：m = 3, n = 7
+     * 输出：28
+     * 示例 2：
+     * $ #
+     * # #
+     * # %
+     * 输入：m = 3, n = 2
+     * 输出：3
+     * 解释：
+     * 从左上角开始，总共有 3 条路径可以到达右下角。
+     * 1. 向右 -> 向下 -> 向下
+     * 2. 向下 -> 向下 -> 向右
+     * 3. 向下 -> 向右 -> 向下
+     * 示例 3：
+     * 输入：m = 7, n = 3
+     * 输出：28
+     * 示例 4：
+     * 输入：m = 3, n = 3
+     * 输出：6
+     * 提示：
+     * 1 <= m, n <= 100
+     * 题目数据保证答案小于等于 2 * 10^9
+     */
+    public static int uniquePaths(int m, int n) {
+        // bfs + dp
+        int[][] dp = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j == 0) {
+                    dp[i][j] = 1;
+                } else {
+                    if (i - 1 >= 0) {
+                        dp[i][j] += dp[i - 1][j];
+                    }
+                    if (j - 1 >= 0) {
+                        dp[i][j] += dp[i][j - 1];
+                    }
+                }
+            }
+        }
+        return dp[m - 1][n - 1];
+
+//        Queue<int[]> queue = new LinkedList<>();
+//        if (m > 1) {
+//            queue.offer(new int[]{1, 0});
+//        }
+//        if (n > 1) {
+//            queue.offer(new int[]{0, 1});
+//        }
+//        while (!queue.isEmpty()) {
+//            int[] pos = queue.poll();
+//            int x = pos[0], y = pos[1];
+//            if (dp[x][y] > 0) {
+//                continue;
+//            }
+//            if (x - 1 >= 0) {
+//                dp[x][y] += dp[x - 1][y];
+//            }
+//            if (y - 1 >= 0) {
+//                dp[x][y] += dp[x][y - 1];
+//            }
+//            if (x + 1 < m) {
+//                queue.offer(new int[]{x + 1, y});
+//            }
+//            if (y + 1 < n) {
+//                queue.offer(new int[]{x, y + 1});
+//            }
+//        }
+//        return dp[m - 1][n - 1];
+    }
+
+    /**
+     * 2275. 按位与结果大于零的最长组合
+     * 对数组 nums 执行 按位与 相当于对数组 nums 中的所有整数执行 按位与 。
+     * 例如，对 nums = [1, 5, 3] 来说，按位与等于 1 & 5 & 3 = 1 。
+     * 同样，对 nums = [7] 而言，按位与等于 7 。
+     * 给你一个正整数数组 candidates 。计算 candidates 中的数字每种组合下 按位与 的结果。
+     * 返回按位与结果大于 0 的 最长 组合的长度。
+     * 示例 1：
+     * 输入：candidates = [16,17,71,62,12,24,14]
+     * 输出：4
+     * 解释：组合 [16,17,62,24] 的按位与结果是 16 & 17 & 62 & 24 = 16 > 0 。
+     * 组合长度是 4 。
+     * 可以证明不存在按位与结果大于 0 且长度大于 4 的组合。
+     * 注意，符合长度最大的组合可能不止一种。
+     * 例如，组合 [62,12,24,14] 的按位与结果是 62 & 12 & 24 & 14 = 8 > 0 。
+     * 示例 2：
+     * 输入：candidates = [8,8]
+     * 输出：2
+     * 解释：最长组合是 [8,8] ，按位与结果 8 & 8 = 8 > 0 。
+     * 组合长度是 2 ，所以返回 2 。
+     * 提示：
+     * 1 <= candidates.length <= 10^5
+     * 1 <= candidates[i] <= 10^7
+     */
+    public static int largestCombination(int[] candidates) {
+        int[] arr = new int[24]; // 10^7 -> 24bit
+        for (int candidate : candidates) {
+            int i = 0;
+            while (candidate > 0) {
+                if ((candidate & 1) == 1) {
+                    arr[i]++;
+                }
+                candidate >>= 1;
+                i++;
+            }
+        }
+        int ans = 0;
+        for (int i : arr) {
+            ans = Math.max(ans, i);
+        }
+        return ans;
+    }
+
+    /**
+     * 142. 环形链表 II
+     * 给定一个链表的头节点  head ，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+     * 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。
+     * 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。
+     * 如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
+     * 不允许修改 链表。
+     * 示例 1：
+     * 输入：head = [3,2,0,-4], pos = 1
+     * 输出：返回索引为 1 的链表节点
+     * 解释：链表中有一个环，其尾部连接到第二个节点。
+     * 示例 2：
+     * 输入：head = [1,2], pos = 0
+     * 输出：返回索引为 0 的链表节点
+     * 解释：链表中有一个环，其尾部连接到第一个节点。
+     * 示例 3：
+     * 输入：head = [1], pos = -1
+     * 输出：返回 null
+     * 解释：链表中没有环。
+     * 提示：
+     * 链表中节点的数目范围在范围 [0, 10^4] 内
+     * -10^5 <= Node.val <= 10^5
+     * pos 的值为 -1 或者链表中的一个有效索引
+     * 进阶：你是否可以使用 O(1) 空间解决此题？
+     */
+    public static ListNode detectCycle(ListNode head) {
+        // 快慢指针
+        if (head == null) {
+            return null;
+        }
+        ListNode fast = head, slow = head;
+        do {
+            fast = fast.next;
+            if (fast == null) {
+                return null;
+            }
+            fast = fast.next;
+            slow = slow.next;
+        } while (fast != null && fast != slow);
+
+        if (fast == null) {
+            return null;
+        }
+        ListNode p = head;
+        while (p != fast) {
+            p = p.next;
+            fast = fast.next;
+        }
+        return p;
+    }
+
+    /**
+     * 1302. 层数最深叶子节点的和
+     * 给你一棵二叉树的根节点 root ，请你返回 层数最深的叶子节点的和 。
+     * 示例 1：
+     *            1
+     *          2   3
+     *       4   5 n  6
+     *     7 n n n   n  8
+     * 输入：root = [1,2,3,4,5,null,6,7,null,null,null,null,8]
+     * 输出：15
+     * 示例 2：
+     * 输入：root = [6,7,8,2,7,1,3,9,null,1,4,null,null,null,5]
+     * 输出：19
+     * 提示：
+     * 树中节点数目在范围 [1, 10^4] 之间。
+     * 1 <= Node.val <= 100
+     */
+    public int deepestLeavesSum(TreeNode root) {
+        Queue<TreeNode> q = new LinkedList<>();
+        q.add(root);
+        boolean isLastLevel = root.left == null && root.right == null;
+        int ans = 0;
+        while (!q.isEmpty()) {
+            int size = q.size();
+            if (isLastLevel) {
+                for (int i = 0; i < size; i++) {
+                    ans += q.poll().val;
+                }
+                break;
+            }
+            isLastLevel = true;
+            for (int i = 0; i < size; i++) {
+                TreeNode node = q.poll();
+                if (node.left != null) {
+                    q.add(node.left);
+                    if (isLastLevel && (node.left.left != null || node.left.right != null)) {
+                        isLastLevel = false;
+                    }
+                }
+                if (node.right != null) {
+                    q.add(node.right);
+                    if (isLastLevel && (node.right.left != null || node.right.right != null)) {
+                        isLastLevel = false;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println(numberOfPairs(new int[]{1, 3, 4}, new int[]{1, 3, 4}, 1));
+        ListNode ln3 = new ListNode(3);
+        ListNode ln2 = new ListNode(2);
+        ListNode ln0 = new ListNode(0);
+        ListNode lnn4 = new ListNode(-4);
+
+        ln3.next = ln2;
+        ln2.next = ln0;
+        ln0.next = lnn4;
+        lnn4.next = ln2;
+
+        System.out.println(detectCycle(ln3).val);
+
     }
 }

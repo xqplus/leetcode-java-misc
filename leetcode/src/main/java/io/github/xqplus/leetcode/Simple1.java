@@ -1211,8 +1211,8 @@ public class Simple1 {
      * 653. 两数之和 IV - 输入二叉搜索树
      * 给定一个二叉搜索树 root 和一个目标结果 k，如果二叉搜索树中存在两个元素且它们的和等于给定的目标结果，则返回 true。
      * 示例 1：
-     *      5
-     *    3  6
+     * 5
+     * 3  6
      * 2  4  n 7
      * 输入: root = [5,3,6,2,4,null,7], k = 9
      * 输出: true
@@ -1293,9 +1293,9 @@ public class Simple1 {
      * 1351. 统计有序矩阵中的负数
      * 给你一个 m * n 的矩阵 grid，矩阵中的元素无论是按行还是按列，都以非严格递减顺序排列。 请你统计并返回 grid 中 负数 的数目。
      * 示例 1：
-     *  4  3  2 -1
-     *  3  2  1 -1
-     *  1  1 -1 -2
+     * 4  3  2 -1
+     * 3  2  1 -1
+     * 1  1 -1 -2
      * -1 -1 -2 -3
      * 输入：grid = [[4,3,2,-1],[3,2,1,-1],[1,1,-1,-2],[-1,-1,-2,-3]]
      * 输出：8
@@ -1318,7 +1318,7 @@ public class Simple1 {
         int ans = 0, idx = -1;
         // 二分查找第一个负数，且根据有序原则更新右边界
         for (int[] row : grid) {
-            int l = 0, r = idx == -1 ? n -1 : idx;
+            int l = 0, r = idx == -1 ? n - 1 : idx;
             while (l <= r) {
                 int mid = l + (r - l) / 2;
                 if (row[mid] < 0) {
@@ -1336,10 +1336,159 @@ public class Simple1 {
     }
 
     /**
+     * 83. 删除排序链表中的重复元素
+     * 给定一个已排序的链表的头 head ， 删除所有重复的元素，使每个元素只出现一次 。返回 已排序的链表 。
+     * 示例 1：
+     * 输入：head = [1,1,2]
+     * 输出：[1,2]
+     * 示例 2：
+     * 输入：head = [1,1,2,3,3]
+     * 输出：[1,2,3]
+     * 提示：
+     * 链表中节点数目在范围 [0, 300] 内
+     * -100 <= Node.val <= 100
+     * 题目数据保证链表已经按升序 排列
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        while (head.next != null) {
+            if (head.val == head.next.val) {
+                head.next = head.next.next;
+            } else {
+                head = head.next;
+            }
+        }
+        return dummy.next;
+    }
+
+    /**
+     * 2220. 转换数字的最少位翻转次数
+     * 一次 位翻转 定义为将数字 x 二进制中的一个位进行 翻转 操作，即将 0 变成 1 ，或者将 1 变成 0 。
+     * 比方说，x = 7 ，二进制表示为 111 ，我们可以选择任意一个位（包含没有显示的前导 0 ）并进行翻转。
+     * 比方说我们可以翻转最右边一位得到 110 ，或者翻转右边起第二位得到 101 ，或者翻转右边起第五位（这一位是前导 0 ）得到 10111 等等。
+     * 给你两个整数 start 和 goal ，请你返回将 start 转变成 goal 的 最少位翻转 次数。
+     * 示例 1：
+     * 输入：start = 10, goal = 7
+     * 输出：3
+     * 解释：10 和 7 的二进制表示分别为 1010 和 0111 。我们可以通过 3 步将 10 转变成 7 ：
+     * - 翻转右边起第一位得到：1010 -> 1011 。
+     * - 翻转右边起第三位：1011 -> 1111 。
+     * - 翻转右边起第四位：1111 -> 0111 。
+     * 我们无法在 3 步内将 10 转变成 7 。所以我们返回 3 。
+     * 示例 2：
+     * 输入：start = 3, goal = 4
+     * 输出：3
+     * 解释：3 和 4 的二进制表示分别为 011 和 100 。我们可以通过 3 步将 3 转变成 4 ：
+     * - 翻转右边起第一位：011 -> 010 。
+     * - 翻转右边起第二位：010 -> 000 。
+     * - 翻转右边起第三位：000 -> 100 。
+     * 我们无法在 3 步内将 3 变成 4 。所以我们返回 3 。
+     * 提示：
+     * 0 <= start, goal <= 10^9
+     */
+    public int minBitFlips(int start, int goal) {
+        String s = Integer.toBinaryString(start), g = Integer.toBinaryString(goal);
+        int ns = s.length() - 1, ng = g.length() - 1, ans = 0;
+        while (ns >= 0 || ng >= 0) {
+            char cs = ns >= 0 ? s.charAt(ns) : '0';
+            char cg = ng >= 0 ? g.charAt(ng) : '0';
+            if (cs != cg) {
+                ans++;
+            }
+            ns--;
+            ng--;
+        }
+        return ans;
+
+        // Integer.bitCount(start ^ goal);
+    }
+
+    /**
+     * 2089. 找出数组排序后的目标下标
+     * 给你一个下标从 0 开始的整数数组 nums 以及一个目标元素 target 。
+     * 目标下标 是一个满足 nums[i] == target 的下标 i 。
+     * 将 nums 按 非递减 顺序排序后，返回由 nums 中目标下标组成的列表。如果不存在目标下标，返回一个 空 列表。返回的列表必须按 递增 顺序排列。
+     * 示例 1：
+     * 输入：nums = [1,2,5,2,3], target = 2
+     * 输出：[1,2]
+     * 解释：排序后，nums 变为 [1,2,2,3,5] 。
+     * 满足 nums[i] == 2 的下标是 1 和 2 。
+     * 示例 2：
+     * 输入：nums = [1,2,5,2,3], target = 3
+     * 输出：[3]
+     * 解释：排序后，nums 变为 [1,2,2,3,5] 。
+     * 满足 nums[i] == 3 的下标是 3 。
+     * 示例 3：
+     * 输入：nums = [1,2,5,2,3], target = 5
+     * 输出：[4]
+     * 解释：排序后，nums 变为 [1,2,2,3,5] 。
+     * 满足 nums[i] == 5 的下标是 4 。
+     * 示例 4：
+     * 输入：nums = [1,2,5,2,3], target = 4
+     * 输出：[]
+     * 解释：nums 中不含值为 4 的元素。
+     * 提示：
+     * 1 <= nums.length <= 100
+     * 1 <= nums[i], target <= 100
+     */
+    public List<Integer> targetIndices(int[] nums, int target) {
+        int i = 0, n = 0;
+        for (int num : nums) {
+            if (num == target) {
+                n++;
+            } else if (num < target) {
+                i++;
+            }
+        }
+        List<Integer> ans = new ArrayList<>();
+        for (int i1 = 0; i1 < n; i1++) {
+            ans.add(i + i1);
+        }
+        return ans;
+    }
+
+    /**
+     * 2706. 购买两块巧克力
+     * 给你一个整数数组 prices ，它表示一个商店里若干巧克力的价格。同时给你一个整数 money ，表示你一开始拥有的钱数。
+     * 你必须购买 恰好 两块巧克力，而且剩余的钱数必须是 非负数 。同时你想最小化购买两块巧克力的总花费。
+     * 请你返回在购买两块巧克力后，最多能剩下多少钱。如果购买任意两块巧克力都超过了你拥有的钱，请你返回 money 。注意剩余钱数必须是非负数。
+     * 示例 1：
+     * 输入：prices = [1,2,2], money = 3
+     * 输出：0
+     * 解释：分别购买价格为 1 和 2 的巧克力。你剩下 3 - 3 = 0 块钱。所以我们返回 0 。
+     * 示例 2：
+     * 输入：prices = [3,2,3], money = 3
+     * 输出：3
+     * 解释：购买任意 2 块巧克力都会超过你拥有的钱数，所以我们返回 3 。
+     * 提示：
+     * 2 <= prices.length <= 50
+     * 1 <= prices[i] <= 100
+     * 1 <= money <= 100
+     */
+    public int buyChoco(int[] prices, int money) {
+        int min1 = Math.min(prices[0], prices[1]);
+        int min2 = Math.max(prices[0], prices[1]);
+        for (int i = 2; i < prices.length; i++) {
+            if (prices[i] < min1) {
+                min2 = min1;
+                min1 = prices[i];
+            } else if (prices[i] < min2) {
+                min2 = prices[i];
+            }
+        }
+        int sum = min1 + min2;
+        return sum > money ? money : money - sum;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[][] nums = {{5,1,0},{-5,-5,-5}};
+        int[][] nums = {{5, 1, 0}, {-5, -5, -5}};
         System.out.println(countNegatives(nums));
     }
 }
