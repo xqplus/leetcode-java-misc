@@ -1485,10 +1485,168 @@ public class Simple1 {
     }
 
     /**
+     * 682. 棒球比赛
+     * 你现在是一场采用特殊赛制棒球比赛的记录员。这场比赛由若干回合组成，过去几回合的得分可能会影响以后几回合的得分。
+     * 比赛开始时，记录是空白的。你会得到一个记录操作的字符串列表 ops，其中 ops[i] 是你需要记录的第 i 项操作，ops 遵循下述规则：
+     * 整数 x - 表示本回合新获得分数 x
+     * "+" - 表示本回合新获得的得分是前两次得分的总和。题目数据保证记录此操作时前面总是存在两个有效的分数。
+     * "D" - 表示本回合新获得的得分是前一次得分的两倍。题目数据保证记录此操作时前面总是存在一个有效的分数。
+     * "C" - 表示前一次得分无效，将其从记录中移除。题目数据保证记录此操作时前面总是存在一个有效的分数。
+     * 请你返回记录中所有得分的总和。
+     * 示例 1：
+     * 输入：ops = ["5","2","C","D","+"]
+     * 输出：30
+     * 解释：
+     * "5" - 记录加 5 ，记录现在是 [5]
+     * "2" - 记录加 2 ，记录现在是 [5, 2]
+     * "C" - 使前一次得分的记录无效并将其移除，记录现在是 [5].
+     * "D" - 记录加 2 * 5 = 10 ，记录现在是 [5, 10].
+     * "+" - 记录加 5 + 10 = 15 ，记录现在是 [5, 10, 15].
+     * 所有得分的总和 5 + 10 + 15 = 30
+     * 示例 2：
+     * 输入：ops = ["5","-2","4","C","D","9","+","+"]
+     * 输出：27
+     * 解释：
+     * "5" - 记录加 5 ，记录现在是 [5]
+     * "-2" - 记录加 -2 ，记录现在是 [5, -2]
+     * "4" - 记录加 4 ，记录现在是 [5, -2, 4]
+     * "C" - 使前一次得分的记录无效并将其移除，记录现在是 [5, -2]
+     * "D" - 记录加 2 * -2 = -4 ，记录现在是 [5, -2, -4]
+     * "9" - 记录加 9 ，记录现在是 [5, -2, -4, 9]
+     * "+" - 记录加 -4 + 9 = 5 ，记录现在是 [5, -2, -4, 9, 5]
+     * "+" - 记录加 9 + 5 = 14 ，记录现在是 [5, -2, -4, 9, 5, 14]
+     * 所有得分的总和 5 + -2 + -4 + 9 + 5 + 14 = 27
+     * 示例 3：
+     * 输入：ops = ["1"]
+     * 输出：1
+     * 提示：
+     * 1 <= ops.length <= 1000
+     * ops[i] 为 "C"、"D"、"+"，或者一个表示整数的字符串。整数范围是 [-3 * 104, 3 * 104]
+     * 对于 "+" 操作，题目数据保证记录此操作时前面总是存在两个有效的分数
+     * 对于 "C" 和 "D" 操作，题目数据保证记录此操作时前面总是存在一个有效的分数
+     */
+    public int calPoints(String[] operations) {
+        int[] nums = new int[operations.length];
+        int ans = 0, idx = 0;
+        for (String operation : operations) {
+            if ("+".equals(operation)) {
+                nums[idx] = nums[idx - 1] + nums[idx - 2];
+                ans += nums[idx++];
+            } else if ("D".equals(operation)) {
+                nums[idx] = nums[idx - 1] * 2;
+                ans += nums[idx++];
+            } else if ("C".equals(operation)) {
+                ans -= nums[--idx];
+            } else {
+                nums[idx] = Integer.parseInt(operation);
+                ans += nums[idx++];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 349. 两个数组的交集
+     * 给定两个数组 nums1 和 nums2 ，返回 它们的 交集 。输出结果中的每个元素一定是 唯一 的。我们可以 不考虑输出结果的顺序 。
+     * 示例 1：
+     * 输入：nums1 = [1,2,2,1], nums2 = [2,2]
+     * 输出：[2]
+     * 示例 2：
+     * 输入：nums1 = [4,9,5], nums2 = [9,4,9,8,4]
+     * 输出：[9,4]
+     * 解释：[4,9] 也是可通过的
+     * 提示：
+     * 1 <= nums1.length, nums2.length <= 1000
+     * 0 <= nums1[i], nums2[i] <= 1000
+     */
+    public int[] intersection(int[] nums1, int[] nums2) {
+        int[] counts = new int[1001];
+        List<Integer> list = new ArrayList<>();
+        for (int i : nums1) {
+            if (counts[i] == 0) {
+                counts[i]++;
+            }
+        }
+        for (int i : nums2) {
+            if (counts[i] == 1) {
+                list.add(i);
+                counts[i]++;
+            }
+        }
+        return list.stream().mapToInt(i -> i).toArray();
+    }
+
+    /**
+     * 3379. 转换数组
+     * 给你一个整数数组 nums，它表示一个循环数组。请你遵循以下规则创建一个大小 相同 的新数组 result ：
+     * 对于每个下标 i（其中 0 <= i < nums.length），独立执行以下操作：
+     * 如果 nums[i] > 0：从下标 i 开始，向 右 移动 nums[i] 步，在循环数组中落脚的下标对应的值赋给 result[i]。
+     * 如果 nums[i] < 0：从下标 i 开始，向 左 移动 abs(nums[i]) 步，在循环数组中落脚的下标对应的值赋给 result[i]。
+     * 如果 nums[i] == 0：将 nums[i] 的值赋给 result[i]。
+     * 返回新数组 result。
+     * 注意：由于 nums 是循环数组，向右移动超过最后一个元素时将回到开头，向左移动超过第一个元素时将回到末尾。
+     * 示例 1：
+     * 输入： nums = [3,-2,1,1]
+     * 输出： [1,1,1,3]
+     * 解释：
+     * 对于 nums[0] 等于 3，向右移动 3 步到 nums[3]，因此 result[0] 为 1。
+     * 对于 nums[1] 等于 -2，向左移动 2 步到 nums[3]，因此 result[1] 为 1。
+     * 对于 nums[2] 等于 1，向右移动 1 步到 nums[3]，因此 result[2] 为 1。
+     * 对于 nums[3] 等于 1，向右移动 1 步到 nums[0]，因此 result[3] 为 3。
+     * 示例 2：
+     * 输入： nums = [-1,4,-1]
+     * 输出： [-1,-1,4]
+     * 解释：
+     * 对于 nums[0] 等于 -1，向左移动 1 步到 nums[2]，因此 result[0] 为 -1。
+     * 对于 nums[1] 等于 4，向右移动 4 步到 nums[2]，因此 result[1] 为 -1。
+     * 对于 nums[2] 等于 -1，向左移动 1 步到 nums[1]，因此 result[2] 为 4。
+     * 提示：
+     * 1 <= nums.length <= 100
+     * -100 <= nums[i] <= 100
+     */
+    public static int[] constructTransformedArray(int[] nums) {
+        int n = nums.length;
+        int[] ans = new int[n];
+        for (int i = 0; i < n; i++) {
+            int idx = nums[i] < 0 ? (i + (n + nums[i] % n)) % n : (i + nums[i]) % n;
+            ans[i] = nums[idx];
+        }
+        return ans;
+    }
+
+    /**
+     * 面试题 02.02. 返回倒数第 k 个节点
+     * 实现一种算法，找出单向链表中倒数第 k 个节点。返回该节点的值。
+     * 注意：本题相对原题稍作改动
+     * 示例：
+     * 输入： 1->2->3->4->5 和 k = 2
+     * 输出： 4
+     * 说明：
+     * 给定的 k 保证是有效的。
+     */
+    private static int ans1 = 0;
+    private static int gk = 0;
+    public int kthToLast(ListNode head, int k) {
+        gk = k;
+        dfs3(head);
+        return ans1;
+    }
+
+    private void dfs3(ListNode node) {
+        if (node == null) {
+            return;
+        }
+        dfs3(node.next);
+        if (--gk == 0) {
+            ans1 = node.val;
+        }
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[][] nums = {{5, 1, 0}, {-5, -5, -5}};
-        System.out.println(countNegatives(nums));
+        int[] nums = {3,-2,1,1};
+        System.out.println(Arrays.toString(constructTransformedArray(nums)));
     }
 }

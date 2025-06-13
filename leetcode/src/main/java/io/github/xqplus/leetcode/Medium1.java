@@ -696,10 +696,10 @@ public class Medium1 {
      * 1302. 层数最深叶子节点的和
      * 给你一棵二叉树的根节点 root ，请你返回 层数最深的叶子节点的和 。
      * 示例 1：
-     *            1
-     *          2   3
-     *       4   5 n  6
-     *     7 n n n   n  8
+     * 1
+     * 2   3
+     * 4   5 n  6
+     * 7 n n n   n  8
      * 输入：root = [1,2,3,4,5,null,6,7,null,null,null,null,8]
      * 输出：15
      * 示例 2：
@@ -743,20 +743,252 @@ public class Medium1 {
     }
 
     /**
+     * 970. 强整数
+     * 给定三个整数 x 、 y 和 bound ，返回 值小于或等于 bound 的所有 强整数 组成的列表 。
+     * 如果某一整数可以表示为 xi + yj ，其中整数 i >= 0 且 j >= 0，那么我们认为该整数是一个 强整数 。
+     * 你可以按 任何顺序 返回答案。在你的回答中，每个值 最多 出现一次。
+     * 示例 1：
+     * 输入：x = 2, y = 3, bound = 10
+     * 输出：[2,3,4,5,7,9,10]
+     * 解释：
+     * 2 = 2^0 + 3^0
+     * 3 = 2^1 + 3^0
+     * 4 = 2^0 + 3^1
+     * 5 = 2^1 + 3^1
+     * 7 = 2^2 + 3^1
+     * 9 = 2^3 + 3^0
+     * 10 = 2^0 + 3^2
+     * 示例 2：
+     * 输入：x = 3, y = 5, bound = 15
+     * 输出：[2,4,6,8,10,14]
+     * 提示：
+     * 1 <= x, y <= 100
+     * 0 <= bound <= 10^6
+     */
+    public List<Integer> powerfulIntegers(int x, int y, int bound) {
+        Set<Integer> set = new HashSet<>();
+        int px = 1;
+        while (px <= bound) {
+            int py = 1;
+            while (px + py <= bound) {
+                set.add(px + py);
+                py *= y;
+                if (py == 1) {
+                    break;
+                }
+            }
+            px *= x;
+            if (px == 1) {
+                break;
+            }
+        }
+        return new ArrayList<>(set);
+    }
+
+    /**
+     * 230. 二叉搜索树中第 K 小的元素
+     * 给定一个二叉搜索树的根节点 root ，和一个整数 k ，请你设计一个算法查找其中第 k 小的元素（从 1 开始计数）。
+     * 示例 1：
+     * 输入：root = [3,1,4,null,2], k = 1
+     * 输出：1
+     * 示例 2：
+     * 输入：root = [5,3,6,2,4,null,null,1], k = 3
+     * 输出：3
+     * 提示：
+     * 树中的节点数为 n 。
+     * 1 <= k <= n <= 10^4
+     * 0 <= Node.val <= 10^4
+     * 进阶：如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 k 小的值，你将如何优化算法？
+     */
+    public int kthSmallest(TreeNode root, int k) {
+        List<Integer> list = new ArrayList<>();
+        kth(root, list);
+        return list.get(k - 1);
+    }
+
+    private void kth(TreeNode node, List<Integer> list) {
+        if (node == null) {
+            return;
+        }
+        kth(node.left, list);
+        list.add(node.val);
+        kth(node.right, list);
+    }
+
+    /**
+     * LCR 081. 组合总和
+     * 给定一个无重复元素的正整数数组 candidates 和一个正整数 target ，找出 candidates 中所有可以使数字和为目标数 target 的唯一组合。
+     * candidates 中的数字可以无限制重复被选取。如果至少一个所选数字数量不同，则两种组合是不同的。
+     * 对于给定的输入，保证和为 target 的唯一组合数少于 150 个。
+     * 示例 1：
+     * 输入: candidates = [2,3,6,7], target = 7
+     * 输出: [[7],[2,2,3]]
+     * 示例 2：
+     * 输入: candidates = [2,3,5], target = 8
+     * 输出: [[2,2,2,2],[2,3,3],[3,5]]
+     * 示例 3：
+     * 输入: candidates = [2], target = 1
+     * 输出: []
+     * 示例 4：
+     * 输入: candidates = [1], target = 1
+     * 输出: [[1]]
+     * 示例 5：
+     * 输入: candidates = [1], target = 2
+     * 输出: [[1,1]]
+     * 提示：
+     * 1 <= candidates.length <= 30
+     * 1 <= candidates[i] <= 200
+     * candidate 中的每个元素都是独一无二的。
+     * 1 <= target <= 500
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        // 回溯
+        List<List<Integer>> ans = new ArrayList<>();
+        comb(candidates, target, 0, 0, ans, new ArrayList<>());
+        return ans;
+    }
+
+    private void comb(int[] candidates, int target, int sum, int idx, List<List<Integer>> res, List<Integer> path) {
+        if (sum >= target) {
+            if (sum == target) {
+                res.add(new ArrayList<>(path));
+            }
+            return;
+        }
+        for (int i = idx; i < candidates.length; i++) {
+            path.add(candidates[i]);
+            comb(candidates, target, sum + candidates[i], i, res, path);
+            path.remove(path.size() - 1);
+        }
+    }
+
+    /**
+     * 54. 螺旋矩阵
+     * 给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
+     * 示例 1：
+     * 1->2->3
+     * |
+     * 4->5  6
+     * |     |
+     * 7<-8<-9
+     * 输入：matrix = [[1,2,3],[4,5,6],[7,8,9]]
+     * 输出：[1,2,3,6,9,8,7,4,5]
+     * 示例 2：
+     * 输入：matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+     * 输出：[1,2,3,4,8,12,11,10,9,5,6,7]
+     * 提示：
+     * m == matrix.length
+     * n == matrix[i].length
+     * 1 <= m, n <= 10
+     * -100 <= matrix[i][j] <= 100
+     */
+    private static int[][] dirs1 = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+    public static List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> ans = new ArrayList<>();
+        boolean[][] visited = new boolean[matrix.length][matrix[0].length];
+        spir(matrix, visited, 0, 0, 0, ans);
+        return ans;
+    }
+
+    private static void spir(int[][] matrix, boolean[][] visited, int i, int j, int d, List<Integer> path) {
+        path.add(matrix[i][j]);
+        visited[i][j] = true; // 优化：可以用 matrix[i][j] = 101 这样修改为题中边界之外的值来标记已访问，空间复杂度缩小到O(1)
+        for (int k = 0; k < 4; k++) {
+            int di = (d + k) % 4; // d表示方向，右下左上 循环
+            int ni = i + dirs1[di][0], nj = j + dirs1[di][1];
+            if (ni >= 0 && ni < matrix.length && nj >= 0 && nj < matrix[0].length && !visited[ni][nj]) {
+                spir(matrix, visited, ni, nj, di, path);
+            }
+        }
+    }
+
+    /**
+     * LCR 185. 统计结果概率
+     * 你选择掷出 num 个色子，请返回所有点数总和的概率。
+     * 你需要用一个浮点数数组返回答案，其中第 i 个元素代表这 num 个骰子所能掷出的点数集合中第 i 小的那个的概率。
+     * 示例 1：
+     * 输入：num = 3
+     * 输出：[0.00463,0.01389,0.02778,0.04630,0.06944,0.09722,0.11574,0.12500,0.12500,0.11574,0.09722,0.06944,0.04630,0.02778,0.01389,0.00463]
+     * 示例 2：
+     * 输入：num = 5
+     * 输出:[0.00013,0.00064,0.00193,0.00450,0.00900,0.01620,0.02636,0.03922,0.05401,0.06944,0.08372,0.09452,0.10031,0.10031,0.09452,0.08372,0.06944,0.05401,0.03922,0.02636,0.01620,0.00900,0.00450,0.00193,0.00064,0.00013]
+     * 提示：
+     * 1 <= num <= 11
+     */
+    public double[] statisticsProbability(int num) {
+        double[] dp = new double[6];
+        Arrays.fill(dp, 1.0 / 6.0);
+        for (int i = 2; i <= num; i++) {
+            double[] tmp = new double[5 * i + 1];
+            for (int j = 0; j < dp.length; j++) {
+                for (int k = 0; k < 6; k++) {
+                    tmp[j + k] += dp[j] / 6.0;
+                }
+            }
+            dp = tmp;
+        }
+        return dp;
+    }
+
+    /**
+     * 213. 打家劫舍 II
+     * 你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。
+     * 同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+     * 给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，今晚能够偷窃到的最高金额。
+     * 示例 1：
+     * 输入：nums = [2,3,2]
+     * 输出：3
+     * 解释：你不能先偷窃 1 号房屋（金额 = 2），然后偷窃 3 号房屋（金额 = 2）, 因为他们是相邻的。
+     * 示例 2：
+     * 输入：nums = [1,2,3,1]
+     * 输出：4
+     * 解释：你可以先偷窃 1 号房屋（金额 = 1），然后偷窃 3 号房屋（金额 = 3）。
+     * 偷窃到的最高金额 = 1 + 3 = 4 。
+     * 示例 3：
+     * 输入：nums = [1,2,3]
+     * 输出：3
+     * 提示：
+     * 1 <= nums.length <= 100
+     * 0 <= nums[i] <= 1000
+     */
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if (n <= 3) {
+            int max = 0;
+            for (int num : nums) {
+                max = Math.max(max, num);
+            }
+            return max;
+        }
+        // 第一家选择的情况
+        int p1 = nums[0], p2 = p1;
+        for (int i = 2; i < n - 1; i++) {
+            int max = Math.max(p2, p1 + nums[i]);
+            p1 = p2;
+            p2 = max;
+        }
+        // 第一家不选的情况
+        int ans = p2;
+        p1 = 0;
+        p2 = nums[1];
+        for (int i = 2; i < n; i++) {
+            int max = Math.max(p2, p1 + nums[i]);
+            p1 = p2;
+            p2 = max;
+        }
+        return Math.max(ans, p2);
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        ListNode ln3 = new ListNode(3);
-        ListNode ln2 = new ListNode(2);
-        ListNode ln0 = new ListNode(0);
-        ListNode lnn4 = new ListNode(-4);
+        // 4,1,2,7,5,3,1
+        // 4 4 6 11 11 14
+        // 0 1 2 8 8 11
 
-        ln3.next = ln2;
-        ln2.next = ln0;
-        ln0.next = lnn4;
-        lnn4.next = ln2;
-
-        System.out.println(detectCycle(ln3).val);
-
+        // 4 0 4+2 7 4+2+5 7+3
+        //
     }
 }

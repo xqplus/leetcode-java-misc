@@ -1,5 +1,7 @@
 package io.github.xqplus.leetcode;
 
+import com.sun.jmx.snmp.SnmpUnknownModelLcdException;
+
 import java.util.*;
 
 public class DailyQuestion {
@@ -181,9 +183,235 @@ public class DailyQuestion {
     }
 
     /**
+     * 440. 字典序的第K小数字
+     * 困难
+     * 给定整数 n 和 k，返回  [1, n] 中字典序第 k 小的数字。
+     * 示例 1:
+     * 输入: n = 13, k = 2
+     * 输出: 10
+     * 解释: 字典序的排列是 [1, 10, 11, 12, 13, 2, 3, 4, 5, 6, 7, 8, 9]，所以第二小的数字是 10。
+     * 示例 2:
+     * 输入: n = 1, k = 1
+     * 输出: 1
+     * 提示:
+     * 1 <= k <= n <= 10^9
+     */
+    private static int ans = 0;
+    private static int gk = 0;
+
+    public static int findKthNumber(int n, int k) {
+        gk = k;
+        dfs(0, n);
+        return ans;
+    }
+
+    private static int dfs(int num, int n) {
+        if (num > 0 && --gk == 0) { // num > 0跳过根节点
+            ans = num;
+            return 1;
+        }
+        int res = 0;
+        for (int i = num == 0 ? 1 : 0; i <= 9; i++) {
+            int nextNum = num * 10 + i;
+            if (nextNum > n || (res = dfs(nextNum, n)) == 1) {
+                break;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * 3442. 奇偶频次间的最大差值 I
+     * 简单
+     * 给你一个由小写英文字母组成的字符串 s 。
+     * 请你找出字符串中两个字符 a1 和 a2 的出现频次之间的 最大 差值 diff = a1 - a2，这两个字符需要满足：
+     * a1 在字符串中出现 奇数次 。
+     * a2 在字符串中出现 偶数次 。
+     * 返回 最大 差值。
+     * 示例 1：
+     * 输入：s = "aaaaabbc"
+     * 输出：3
+     * 解释：
+     * 字符 'a' 出现 奇数次 ，次数为 5 ；字符 'b' 出现 偶数次 ，次数为 2 。
+     * 最大差值为 5 - 2 = 3 。
+     * 示例 2：
+     * 输入：s = "abcabcab"
+     * 输出：1
+     * 解释：
+     * 字符 'a' 出现 奇数次 ，次数为 3 ；字符 'c' 出现 偶数次 ，次数为 2 。
+     * 最大差值为 3 - 2 = 1 。
+     * 提示：
+     * 3 <= s.length <= 100
+     * s 仅由小写英文字母组成。
+     * s 至少由一个出现奇数次的字符和一个出现偶数次的字符组成。
+     */
+    public static int maxDifference(String s) {
+        int[] counts = new int[26];
+        for (char c : s.toCharArray()) {
+            counts[c - 'a']++;
+        }
+        int maxOddCnt = 0, minEvenCnt = 100;
+        for (int cnt : counts) {
+            if (cnt == 0) {
+                continue;
+            }
+            if ((cnt & 1) == 1) {
+                if (cnt > maxOddCnt) {
+                    maxOddCnt = cnt;
+                }
+            } else {
+                if (cnt < minEvenCnt) {
+                    minEvenCnt = cnt;
+                }
+            }
+        }
+        return maxOddCnt - minEvenCnt;
+    }
+
+    /**
+     * 3445. 奇偶频次间的最大差值 II
+     * 困难
+     * 给你一个字符串 s 和一个整数 k 。请你找出 s 的子字符串 subs 中两个字符的出现频次之间的 最大 差值，freq[a] - freq[b] ，其中：
+     * subs 的长度 至少 为 k 。
+     * 字符 a 在 subs 中出现奇数次。
+     * 字符 b 在 subs 中出现偶数次。
+     * 返回 最大 差值。
+     * 注意 ，subs 可以包含超过 2 个 互不相同 的字符。.
+     * 子字符串 是字符串中的一个连续字符序列。
+     * 示例 1：
+     * 输入：s = "12233", k = 4
+     * 输出：-1
+     * 解释：
+     * 对于子字符串 "12233" ，'1' 的出现次数是 1 ，'3' 的出现次数是 2 。差值是 1 - 2 = -1 。
+     * 示例 2：
+     * 输入：s = "1122211", k = 3
+     * 输出：1
+     * 解释：
+     * 对于子字符串 "11222" ，'2' 的出现次数是 3 ，'1' 的出现次数是 2 。差值是 3 - 2 = 1 。
+     * 示例 3：
+     * 输入：s = "110", k = 3
+     * 输出：-1
+     * 提示：
+     * 3 <= s.length <= 3 * 10^4
+     * s 仅由数字 '0' 到 '4' 组成。
+     * 输入保证至少存在一个子字符串是由一个出现奇数次的字符和一个出现偶数次的字符组成。
+     * 1 <= k <= s.length
+     */
+    // (x)
+    public int maxDifference(String s, int k) {
+        int n = s.length();
+        int ans = Integer.MIN_VALUE;
+        for (char a = '0'; a <= '4'; ++a) {
+            for (char b = '0'; b <= '4'; ++b) {
+                if (a == b) {
+                    continue;
+                }
+                int[] best = new int[4];
+                Arrays.fill(best, Integer.MAX_VALUE);
+                int cnt_a = 0, cnt_b = 0;
+                int prev_a = 0, prev_b = 0;
+                int left = -1;
+
+                for (int right = 0; right < n; ++right) {
+                    cnt_a += (s.charAt(right) == a) ? 1 : 0;
+                    cnt_b += (s.charAt(right) == b) ? 1 : 0;
+
+                    while (right - left >= k && cnt_b - prev_b >= 2) {
+                        int left_status = getStatus(prev_a, prev_b);
+                        best[left_status] = Math.min(best[left_status], prev_a - prev_b);
+                        ++left;
+                        prev_a += (s.charAt(left) == a) ? 1 : 0;
+                        prev_b += (s.charAt(left) == b) ? 1 : 0;
+                    }
+
+                    int right_status = getStatus(cnt_a, cnt_b);
+                    if (best[right_status ^ 0b10] != Integer.MAX_VALUE) {
+                        ans = Math.max(ans, cnt_a - cnt_b - best[right_status ^ 0b10]);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+
+    private int getStatus(int cnt_a, int cnt_b) {
+        return ((cnt_a & 1) << 1) | (cnt_b & 1);
+    }
+
+    /**
+     * 3423. 循环数组中相邻元素的最大差值
+     * 给你一个 循环 数组 nums ，请你找出相邻元素之间的 最大 绝对差值。
+     * 注意：一个循环数组中，第一个元素和最后一个元素是相邻的。
+     * 示例 1：
+     * 输入：nums = [1,2,4]
+     * 输出：3
+     * 解释：
+     * 由于 nums 是循环的，nums[0] 和 nums[2] 是相邻的，它们之间的绝对差值是最大值 |4 - 1| = 3 。
+     * 示例 2：
+     * 输入：nums = [-5,-10,-5]
+     * 输出：5
+     * 解释：
+     * 相邻元素 nums[0] 和 nums[1] 之间的绝对差值为最大值 |-5 - (-10)| = 5 。
+     * 提示：
+     * 2 <= nums.length <= 100
+     * -100 <= nums[i] <= 100
+     */
+    public int maxAdjacentDistance(int[] nums) {
+        int n = nums.length, ans = Math.abs(nums[0] - nums[n - 1]);
+        for (int i = 1; i < n; i++) {
+            ans = Math.max(ans, Math.abs(nums[i] - nums[i - 1]));
+        }
+        return ans;
+    }
+
+    /**
+     * 2616. 最小化数对的最大差值
+     * 中等
+     * 给你一个下标从 0 开始的整数数组 nums 和一个整数 p 。
+     * 请你从 nums 中找到 p 个下标对，每个下标对对应数值取差值，你需要使得这 p 个差值的 最大值 最小。
+     * 同时，你需要确保每个下标在这 p 个下标对中最多出现一次。
+     * 对于一个下标对 i 和 j ，这一对的差值为 |nums[i] - nums[j]| ，其中 |x| 表示 x 的 绝对值 。
+     * 请你返回 p 个下标对对应数值 最大差值 的 最小值 。
+     * 示例 1：
+     * 输入：nums = [10,1,2,7,1,3], p = 2   1 1 2 3 7 10
+     * 输出：1
+     * 解释：第一个下标对选择 1 和 4 ，第二个下标对选择 2 和 5 。
+     * 最大差值为 max(|nums[1] - nums[4]|, |nums[2] - nums[5]|) = max(0, 1) = 1 。所以我们返回 1 。
+     * 示例 2：
+     * 输入：nums = [4,2,1,2], p = 1
+     * 输出：0
+     * 解释：选择下标 1 和 3 构成下标对。差值为 |2 - 2| = 0 ，这是最大差值的最小值。
+     * 提示：
+     * 1 <= nums.length <= 10^5
+     * 0 <= nums[i] <= 10^9
+     * 0 <= p <= (nums.length)/2
+     */
+    public int minimizeMax(int[] nums, int p) {
+        // 贪心
+        // 先排序，差值最小值一定出现相邻元素，从最大差值二分
+        Arrays.sort(nums);
+        int n = nums.length, left = 0, right = nums[n - 1] - nums[0];
+        while (left < right) {
+            int mid = left + (right - left) / 2, count = 0;
+            for (int i = 0; i < n - 1; i++) {
+                if (nums[i + 1] - nums[i] <= mid) {
+                    count++;
+                    i++;
+                }
+            }
+            if (count >= p) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println(smallestEquivalentString("leetcode", "programs", "sourcecode"));
+        System.out.println(maxDifference("aaaaabbc"));
     }
 }
