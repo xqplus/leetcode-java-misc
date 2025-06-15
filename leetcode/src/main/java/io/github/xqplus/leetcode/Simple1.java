@@ -1643,6 +1643,149 @@ public class Simple1 {
     }
 
     /**
+     * 3512. 使数组和能被 K 整除的最少操作次数
+     * 给你一个整数数组 nums 和一个整数 k。你可以执行以下操作任意次：
+     * 选择一个下标 i，并将 nums[i] 替换为 nums[i] - 1。
+     * 返回使数组元素之和能被 k 整除所需的最小操作次数。
+     * 示例 1：
+     * 输入： nums = [3,9,7], k = 5
+     * 输出： 4
+     * 解释：
+     * 对 nums[1] = 9 执行 4 次操作。现在 nums = [3, 5, 7]。
+     * 数组之和为 15，可以被 5 整除。
+     * 示例 2：
+     * 输入： nums = [4,1,3], k = 4
+     * 输出： 0
+     * 解释：
+     * 数组之和为 8，已经可以被 4 整除。因此不需要操作。
+     * 示例 3：
+     * 输入： nums = [3,2], k = 6
+     * 输出： 5
+     * 解释：
+     * 对 nums[0] = 3 执行 3 次操作，对 nums[1] = 2 执行 2 次操作。现在 nums = [0, 0]。
+     * 数组之和为 0，可以被 6 整除。
+     * 提示：
+     * 1 <= nums.length <= 1000
+     * 1 <= nums[i] <= 1000
+     * 1 <= k <= 100
+     */
+    public int minOperations(int[] nums, int k) {
+        int sum = 0;
+        for (int num : nums) {
+            sum += num;
+        }
+        return sum - (sum / k * k);
+    }
+
+    /**
+     * 1961. 检查字符串是否为数组前缀
+     * 给你一个字符串 s 和一个字符串数组 words ，请你判断 s 是否为 words 的 前缀字符串 。
+     * 字符串 s 要成为 words 的 前缀字符串 ，需要满足：s 可以由 words 中的前 k（k 为 正数 ）个字符串按顺序相连得到，且 k 不超过 words.length 。
+     * 如果 s 是 words 的 前缀字符串 ，返回 true ；否则，返回 false 。
+     * 示例 1：
+     * 输入：s = "iloveleetcode", words = ["i","love","leetcode","apples"]
+     * 输出：true
+     * 解释：
+     * s 可以由 "i"、"love" 和 "leetcode" 相连得到。
+     * 示例 2：
+     * 输入：s = "iloveleetcode", words = ["apples","i","love","leetcode"]
+     * 输出：false
+     * 解释：
+     * 数组的前缀相连无法得到 s 。
+     * 提示：
+     * 1 <= words.length <= 100
+     * 1 <= words[i].length <= 20
+     * 1 <= s.length <= 1000
+     * words[i] 和 s 仅由小写英文字母组成
+     */
+    public boolean isPrefixString(String s, String[] words) {
+        int n = s.length();
+        StringBuilder sb = new StringBuilder();
+        for (String word : words) {
+            sb.append(word);
+            if (sb.length() > n) {
+                return false;
+            }
+            if (sb.length() == n) {
+                return sb.toString().equals(s);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 530. 二叉搜索树的最小绝对差
+     * 给你一个二叉搜索树的根节点 root ，返回 树中任意两不同节点值之间的最小差值 。
+     * 差值是一个正数，其数值等于两值之差的绝对值。
+     * 示例 1：
+     * 输入：root = [4,2,6,1,3]
+     * 输出：1
+     * 示例 2：
+     * 输入：root = [1,0,48,null,null,12,49]
+     * 输出：1
+     * 提示：
+     * 树中节点的数目范围是 [2, 10^4]
+     * 0 <= Node.val <= 10^5
+     */
+    public int getMinimumDifference(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        dfs2(root, list);
+        int ans = 100000;
+        for (int i = 1; i < list.size(); i++) {
+            ans = Math.min(ans, list.get(i) - list.get(i - 1));
+        }
+        return ans;
+    }
+
+    private void dfs2(TreeNode node, List<Integer> list) {
+        // 中序遍历
+        if (node == null) {
+            return;
+        }
+        dfs2(node.left, list);
+        list.add(node.val);
+        dfs2(node.right, list);
+    }
+
+    /**
+     * 2389. 和有限的最长子序列
+     * 给你一个长度为 n 的整数数组 nums ，和一个长度为 m 的整数数组 queries 。
+     * 返回一个长度为 m 的数组 answer ，其中 answer[i] 是 nums 中 元素之和小于等于 queries[i] 的 子序列 的 最大 长度  。
+     * 子序列 是由一个数组删除某些元素（也可以不删除）但不改变剩余元素顺序得到的一个数组。
+     * 示例 1：
+     * 输入：nums = [4,5,2,1], queries = [3,10,21]
+     * 输出：[2,3,4]
+     * 解释：queries 对应的 answer 如下：
+     * - 子序列 [2,1] 的和小于或等于 3 。可以证明满足题目要求的子序列的最大长度是 2 ，所以 answer[0] = 2 。
+     * - 子序列 [4,5,1] 的和小于或等于 10 。可以证明满足题目要求的子序列的最大长度是 3 ，所以 answer[1] = 3 。
+     * - 子序列 [4,5,2,1] 的和小于或等于 21 。可以证明满足题目要求的子序列的最大长度是 4 ，所以 answer[2] = 4 。
+     * 示例 2：
+     * 输入：nums = [2,3,4,5], queries = [1]
+     * 输出：[0]
+     * 解释：空子序列是唯一一个满足元素和小于或等于 1 的子序列，所以 answer[0] = 0 。
+     * 提示：
+     * n == nums.length
+     * m == queries.length
+     * 1 <= n, m <= 1000
+     * 1 <= nums[i], queries[i] <= 10^6
+     */
+    public int[] answerQueries(int[] nums, int[] queries) {
+        Arrays.sort(nums);
+        int[] ans = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            int sum = 0;
+            for (int num : nums) {
+                sum += num;
+                if (sum > queries[i]) {
+                    break;
+                }
+                ans[i]++;
+            }
+        }
+        return ans;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
