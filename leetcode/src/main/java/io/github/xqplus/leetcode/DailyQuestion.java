@@ -474,9 +474,107 @@ public class DailyQuestion {
     }
 
     /**
+     * 2016. 增量元素之间的最大差值
+     * 简单 25/6/16
+     * 给你一个下标从 0 开始的整数数组 nums ，该数组的大小为 n ，请你计算 nums[j] - nums[i] 能求得的 最大差值 ，其中 0 <= i < j < n 且 nums[i] < nums[j] 。
+     * 返回 最大差值 。如果不存在满足要求的 i 和 j ，返回 -1 。
+     * 示例 1：
+     * 输入：nums = [7,1,5,4]
+     * 输出：4
+     * 解释：
+     * 最大差值出现在 i = 1 且 j = 2 时，nums[j] - nums[i] = 5 - 1 = 4 。
+     * 注意，尽管 i = 1 且 j = 0 时 ，nums[j] - nums[i] = 7 - 1 = 6 > 4 ，但 i > j 不满足题面要求，所以 6 不是有效的答案。
+     * 示例 2：
+     * 输入：nums = [9,4,3,2]
+     * 输出：-1
+     * 解释：
+     * 不存在同时满足 i < j 和 nums[i] < nums[j] 这两个条件的 i, j 组合。
+     * 示例 3：
+     * 输入：nums = [1,5,2,10]
+     * 输出：9
+     * 解释：
+     * 最大差值出现在 i = 0 且 j = 3 时，nums[j] - nums[i] = 10 - 1 = 9 。
+     * 提示：
+     * n == nums.length
+     * 2 <= n <= 1000
+     * 1 <= nums[i] <= 10^9
+     */
+    public static int maximumDifference(int[] nums) {
+        int max = nums[0], min = nums[0], ans = -1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < min) {
+                if (max - min > 0) {
+                    ans = Math.max(max - min, ans);
+                }
+                min = nums[i];
+                max = nums[i];
+            } else if (nums[i] > max) {
+                max = nums[i];
+            }
+        }
+        if (max - min > 0) {
+            ans = Math.max(max - min, ans);
+        }
+        return ans;
+    }
+
+    /**
+     * 3405. 统计恰好有 K 个相等相邻元素的数组数目
+     * 困难 25/6/17
+     * 给你三个整数 n ，m ，k 。长度为 n 的 好数组 arr 定义如下：
+     * arr 中每个元素都在 闭 区间 [1, m] 中。
+     * 恰好 有 k 个下标 i （其中 1 <= i < n）满足 arr[i - 1] == arr[i] 。
+     * 请你返回可以构造出的 好数组 数目。
+     * 由于答案可能会很大，请你将它对 10^9 + 7 取余 后返回。
+     * 示例 1：
+     * 输入：n = 3, m = 2, k = 1
+     * 输出：4
+     * 解释：
+     * 总共有 4 个好数组，分别是 [1, 1, 2] ，[1, 2, 2] ，[2, 1, 1] 和 [2, 2, 1] 。
+     * 所以答案为 4 。
+     * 示例 2：
+     * 输入：n = 4, m = 2, k = 2
+     * 输出：6
+     * 解释：
+     * 好数组包括 [1, 1, 1, 2] ，[1, 1, 2, 2] ，[1, 2, 2, 2] ，[2, 1, 1, 1] ，[2, 2, 1, 1] 和 [2, 2, 2, 1] 。
+     * 所以答案为 6 。
+     * 示例 3：
+     * 输入：n = 5, m = 2, k = 0
+     * 输出：2
+     * 解释：
+     * 好数组包括 [1, 2, 1, 2, 1] 和 [2, 1, 2, 1, 2] 。
+     * 所以答案为 2 。
+     * 提示：
+     * 1 <= n <= 10^5
+     * 1 <= m <= 10^5
+     * 0 <= k <= n - 1
+     */
+    public static int countGoodArrays(int n, int m, int k) {
+        // m*(m-1)^(n-1-k)*C(n-1)k
+        int mod = 1000000007;
+        int a = (int) Math.pow(m - 1, n - 1 - k) % mod;
+        int b = (int) C(n - 1, k) % mod;
+        return m * a * b;
+
+
+        // 10 9 0
+        // 8^9
+    }
+
+    private static long C(int n, int k) {
+        // 优化：取 k 和 n-k 中的较小值
+        k = Math.min(k, n - k);
+        long result = 1;
+        for (int i = 1; i <= k; i++) {
+            result = result * (n - i + 1) / i;
+        }
+        return result;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println(maxDiff(111));
+        System.out.println(countGoodArrays(10, 9, 0));
     }
 }

@@ -1155,8 +1155,476 @@ public class Simple2 {
     }
 
     /**
+     * 2154. 将找到的值乘以 2
+     * 给你一个整数数组 nums ，另给你一个整数 original ，这是需要在 nums 中搜索的第一个数字。
+     * 接下来，你需要按下述步骤操作：
+     * 如果在 nums 中找到 original ，将 original 乘以 2 ，得到新 original（即，令 original = 2 * original）。
+     * 否则，停止这一过程。
+     * 只要能在数组中找到新 original ，就对新 original 继续 重复 这一过程。
+     * 返回 original 的 最终 值。
+     * 示例 1：
+     * 输入：nums = [5,3,6,1,12], original = 3
+     * 输出：24
+     * 解释：
+     * - 3 能在 nums 中找到。3 * 2 = 6 。
+     * - 6 能在 nums 中找到。6 * 2 = 12 。
+     * - 12 能在 nums 中找到。12 * 2 = 24 。
+     * - 24 不能在 nums 中找到。因此，返回 24 。
+     * 示例 2：
+     * 输入：nums = [2,7,9], original = 4
+     * 输出：4
+     * 解释：
+     * - 4 不能在 nums 中找到。因此，返回 4 。
+     * 提示：
+     * 1 <= nums.length <= 1000
+     * 1 <= nums[i], original <= 1000
+     */
+    public int findFinalValue(int[] nums, int original) {
+        int[] arr = new int[1001];
+        for (int num : nums) {
+           if (arr[num] == 0) {
+               arr[num] = 1;
+           }
+        }
+        while (original <= 1000 && arr[original] == 1) {
+            original <<= 1;
+        }
+        return original;
+    }
+
+    /**
+     * 1796. 字符串中第二大的数字
+     * 给你一个混合字符串 s ，请你返回 s 中 第二大 的数字，如果不存在第二大的数字，请你返回 -1 。
+     * 混合字符串 由小写英文字母和数字组成。
+     * 示例 1：
+     * 输入：s = "dfa12321afd"
+     * 输出：2
+     * 解释：出现在 s 中的数字包括 [1, 2, 3] 。第二大的数字是 2 。
+     * 示例 2：
+     * 输入：s = "abc1111"
+     * 输出：-1
+     * 解释：出现在 s 中的数字只包含 [1] 。没有第二大的数字。
+     * 提示：
+     * 1 <= s.length <= 500
+     * s 只包含小写英文字母和（或）数字。
+     */
+    public int secondHighest(String s) {
+        int first = -1, second = -1;
+        for (char c : s.toCharArray()) {
+            int k = c - '0';
+            if (k <= 9) {
+                if (k > first) {
+                    second = first;
+                    first = k;
+                } else if (k < first && k > second) {
+                    second = k;
+                }
+            }
+        }
+        return second;
+    }
+
+    /**
+     * 面试题 01.04. 回文排列
+     * 给定一个字符串，编写一个函数判定其是否为某个回文串的排列之一。
+     * 回文串是指正反两个方向都一样的单词或短语。排列是指字母的重新排列。
+     * 回文串不一定是字典当中的单词。
+     * 示例1：
+     * 输入："tactcoa"
+     * 输出：true（排列有"tacocat"、"atcocta"，等等）
+     */
+    public boolean canPermutePalindrome(String s) {
+        // 回文串的重排列中只能出现0或1个奇数字串个数
+        Map<Character, Integer> map = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+        int odd = 0;
+        for (Integer value : map.values()) {
+            if (value > 0 && (value & 1) == 1) {
+                odd++;
+            }
+        }
+        return odd < 2;
+    }
+
+    /**
+     * 2200. 找出数组中的所有 K 近邻下标
+     * 给你一个下标从 0 开始的整数数组 nums 和两个整数 key 和 k 。K 近邻下标 是 nums 中的一个下标 i ，
+     * 并满足至少存在一个下标 j 使得 |i - j| <= k 且 nums[j] == key 。
+     * 以列表形式返回按 递增顺序 排序的所有 K 近邻下标。
+     * 示例 1：
+     * 输入：nums = [3,4,9,1,3,9,5], key = 9, k = 1
+     * 输出：[1,2,3,4,5,6]
+     * 解释：因此，nums[2] == key 且 nums[5] == key 。
+     * - 对下标 0 ，|0 - 2| > k 且 |0 - 5| > k ，所以不存在 j 使得 |0 - j| <= k 且 nums[j] == key 。所以 0 不是一个 K 近邻下标。
+     * - 对下标 1 ，|1 - 2| <= k 且 nums[2] == key ，所以 1 是一个 K 近邻下标。
+     * - 对下标 2 ，|2 - 2| <= k 且 nums[2] == key ，所以 2 是一个 K 近邻下标。
+     * - 对下标 3 ，|3 - 2| <= k 且 nums[2] == key ，所以 3 是一个 K 近邻下标。
+     * - 对下标 4 ，|4 - 5| <= k 且 nums[5] == key ，所以 4 是一个 K 近邻下标。
+     * - 对下标 5 ，|5 - 5| <= k 且 nums[5] == key ，所以 5 是一个 K 近邻下标。
+     * - 对下标 6 ，|6 - 5| <= k 且 nums[5] == key ，所以 6 是一个 K 近邻下标。
+     * 因此，按递增顺序返回 [1,2,3,4,5,6] 。
+     * 示例 2：
+     * 输入：nums = [2,2,2,2,2], key = 2, k = 2
+     * 输出：[0,1,2,3,4]
+     * 解释：对 nums 的所有下标 i ，总存在某个下标 j 使得 |i - j| <= k 且 nums[j] == key ，所以每个下标都是一个 K 近邻下标。
+     * 因此，返回 [0,1,2,3,4] 。
+     * 提示：
+     * 1 <= nums.length <= 1000
+     * 1 <= nums[i] <= 1000
+     * key 是数组 nums 中的一个整数
+     * 1 <= k <= nums.length
+     */
+    public static List<Integer> findKDistantIndices(int[] nums, int key, int k) {
+        int n = nums.length, l = 0, r = n - 1;
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 0; i < n; i++) {  // 3 4 9 1 3 9 5
+            if (nums[i] == key) {
+                l = Math.max(l, i - k);
+                r = Math.min(r, i + k);
+                for (int j = l; j <= r; j++) {
+                    ans.add(j);
+                }
+                if (r == n - 1) {
+                    break;
+                }
+                l = r + 1;
+                r = n - 1;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2085. 统计出现过一次的公共字符串
+     * 给你两个字符串数组 words1 和 words2 ，请你返回在两个字符串数组中 都恰好出现一次 的字符串的数目。
+     * 示例 1：
+     * 输入：words1 = ["leetcode","is","amazing","as","is"], words2 = ["amazing","leetcode","is"]
+     * 输出：2
+     * 解释：
+     * - "leetcode" 在两个数组中都恰好出现一次，计入答案。
+     * - "amazing" 在两个数组中都恰好出现一次，计入答案。
+     * - "is" 在两个数组中都出现过，但在 words1 中出现了 2 次，不计入答案。
+     * - "as" 在 words1 中出现了一次，但是在 words2 中没有出现过，不计入答案。
+     * 所以，有 2 个字符串在两个数组中都恰好出现了一次。
+     * 示例 2：
+     * 输入：words1 = ["b","bb","bbb"], words2 = ["a","aa","aaa"]
+     * 输出：0
+     * 解释：没有字符串在两个数组中都恰好出现一次。
+     * 示例 3：
+     * 输入：words1 = ["a","ab"], words2 = ["a","a","a","ab"]
+     * 输出：1
+     * 解释：唯一在两个数组中都出现一次的字符串是 "ab" 。
+     * 提示：
+     * 1 <= words1.length, words2.length <= 1000
+     * 1 <= words1[i].length, words2[j].length <= 30
+     * words1[i] 和 words2[j] 都只包含小写英文字母。
+     */
+    public int countWords(String[] words1, String[] words2) {
+        Map<String, Integer> w1Map = new HashMap<>();
+        Map<String, Integer> w2Map = new HashMap<>();
+        for (String s : words1) {
+            w1Map.put(s, w1Map.getOrDefault(s, 0) + 1);
+        }
+        for (String s : words2) {
+            w2Map.put(s, w2Map.getOrDefault(s, 0) + 1);
+        }
+        int ans = 0;
+        for (String s : w1Map.keySet()) {
+            int w1 = w1Map.get(s), w2 = w2Map.getOrDefault(s, 0);
+            if (w1 == 1 && w2 == 1) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 1800. 最大升序子数组和
+     * 给你一个正整数组成的数组 nums ，返回 nums 中一个 严格递增子数组 的最大可能元素和。
+     * 子数组是数组中的一个连续数字序列。
+     * 示例 1：
+     * 输入：nums = [10,20,30,5,10,50]
+     * 输出：65
+     * 解释：[5,10,50] 是元素和最大的升序子数组，最大元素和为 65 。
+     * 示例 2：
+     * 输入：nums = [10,20,30,40,50]
+     * 输出：150
+     * 解释：[10,20,30,40,50] 是元素和最大的升序子数组，最大元素和为 150 。
+     * 示例 3：
+     * 输入：nums = [12,17,15,13,10,11,12]
+     * 输出：33
+     * 解释：[10,11,12] 是元素和最大的升序子数组，最大元素和为 33 。
+     * 提示：
+     * 1 <= nums.length <= 100
+     * 1 <= nums[i] <= 100
+     */
+    public int maxAscendingSum(int[] nums) {
+        int max = nums[0], sum = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i - 1]) {
+                sum += nums[i];
+            } else {
+                max = Math.max(max, sum);
+                sum = nums[i];
+            }
+        }
+        return Math.max(max, sum);
+    }
+
+    /**
+     * 2873. 有序三元组中的最大值 I
+     * 给你一个下标从 0 开始的整数数组 nums 。
+     * 请你从所有满足 i < j < k 的下标三元组 (i, j, k) 中，找出并返回下标三元组的最大值。如果所有满足条件的三元组的值都是负数，则返回 0 。
+     * 下标三元组 (i, j, k) 的值等于 (nums[i] - nums[j]) * nums[k] 。
+     * 示例 1：
+     * 输入：nums = [12,6,1,2,7]
+     * 输出：77
+     * 解释：下标三元组 (0, 2, 4) 的值是 (nums[0] - nums[2]) * nums[4] = 77 。
+     * 可以证明不存在值大于 77 的有序下标三元组。
+     * 示例 2：
+     * 输入：nums = [1,10,3,4,19]
+     * 输出：133
+     * 解释：下标三元组 (1, 2, 4) 的值是 (nums[1] - nums[2]) * nums[4] = 133 。
+     * 可以证明不存在值大于 133 的有序下标三元组。
+     * 示例 3：
+     * 输入：nums = [1,2,3]
+     * 输出：0
+     * 解释：唯一的下标三元组 (0, 1, 2) 的值是一个负数，(nums[0] - nums[1]) * nums[2] = -3 。因此，答案是 0 。
+     * 提示：
+     * 3 <= nums.length <= 100
+     * 1 <= nums[i] <= 10^6
+     */
+    public static long maximumTripletValue(int[] nums) {
+        int n = nums.length;
+        int[][] arr = new int[n][2]; // [][0]表示以当前下标开始的局部最小值，[][0]局部最大值
+        arr[n - 1][0] = nums[n - 1];
+        arr[n - 1][1] = nums[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            arr[i][0] = Math.min(arr[i + 1][0], nums[i]);
+            arr[i][1] = Math.max(arr[i + 1][1], nums[i]);
+        }
+        long ans = 0;
+        for (int i = 0; i < n - 2; i++) {
+            for (int j = i + 1; j < n - 1; j++) {
+                long sub = nums[i] - nums[j];
+                ans = Math.max(ans, sub * (sub < 0 ? arr[j + 1][0] : arr[j + 1][1]));
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2160. 拆分数位后四位数字的最小和
+     * 给你一个四位 正 整数 num 。请你使用 num 中的 数位 ，将 num 拆成两个新的整数 new1 和 new2 。new1 和 new2 中可以有 前导 0 ，
+     * 且 num 中 所有 数位都必须使用。
+     * 比方说，给你 num = 2932 ，你拥有的数位包括：两个 2 ，一个 9 和一个 3 。一些可能的 [new1, new2] 数对为 [22, 93]，[23, 92]，[223, 9] 和 [2, 329] 。
+     * 请你返回可以得到的 new1 和 new2 的 最小 和。
+     * 示例 1：
+     * 输入：num = 2932
+     * 输出：52
+     * 解释：可行的 [new1, new2] 数对为 [29, 23] ，[223, 9] 等等。
+     * 最小和为数对 [29, 23] 的和：29 + 23 = 52 。
+     * 示例 2：
+     * 输入：num = 4009
+     * 输出：13
+     * 解释：可行的 [new1, new2] 数对为 [0, 49] ，[490, 0] 等等。
+     * 最小和为数对 [4, 9] 的和：4 + 9 = 13 。
+     * 提示：
+     * 1000 <= num <= 9999
+     */
+    public int minimumSum(int num) {
+        int n1 = 0, n2 = 0, n3 = 0, n4 = 0;
+        while (num > 0) {
+            int n = num % 10;
+            if (n >= n4) {
+                n1 = n2;
+                n2 = n3;
+                n3 = n4;
+                n4 = n;
+            } else if (n >= n3) {
+                n1 = n2;
+                n2 = n3;
+                n3 = n;
+            } else if (n >= n2) {
+                n1 = n2;
+                n2 = n;
+            } else if (n >= n1) {
+                n1 = n;
+            }
+            num = num / 10;
+        }
+        return n1 * 10 + n3 + n2 * 10 + n4;
+    }
+
+    /**
+     * 3019. 按键变更的次数
+     * 给你一个下标从 0 开始的字符串 s ，该字符串由用户输入。按键变更的定义是：使用与上次使用的按键不同的键。
+     * 例如 s = "ab" 表示按键变更一次，而 s = "bBBb" 不存在按键变更。
+     * 返回用户输入过程中按键变更的次数。
+     * 注意：shift 或 caps lock 等修饰键不计入按键变更，也就是说，如果用户先输入字母 'a' 然后输入字母 'A' ，不算作按键变更。
+     * 示例 1：
+     * 输入：s = "aAbBcC"
+     * 输出：2
+     * 解释：
+     * 从 s[0] = 'a' 到 s[1] = 'A'，不存在按键变更，因为不计入 caps lock 或 shift 。
+     * 从 s[1] = 'A' 到 s[2] = 'b'，按键变更。
+     * 从 s[2] = 'b' 到 s[3] = 'B'，不存在按键变更，因为不计入 caps lock 或 shift 。
+     * 从 s[3] = 'B' 到 s[4] = 'c'，按键变更。
+     * 从 s[4] = 'c' 到 s[5] = 'C'，不存在按键变更，因为不计入 caps lock 或 shift 。
+     * 示例 2：
+     * 输入：s = "AaAaAaaA"
+     * 输出：0
+     * 解释： 不存在按键变更，因为这个过程中只按下字母 'a' 和 'A' ，不需要进行按键变更。
+     * 提示：
+     * 1 <= s.length <= 100
+     * s 仅由英文大写字母和小写字母组成。
+     */
+    public int countKeyChanges(String s) {
+        int ans = 0;
+        char[] cs = s.toCharArray();
+        for (int i = 1; i < cs.length; i++) {
+            if (cs[i] != cs[i - 1] && Math.abs(cs[i] - cs[i - 1]) != 32) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2864. 最大二进制奇数
+     * 给你一个 二进制 字符串 s ，其中至少包含一个 '1' 。
+     * 你必须按某种方式 重新排列 字符串中的位，使得到的二进制数字是可以由该组合生成的 最大二进制奇数 。
+     * 以字符串形式，表示并返回可以由给定组合生成的最大二进制奇数。
+     * 注意 返回的结果字符串 可以 含前导零。
+     * 示例 1：
+     * 输入：s = "010"
+     * 输出："001"
+     * 解释：因为字符串 s 中仅有一个 '1' ，其必须出现在最后一位上。所以答案是 "001" 。
+     * 示例 2：
+     * 输入：s = "0101"
+     * 输出："1001"
+     * 解释：其中一个 '1' 必须出现在最后一位上。而由剩下的数字可以生产的最大数字是 "100" 。所以答案是 "1001" 。
+     * 提示：
+     * 1 <= s.length <= 100
+     * s 仅由 '0' 和 '1' 组成
+     * s 中至少包含一个 '1'
+     */
+    public String maximumOddBinaryNumber(String s) {
+        int n0 = 0, n1 = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '0') {
+                n0++;
+            } else {
+                n1++;
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n1 - 1; i++) {
+            sb.append('1');
+        }
+        for (int i = 0; i < n0; i++) {
+            sb.append('0');
+        }
+        sb.append('1');
+        return sb.toString();
+    }
+
+    /**
+     * 1991. 找到数组的中间位置
+     * 给你一个下标从 0 开始的整数数组 nums ，请你找到 最左边 的中间位置 middleIndex （也就是所有可能中间位置下标最小的一个）。
+     * 中间位置 middleIndex 是满足
+     * nums[0] + nums[1] + ... + nums[middleIndex-1] == nums[middleIndex+1] + nums[middleIndex+2] + ... + nums[nums.length-1] 的数组下标。
+     * 如果 middleIndex == 0 ，左边部分的和定义为 0 。类似的，如果 middleIndex == nums.length - 1 ，右边部分的和定义为 0 。
+     * 请你返回满足上述条件 最左边 的 middleIndex ，如果不存在这样的中间位置，请你返回 -1 。
+     * 示例 1：
+     * 输入：nums = [2,3,-1,8,4]  2 5 4 12 16
+     * 输出：3
+     * 解释：
+     * 下标 3 之前的数字和为：2 + 3 + -1 = 4
+     * 下标 3 之后的数字和为：4 = 4
+     * 示例 2：
+     * 输入：nums = [1,-1,4] 1 0 4
+     * 输出：2
+     * 解释：
+     * 下标 2 之前的数字和为：1 + -1 = 0
+     * 下标 2 之后的数字和为：0
+     * 示例 3：
+     * 输入：nums = [2,5]
+     * 输出：-1
+     * 解释：
+     * 不存在符合要求的 middleIndex 。
+     * 示例 4：
+     * 输入：nums = [1]
+     * 输出：0
+     * 解释：
+     * 下标 0 之前的数字和为：0
+     * 下标 0 之后的数字和为：0
+     * 提示：
+     * 1 <= nums.length <= 100
+     * -1000 <= nums[i] <= 1000
+     */
+    public int findMiddleIndex(int[] nums) {
+        int t = 0, s = 0;
+        for (int num : nums) {
+            t += num;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (s * 2 == t - nums[i]) {
+                return i;
+            }
+            s += nums[i];
+        }
+        return -1;
+    }
+
+    /**
+     * 3033. 修改矩阵
+     * 给你一个下标从 0 开始、大小为 m x n 的整数矩阵 matrix ，新建一个下标从 0 开始、名为 answer 的矩阵。
+     * 使 answer 与 matrix 相等，接着将其中每个值为 -1 的元素替换为所在列的 最大 元素。
+     * 返回矩阵 answer 。
+     * 示例 1：
+     * 输入：matrix = [[1,2,-1],[4,-1,6],[7,8,9]]
+     * 输出：[[1,2,9],[4,8,6],[7,8,9]]
+     * 解释：上图显示了发生替换的元素（蓝色区域）。
+     * - 将单元格 [1][1] 中的值替换为列 1 中的最大值 8 。
+     * - 将单元格 [0][2] 中的值替换为列 2 中的最大值 9 。
+     * 示例 2：
+     * 输入：matrix = [[3,-1],[5,2]]
+     * 输出：[[3,2],[5,2]]
+     * 解释：上图显示了发生替换的元素（蓝色区域）。
+     * 提示：
+     * m == matrix.length
+     * n == matrix[i].length
+     * 2 <= m, n <= 50
+     * -1 <= matrix[i][j] <= 100
+     * 测试用例中生成的输入满足每列至少包含一个非负整数。
+     */
+    public int[][] modifiedMatrix(int[][] matrix) {
+        List<int[]> targets = new ArrayList<>();
+        int m = matrix.length, n = matrix[0].length;
+        int[] nmax = new int[n];
+        int[][] ans = new int[m][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (matrix[j][i] == -1) {
+                    targets.add(new int[]{j, i});
+                }
+                nmax[i] = Math.max(nmax[i], matrix[j][i]);
+                ans[j][i] = matrix[j][i];
+            }
+        }
+        for (int[] target : targets) {
+            ans[target[0]][target[1]] = nmax[target[1]];
+        }
+        return ans;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
+        System.out.println(maximumTripletValue(new int[]{8, 6, 3, 13, 2, 12, 19, 5, 19, 6, 10, 11, 9}));
     }
 }

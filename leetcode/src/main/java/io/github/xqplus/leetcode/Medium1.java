@@ -981,14 +981,240 @@ public class Medium1 {
     }
 
     /**
+     * 1680. 连接连续二进制数字
+     * 给你一个整数 n ，请你将 1 到 n 的二进制表示连接起来，并返回连接结果对应的 十进制 数字对 10^9 + 7 取余的结果。
+     * 示例 1：
+     * 输入：n = 1
+     * 输出：1
+     * 解释：二进制的 "1" 对应着十进制的 1 。
+     * 示例 2：
+     * 输入：n = 3
+     * 输出：27
+     * 解释：二进制下，1，2 和 3 分别对应 "1" ，"10" 和 "11" 。
+     * 将它们依次连接，我们得到 "11011" ，对应着十进制的 27 。
+     * 示例 3：
+     * 输入：n = 12
+     * 输出：505379714
+     * 解释：连接结果为 "1101110010111011110001001101010111100" 。
+     * 对应的十进制数字为 118505380540 。
+     * 对 10^9 + 7 取余后，结果为 505379714 。
+     * 提示：
+     * 1 <= n <= 10^5
+     */
+    public int concatenatedBinary(int n) {
+        int k = 1, mod = 1000000007;
+        long ans = 0;
+        while (k <= n) {
+            ans = ans << 32 - Integer.numberOfLeadingZeros(k) | k;
+            ans %= mod;
+            k++;
+        }
+        return (int) ans;
+    }
+
+    /**
+     * 2982. 找出出现至少三次的最长特殊子字符串 II
+     * 给你一个仅由小写英文字母组成的字符串 s 。
+     * 如果一个字符串仅由单一字符组成，那么它被称为 特殊 字符串。例如，字符串 "abc" 不是特殊字符串，而字符串 "ddd"、"zz" 和 "f" 是特殊字符串。
+     * 返回在 s 中出现 至少三次 的 最长特殊子字符串 的长度，如果不存在出现至少三次的特殊子字符串，则返回 -1 。
+     * 子字符串 是字符串中的一个连续 非空 字符序列。
+     * 示例 1：
+     * 输入：s = "aaaa"
+     * 输出：2
+     * 解释：出现三次的最长特殊子字符串是 "aa"
+     * 可以证明最大长度是 2 。
+     * 示例 2：
+     * 输入：s = "abcdef"
+     * 输出：-1
+     * 解释：不存在出现至少三次的特殊子字符串。因此返回 -1 。
+     * 示例 3：
+     * 输入：s = "abcaba"
+     * 输出：1
+     * 解释：出现三次的最长特殊子字符串是 "a"
+     * 可以证明最大长度是 1 。
+     * 提示：
+     * 3 <= s.length <= 5 * 10^5
+     * s 仅由小写英文字母组成。
+     */
+    public int maximumLength(String s) {
+        // 统计每个字符出现的三个最长的特殊子字符串长度
+        int[][] counts = new int[26][3];
+        char[] cs = s.toCharArray();
+        int n = cs.length;
+        for (int i = 0, j = 0; i < n; i = j) {
+            while (j < n && cs[j] == cs[i]) {
+                j++;
+            }
+            int num = j - i, idx = cs[i] - 'a';
+            if (num > counts[idx][0]) {
+                counts[idx][2] = counts[idx][1];
+                counts[idx][1] = counts[idx][0];
+                counts[idx][0] = num;
+            } else if (num > counts[idx][1]) {
+                counts[idx][2] = counts[idx][1];
+                counts[idx][1] = num;
+            } else if (num > counts[idx][2]) {
+                counts[idx][2] = num;
+            }
+        }
+        int ans = -1;
+        // l0 l1 l2
+        // l0-2
+        // l0==l1 l0-1
+        // l0>l1 l1
+        // l2
+        for (int[] count : counts) {
+            int l1 = Math.min(count[0] - 1, count[1]);
+            int l = Math.max(count[0] - 2, Math.max(l1, count[2]));
+            if (l > 0) {
+                ans = Math.max(ans, l);
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * LCP 62. 交通枢纽
+     * 为了缓解「力扣嘉年华」期间的人流压力，组委会在活动期间开设了一些交通专线。path[i] = [a, b] 表示有一条从地点 a通往地点 b 的 单向 交通专线。
+     * 若存在一个地点，满足以下要求，我们则称之为 交通枢纽：
+     * 所有地点（除自身外）均有一条 单向 专线 直接 通往该地点；
+     * 该地点不存在任何 通往其他地点 的单向专线。
+     * 请返回交通专线的 交通枢纽。若不存在，则返回 -1。
+     * 注意：
+     * 对于任意一个地点，至少被一条专线连通。
+     * 示例 1：
+     * 输入：path = [[0,1],[0,3],[1,3],[2,0],[2,3]]
+     * 输出：3
+     * 解释：如下图所示： 地点 0,1,2 各有一条通往地点 3 的交通专线， 且地点 3 不存在任何通往其他地点的交通专线。image.png
+     * 示例 2：
+     * 输入：path = [[0,3],[1,0],[1,3],[2,0],[3,0],[3,2]]
+     * 输出：-1
+     * 解释：如下图所示：不存在满足 交通枢纽 的地点。image.png
+     * 提示：
+     * 1 <= path.length <= 1000
+     * 0 <= path[i][0], path[i][1] <= 1000
+     * path[i][0] 与 path[i][1] 不相等
+     */
+    public static int transportationHub(int[][] path) {
+        // 出度为0，入度为n-1的地点即为交通枢纽
+        int[][] dir = new int[1001][2]; // [][0]为入度，[][1]为出度
+        Set<Integer> set = new HashSet<>();
+        for (int[] p : path) {
+            dir[p[0]][1]++;
+            dir[p[1]][0]++;
+            set.add(p[0]);
+            set.add(p[1]);
+        }
+        int n = set.size();
+        for (Integer d : set) {
+            if (dir[d][0] == n - 1 && dir[d][1] == 0) {
+                return d;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 1975. 最大方阵和
+     * 给你一个 n x n 的整数方阵 matrix 。你可以执行以下操作 任意次 ：
+     * 选择 matrix 中 相邻 两个元素，并将它们都 乘以 -1 。
+     * 如果两个元素有 公共边 ，那么它们就是 相邻 的。
+     * 你的目的是 最大化 方阵元素的和。请你在执行以上操作之后，返回方阵的 最大 和。
+     * 示例 1：
+     * 1  -1
+     * -1  1
+     * 输入：matrix = [[1,-1],[-1,1]]
+     * 输出：4
+     * 解释：我们可以执行以下操作使和等于 4 ：
+     * - 将第一行的 2 个元素乘以 -1 。
+     * - 将第一列的 2 个元素乘以 -1 。
+     * 示例 2：
+     *  1  2  3
+     * -1 -2 -3
+     *  1  2  3
+     * 输入：matrix = [[1,2,3],[-1,-2,-3],[1,2,3]]
+     * 输出：16
+     * 解释：我们可以执行以下操作使和等于 16 ：
+     * - 将第二行的最后 2 个元素乘以 -1 。
+     * 提示：
+     * n == matrix.length == matrix[i].length
+     * 2 <= n <= 250
+     * -10^5 <= matrix[i][j] <= 10^5
+     */
+    public long maxMatrixSum(int[][] matrix) {
+        // 设矩阵负数个数为n,那么经过任意次变化后，数量一定为 n & 1，如果最后存在一个负数，那么一定是绝对值最小的数
+        long sumAbs = 0;
+        int n = matrix.length, neg = 0, minAbs = 100001;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] < 0) {
+                    neg++;
+                }
+                sumAbs += Math.abs(matrix[i][j]);
+                minAbs = Math.min(minAbs, Math.abs(matrix[i][j]));
+            }
+        }
+        return (neg & 1) == 0 ? sumAbs : sumAbs - (minAbs << 1);
+    }
+
+    /**
+     * 2787. 将一个数字表示成幂的和的方案数
+     * 给你两个 正 整数 n 和 x 。
+     * 请你返回将 n 表示成一些 互不相同 正整数的 x 次幂之和的方案数。
+     * 换句话说，你需要返回互不相同整数 [n1, n2, ..., nk] 的集合数目，满足 n = n1x + n2x + ... + nkx 。
+     * 由于答案可能非常大，请你将它对 109 + 7 取余后返回。
+     * 比方说，n = 160 且 x = 3 ，一个表示 n 的方法是 n = 2^3 + 3^3 + 5^3 。
+     * 示例 1：
+     * 输入：n = 10, x = 2
+     * 输出：1
+     * 解释：我们可以将 n 表示为：n = 3^2 + 1^2 = 10 。
+     * 这是唯一将 10 表达成不同整数 2 次方之和的方案。
+     * 示例 2：
+     * 输入：n = 4, x = 1
+     * 输出：2
+     * 解释：我们可以将 n 按以下方案表示：
+     * - n = 4^1 = 4 。
+     * - n = 3^1 + 1^1 = 4 。
+     * 提示：
+     * 1 <= n <= 300
+     * 1 <= x <= 5
+     */
+    public static int numberOfWays(int n, int x) {
+        // n=10 x=2
+        // 1^2=1 2^2=4 3^2=9
+        List<Integer> pows = new ArrayList<>();
+        int k = 1, pow;
+        while ((pow = (int) Math.pow(k, x)) <= n) {
+            pows.add(pow);
+            k++;
+        }
+        long[] dp = new long[n + 1];
+        dp[0] = 1;
+        for (Integer p : pows) {
+            for (int i = n; i >= p; i--) {
+                dp[i] += dp[i - p];
+            }
+        }
+        return (int) (dp[n] % 1000000007);
+    }
+
+    public static int countSubsets(int[] nums, int target) {
+        int[] dp = new int[target + 1];
+        dp[0] = 1; // 初始化空集
+        for (int num : nums) {
+            // 从后向前更新，避免覆盖
+            for (int s = target; s >= num; s--) {
+                dp[s] += dp[s - num];
+            }
+        }
+        return dp[target];
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        // 4,1,2,7,5,3,1
-        // 4 4 6 11 11 14
-        // 0 1 2 8 8 11
-
-        // 4 0 4+2 7 4+2+5 7+3
-        //
+//        System.out.println(countSubsets(new int[]{1, 4, 9}, 10));
+        System.out.println(numberOfWays(10, 2));
     }
 }
