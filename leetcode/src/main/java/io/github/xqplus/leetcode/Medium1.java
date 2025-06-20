@@ -1129,9 +1129,9 @@ public class Medium1 {
      * - 将第一行的 2 个元素乘以 -1 。
      * - 将第一列的 2 个元素乘以 -1 。
      * 示例 2：
-     *  1  2  3
+     * 1  2  3
      * -1 -2 -3
-     *  1  2  3
+     * 1  2  3
      * 输入：matrix = [[1,2,3],[-1,-2,-3],[1,2,3]]
      * 输出：16
      * 解释：我们可以执行以下操作使和等于 16 ：
@@ -1211,10 +1211,276 @@ public class Medium1 {
     }
 
     /**
+     * 1765. 地图中的最高点
+     * 给你一个大小为 m x n 的整数矩阵 isWater ，它代表了一个由 陆地 和 水域 单元格组成的地图。
+     * 如果 isWater[i][j] == 0 ，格子 (i, j) 是一个 陆地 格子。
+     * 如果 isWater[i][j] == 1 ，格子 (i, j) 是一个 水域 格子。
+     * 你需要按照如下规则给每个单元格安排高度：
+     * 每个格子的高度都必须是非负的。
+     * 如果一个格子是 水域 ，那么它的高度必须为 0 。
+     * 任意相邻的格子高度差 至多 为 1 。当两个格子在正东、南、西、北方向上相互紧挨着，就称它们为相邻的格子。（也就是说它们有一条公共边）
+     * 找到一种安排高度的方案，使得矩阵中的最高高度值 最大 。
+     * 请你返回一个大小为 m x n 的整数矩阵 height ，其中 height[i][j] 是格子 (i, j) 的高度。如果有多种解法，请返回 任意一个 。
+     * 示例 1：
+     * 输入：isWater = [[0,1],[0,0]]
+     * 输出：[[1,0],[2,1]]
+     * 解释：上图展示了给各个格子安排的高度。
+     * 蓝色格子是水域格，绿色格子是陆地格。
+     * 示例 2：
+     * 0 0 1    0 1 0
+     * 1 0 0 -> 1 0 1 ->
+     * 0 0 0    0 0 0
+     * 输入：isWater = [[0,0,1],[1,0,0],[0,0,0]]
+     * 输出：[[1,1,0],[0,1,1],[1,2,2]]
+     * 解释：所有安排方案中，最高可行高度为 2 。
+     * 任意安排方案中，只要最高高度为 2 且符合上述规则的，都为可行方案。
+     * 提示：
+     * m == isWater.length
+     * n == isWater[i].length
+     * 1 <= m, n <= 1000
+     * isWater[i][j] 要么是 0 ，要么是 1 。
+     * 至少有 1 个水域格子。
+     */
+    public static int[][] highestPeak(int[][] isWater) {
+        int m = isWater.length, n = isWater[0].length;
+        int[][] ans = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            Arrays.fill(ans[i], -1); // 访问状态
+        }
+        Queue<int[]> q = new LinkedList<>();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (isWater[i][j] == 1) {
+                    ans[i][j] = 0;
+                    q.offer(new int[]{i, j});
+                }
+            }
+        }
+        while (!q.isEmpty()) {
+            int[] p = q.poll();
+            for (int[] dir : dirs) {
+                int x = p[0] + dir[0], y = p[1] + dir[1];
+                if (x >= 0 && x < m && y >= 0 && y < n && ans[x][y] != -1) {
+                    ans[x][y] = ans[p[0]][p[1]] + 1;
+                    q.offer(new int[]{x, y});
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * LCR 033. 字母异位词分组
+     * 给定一个字符串数组 strs ，将 变位词 组合在一起。 可以按任意顺序返回结果列表。
+     * 注意：若两个字符串中每个字符出现的次数都相同，则称它们互为变位词。
+     * 示例 1：
+     * 输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+     * 输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+     * 示例 2：
+     * 输入: strs = [""]
+     * 输出: [[""]]
+     * 示例 3：
+     * 输入: strs = ["a"]
+     * 输出: [["a"]]
+     * 提示：
+     * 1 <= strs.length <= 10^4
+     * 0 <= strs[i].length <= 100
+     * strs[i] 仅包含小写字母
+     */
+    public static List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> ans = new ArrayList<>();
+        Map<String, Integer> idxMap = new HashMap<>();
+        for (String str : strs) {
+            int[] cnt = new int[26];
+            for (char c : str.toCharArray()) {
+                cnt[c - 'a']++;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 26; i++) {
+                while (cnt[i] > 0) {
+                    sb.append((char) (i + 'a'));
+                    cnt[i]--;
+                }
+            }
+            String key = sb.toString();
+            if (idxMap.containsKey(key)) {
+                ans.get(idxMap.get(key)).add(str);
+            } else {
+                List<String> list = new ArrayList<>();
+                list.add(str);
+                ans.add(list);
+                idxMap.put(key, ans.size() - 1);
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2008. 出租车的最大盈利
+     * 你驾驶出租车行驶在一条有 n 个地点的路上。这 n 个地点从近到远编号为 1 到 n ，你想要从 1 开到 n ，通过接乘客订单盈利。
+     * 你只能沿着编号递增的方向前进，不能改变方向。
+     * 乘客信息用一个下标从 0 开始的二维数组 rides 表示，其中 rides[i] = [starti, endi, tipi] 表示第 i 位乘客需要从地点 starti 前往 endi ，
+     * 愿意支付 tipi 元的小费。
+     * 每一位 你选择接单的乘客 i ，你可以 盈利 endi - starti + tipi 元。你同时 最多 只能接一个订单。
+     * 给你 n 和 rides ，请你返回在最优接单方案下，你能盈利 最多 多少元。
+     * 注意：你可以在一个地点放下一位乘客，并在同一个地点接上另一位乘客。
+     * 示例 1：
+     * 输入：n = 5, rides = [[2,5,4],[1,5,1]]
+     * 输出：7
+     * 解释：我们可以接乘客 0 的订单，获得 5 - 2 + 4 = 7 元。
+     * 示例 2：//  6 10 12 15 18  0 0 0 0 0 0 6 6 6 6 9 9 14 14 14 19 19 19  20
+     * 输入：n = 20, rides = [[1,6,1],[3,10,2],[10,12,3],[11,12,2],[12,15,2],[13,18,1]]
+     * 输出：20
+     * 解释：我们可以接以下乘客的订单：
+     * - 将乘客 1 从地点 3 送往地点 10 ，获得 10 - 3 + 2 = 9 元。
+     * - 将乘客 2 从地点 10 送往地点 12 ，获得 12 - 10 + 3 = 5 元。
+     * - 将乘客 5 从地点 13 送往地点 18 ，获得 18 - 13 + 1 = 6 元。
+     * 我们总共获得 9 + 5 + 6 = 20 元。
+     * 提示：
+     * 1 <= n <= 10^5
+     * 1 <= rides.length <= 3 * 10^4
+     * rides[i].length == 3
+     * 1 <= starti < endi <= n
+     * 1 <= tipi <= 10^5
+     */
+    public static long maxTaxiEarnings(int n, int[][] rides) {
+        // 设f(x,y)表示到达地点x,能够盈利的最大金额y，那么某一个地点k的最大值等于到这点每个乘客金额+起始点金额的最大子，
+        // 如果没有乘客到该地点，那么等于上一个地点的金额，f(n)即为答案
+        // 先找到最大地点，再构造dp，计数每个点到达的项（用map，数组计数范围太大）
+        int k = 0;
+        Map<Integer, List<int[]>> map = new HashMap<>();
+        for (int[] ride : rides) {
+            k = Math.max(k, ride[1]);
+            map.computeIfAbsent(ride[1], key -> new ArrayList<>()).add(ride);
+        }
+        long[] dp = new long[k + 1];
+        for (int i = 1; i <= k; i++) {
+            if (!map.containsKey(i)) {
+                dp[i] = dp[i - 1];
+                continue;
+            }
+            List<int[]> rds = map.get(i);
+            int[] rd1 = rds.get(0);
+            long rdMax = rd1[1] - rd1[0] + rd1[2] + dp[rd1[0]];
+            for (int j = 1; j < rds.size(); j++) {
+                int[] rd = rds.get(j);
+                rdMax = Math.max(rdMax, rd[1] - rd[0] + rd[2] + dp[rd[0]]);
+            }
+            dp[i] = Math.max(rdMax, dp[i - 1]);
+        }
+        return dp[k];
+        // [[1,6,1],[3,10,2],[10,12,3],[11,12,2],[12,15,2],[13,18,1]]
+    }
+
+    /**
+     * 1921. 消灭怪物的最大数量
+     * 你正在玩一款电子游戏，在游戏中你需要保护城市免受怪物侵袭。
+     * 给定一个 下标从 0 开始 且大小为 n 的整数数组 dist ，其中 dist[i] 是第 i 个怪物与城市的 初始距离（单位：千米）。
+     * 怪物以 恒定 的速度走向城市。每个怪物的速度都以一个长度为 n 的整数数组 speed 表示，其中 speed[i] 是第 i 个怪物的速度（单位：千米/分）。
+     * 你有一种武器，一旦充满电，就可以消灭 一个 怪物。但是，武器需要 一分钟 才能充电。武器在游戏开始时是充满电的状态，怪物从 第 0 分钟 时开始移动。
+     * 一旦任一怪物到达城市，你就输掉了这场游戏。如果某个怪物 恰好 在某一分钟开始时到达城市（距离表示为0），这也会被视为 输掉 游戏，在你可以使用武器之前，游戏就会结束。
+     * 返回在你输掉游戏前可以消灭的怪物的 最大 数量。如果你可以在所有怪物到达城市前将它们全部消灭，返回  n 。
+     * 示例 1：
+     * 输入：dist = [1,3,4], speed = [1,1,1] 1 3 4  1 2 2
+     * 输出：3
+     * 解释：
+     * 第 0 分钟开始时，怪物的距离是 [1,3,4]，你消灭了第一个怪物。
+     * 第 1 分钟开始时，怪物的距离是 [X,2,3]，你消灭了第二个怪物。
+     * 第 3 分钟开始时，怪物的距离是 [X,X,2]，你消灭了第三个怪物。
+     * 所有 3 个怪物都可以被消灭。
+     * 示例 2：
+     * 输入：dist = [1,1,2,3], speed = [1,1,1,1] 1 1 2 3
+     * 输出：1
+     * 解释：
+     * 第 0 分钟开始时，怪物的距离是 [1,1,2,3]，你消灭了第一个怪物。
+     * 第 1 分钟开始时，怪物的距离是 [X,0,1,2]，所以你输掉了游戏。
+     * 你只能消灭 1 个怪物。
+     * 示例 3：
+     * 输入：dist = [3,2,4], speed = [5,3,2]  1 1 2
+     * 输出：1
+     * 解释：
+     * 第 0 分钟开始时，怪物的距离是 [3,2,4]，你消灭了第一个怪物。
+     * 第 1 分钟开始时，怪物的距离是 [X,0,2]，你输掉了游戏。
+     * 你只能消灭 1 个怪物。
+     * 提示：
+     * n == dist.length == speed.length
+     * 1 <= n <= 10^5
+     * 1 <= dist[i], speed[i] <= 10^5
+     */
+    public int eliminateMaximum(int[] dist, int[] speed) {
+        for (int i = 0; i < dist.length; i++) {
+            dist[i] = (dist[i] + speed[i] - 1) / speed[i];
+        }
+        Arrays.sort(dist);
+        int i = 1;
+        for (; i < dist.length; i++) {
+            if (dist[i] == i) {
+                break;
+            }
+        }
+        return i;
+    }
+
+    /**
+     * 3462. 提取至多 K 个元素的最大总和
+     * 给你一个大小为 n x m 的二维矩阵 grid ，以及一个长度为 n 的整数数组 limits ，和一个整数 k 。
+     * 你的目标是从矩阵 grid 中提取出 至多 k 个元素，并计算这些元素的最大总和，提取时需满足以下限制：
+     * 从 grid 的第 i 行提取的元素数量不超过 limits[i] 。
+     * 返回最大总和。
+     * 示例 1：
+     * 输入：grid = [[1,2],[3,4]], limits = [1,2], k = 2
+     * [0][0]=0 [0][1]=2 [0][2]=3
+     * [1][0]=3 [1][1]=2+4 [1][2]=3+4
+     * 输出：7
+     * 解释：
+     * 从第 2 行提取至多 2 个元素，取出 4 和 3 。
+     * 至多提取 2 个元素时的最大总和 4 + 3 = 7 。
+     * 示例 2：
+     * 输入：grid = [[5,3,7],[8,2,6]], limits = [2,2], k = 3
+     * 输出：21
+     * 解释：
+     * 从第 1 行提取至多 2 个元素，取出 7 。
+     * 从第 2 行提取至多 2 个元素，取出 8 和 6 。
+     * 至多提取 3 个元素时的最大总和 7 + 8 + 6 = 21 。
+     * 提示：
+     * n == grid.length == limits.length
+     * m == grid[i].length
+     * 1 <= n, m <= 500
+     * 0 <= grid[i][j] <= 10^5
+     * 0 <= limits[i] <= m
+     * 0 <= k <= min(n * m, sum(limits))
+     */
+    public long maxSum(int[][] grid, int[] limits, int k) {
+        if (k == 0) {
+            return 0;
+        }
+        Map<Integer, List<Integer>> map = new TreeMap<>(Comparator.reverseOrder());
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                map.computeIfAbsent(grid[i][j], key -> new ArrayList<>()).add(i);
+            }
+        }
+        long ans = 0;
+        for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+            for (Integer i : entry.getValue()) {
+                if (limits[i] > 0) {
+                    ans += entry.getKey();
+                    limits[i]--;
+                    k--;
+                }
+                if (k == 0) {
+                    return ans;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-//        System.out.println(countSubsets(new int[]{1, 4, 9}, 10));
-        System.out.println(numberOfWays(10, 2));
+        int[][] rides = {{1,6,1},{3,10,2},{10,12,3},{11,12,2},{12,15,2},{13,18,1}};
+        System.out.println(maxTaxiEarnings(20, rides));
     }
 }
