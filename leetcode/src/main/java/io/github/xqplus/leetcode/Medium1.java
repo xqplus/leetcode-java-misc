@@ -1477,10 +1477,59 @@ public class Medium1 {
     }
 
     /**
+     * 2896. 执行操作使两个字符串相等
+     * 给你两个下标从 0 开始的二进制字符串 s1 和 s2 ，两个字符串的长度都是 n ，再给你一个正整数 x 。
+     * 你可以对字符串 s1 执行以下操作 任意次 ：
+     * 选择两个下标 i 和 j ，将 s1[i] 和 s1[j] 都反转，操作的代价为 x 。
+     * 选择满足 i < n - 1 的下标 i ，反转 s1[i] 和 s1[i + 1] ，操作的代价为 1 。
+     * 请你返回使字符串 s1 和 s2 相等的 最小 操作代价之和，如果无法让二者相等，返回 -1 。
+     * 注意 ，反转字符的意思是将 0 变成 1 ，或者 1 变成 0 。
+     * 示例 1：
+     * 输入：s1 = "1100011000", s2 = "0101001010", x = 2
+     * 输出：4
+     * 解释：我们可以执行以下操作：
+     * - 选择 i = 3 执行第二个操作。结果字符串是 s1 = "1101111000" 。
+     * - 选择 i = 4 执行第二个操作。结果字符串是 s1 = "1101001000" 。
+     * - 选择 i = 0 和 j = 8 ，执行第一个操作。结果字符串是 s1 = "0101001010" = s2 。
+     * 总代价是 1 + 1 + 2 = 4 。这是最小代价和。
+     * 示例 2：
+     * 输入：s1 = "10110", s2 = "00011", x = 4
+     * 输出：-1
+     * 解释：无法使两个字符串相等。
+     * 提示：
+     * n == s1.length == s2.length
+     * 1 <= n, x <= 500
+     * s1 和 s2 只包含字符 '0' 和 '1' 。
+     */
+    public int minOperations(String s1, String s2, int x) {
+        // 先统计
+        List<Integer> idxList = new ArrayList<>();
+        for (int i = 0; i < s1.length(); i++) {
+            if (s1.charAt(i) != s2.charAt(i)) {
+                idxList.add(i);
+            }
+        }
+        int n = idxList.size();
+        if (n == 0 || (n & 1) == 1) {
+            return n == 0 ? 0 : -1;
+        }
+
+        // dp[i]表示反转idxList前i个元素最小花费
+        // int[] dp = new int[n + 1];
+        int cost0 = 0, cost1 = x;
+        for (int i = 1; i < n; i++) {
+            int cost2 = Math.min(cost1 + x, cost0 + (idxList.get(i) - idxList.get(i - 1)) * 2);
+            cost0 = cost1;
+            cost1 = cost2;
+        }
+        return cost1 / 2;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[][] rides = {{1,6,1},{3,10,2},{10,12,3},{11,12,2},{12,15,2},{13,18,1}};
+        int[][] rides = {{1, 6, 1}, {3, 10, 2}, {10, 12, 3}, {11, 12, 2}, {12, 15, 2}, {13, 18, 1}};
         System.out.println(maxTaxiEarnings(20, rides));
     }
 }

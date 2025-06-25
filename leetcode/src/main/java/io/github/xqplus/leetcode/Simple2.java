@@ -1182,9 +1182,9 @@ public class Simple2 {
     public int findFinalValue(int[] nums, int original) {
         int[] arr = new int[1001];
         for (int num : nums) {
-           if (arr[num] == 0) {
-               arr[num] = 1;
-           }
+            if (arr[num] == 0) {
+                arr[num] = 1;
+            }
         }
         while (original <= 1000 && arr[original] == 1) {
             original <<= 1;
@@ -1656,9 +1656,200 @@ public class Simple2 {
     }
 
     /**
+     * 1592. 重新排列单词间的空格
+     * 给你一个字符串 text ，该字符串由若干被空格包围的单词组成。每个单词由一个或者多个小写英文字母组成，并且两个单词之间至少存在一个空格。
+     * 题目测试用例保证 text 至少包含一个单词 。
+     * 请你重新排列空格，使每对相邻单词之间的空格数目都 相等 ，并尽可能 最大化 该数目。如果不能重新平均分配所有空格，请 将多余的空格放置在字符串末尾 ，
+     * 这也意味着返回的字符串应当与原 text 字符串的长度相等。
+     * 返回 重新排列空格后的字符串 。
+     * 示例 1：
+     * 输入：text = "  this   is  a sentence "
+     * 输出："this   is   a   sentence"
+     * 解释：总共有 9 个空格和 4 个单词。可以将 9 个空格平均分配到相邻单词之间，相邻单词间空格数为：9 / (4-1) = 3 个。
+     * 示例 2：
+     * 输入：text = " practice   makes   perfect"
+     * 输出："practice   makes   perfect "
+     * 解释：总共有 7 个空格和 3 个单词。7 / (3-1) = 3 个空格加上 1 个多余的空格。多余的空格需要放在字符串的末尾。
+     * 示例 3：
+     * 输入：text = "hello   world"
+     * 输出："hello   world"
+     * 示例 4：
+     * 输入：text = "  walks  udp package   into  bar a"
+     * 输出："walks  udp  package  into  bar  a "
+     * 示例 5：
+     * 输入：text = "a"
+     * 输出："a"
+     * 提示：
+     * 1 <= text.length <= 100
+     * text 由小写英文字母和 ' ' 组成
+     * text 中至少包含一个单词
+     */
+    public static String reorderSpaces(String text) {
+        StringBuilder sb = new StringBuilder();
+        char[] charArray = text.toCharArray();
+        int cntLetter = 0, cntSpace = 0;
+        for (int i = 0; i < charArray.length; i++) {
+            if (charArray[i] != ' ') {
+                sb.append(charArray[i]);
+                if (i == 0 || charArray[i - 1] == ' ') {
+                    cntLetter++;
+                }
+            } else {
+                if (i > 0 && charArray[i - 1] != ' ') { // 字母后第一个空格
+                    sb.append('#');
+                }
+                cntSpace++;
+            }
+        }
+        if (sb.charAt(sb.length() - 1) == '#') {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        int len = --cntLetter == 0 ? cntSpace : cntSpace % cntLetter;
+        for (int i = 0; i < len; i++) {
+            sb.append(' ');
+        }
+        String ans = sb.toString();
+        if (cntLetter > 0) {
+            sb = new StringBuilder();
+            for (int i = 0; i < cntSpace / cntLetter; i++) {
+                sb.append(' ');
+            }
+            return ans.replace("#", sb.toString());
+        }
+        return ans;
+    }
+
+    /**
+     * 3110. 字符串的分数
+     * 给你一个字符串 s 。一个字符串的 分数 定义为相邻字符 ASCII 码差值绝对值的和。
+     * 请你返回 s 的 分数 。
+     * 示例 1：
+     * 输入：s = "hello"
+     * 输出：13
+     * 解释：
+     * s 中字符的 ASCII 码分别为：'h' = 104 ，'e' = 101 ，'l' = 108 ，'o' = 111 。所以 s 的分数为 |104 - 101| + |101 - 108| + |108 - 108| + |108 - 111| = 3 + 7 + 0 + 3 = 13 。
+     * 示例 2：
+     * 输入：s = "zaz"
+     * 输出：50
+     * 解释：
+     * s 中字符的 ASCII 码分别为：'z' = 122 ，'a' = 97 。所以 s 的分数为 |122 - 97| + |97 - 122| = 25 + 25 = 50 。
+     * 提示：
+     * 2 <= s.length <= 100
+     * s 只包含小写英文字母。
+     */
+    public int scoreOfString(String s) {
+        int ans = 0;
+        for (int i = 0; i < s.length() - 1; i++) {
+            ans += Math.abs(s.charAt(i) - s.charAt(i + 1));
+        }
+        return ans;
+    }
+
+    /**
+     * 2595. 奇偶位数
+     * 给你一个 正 整数 n 。
+     * 用 even 表示在 n 的二进制形式（下标从 0 开始）中值为 1 的偶数下标的个数。
+     * 用 odd 表示在 n 的二进制形式（下标从 0 开始）中值为 1 的奇数下标的个数。
+     * 请注意，在数字的二进制表示中，位下标的顺序 从右到左。
+     * 返回整数数组 answer ，其中 answer = [even, odd] 。
+     * 示例 1：
+     * 输入：n = 50
+     * 输出：[1,2]
+     * 解释：
+     * 50 的二进制表示是 110010。
+     * 在下标 1，4，5 对应的值为 1。
+     * 示例 2：
+     * 输入：n = 2
+     * 输出：[0,1]
+     * 解释：
+     * 2 的二进制表示是 10。
+     * 只有下标 1 对应的值为 1。
+     * 提示：
+     * 1 <= n <= 1000
+     */
+    public int[] evenOddBit(int n) {
+        int[] ans = new int[2];
+        boolean even = true;
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                if (even) {
+                    ans[0]++;
+                } else {
+                    ans[1]++;
+                }
+            }
+            n >>= 1;
+            even = !even;
+        }
+        return ans;
+    }
+
+    /**
+     * 1299. 将每个元素替换为右侧最大元素
+     * 给你一个数组 arr ，请你将每个元素用它右边最大的元素替换，如果是最后一个元素，用 -1 替换。
+     * 完成所有替换操作后，请你返回这个数组。
+     * 示例 1：
+     * 输入：arr = [17,18,5,4,6,1]
+     * 输出：[18,6,6,6,1,-1]
+     * 解释：
+     * - 下标 0 的元素 --> 右侧最大元素是下标 1 的元素 (18)
+     * - 下标 1 的元素 --> 右侧最大元素是下标 4 的元素 (6)
+     * - 下标 2 的元素 --> 右侧最大元素是下标 4 的元素 (6)
+     * - 下标 3 的元素 --> 右侧最大元素是下标 4 的元素 (6)
+     * - 下标 4 的元素 --> 右侧最大元素是下标 5 的元素 (1)
+     * - 下标 5 的元素 --> 右侧没有其他元素，替换为 -1
+     * 示例 2：
+     * 输入：arr = [400]
+     * 输出：[-1]
+     * 解释：下标 0 的元素右侧没有其他元素。
+     * 提示：
+     * 1 <= arr.length <= 104
+     * 1 <= arr[i] <= 105
+     */
+    public int[] replaceElements(int[] arr) {
+        int rightMax = -1;
+        for (int i = arr.length - 1; i >= 0; i--) {
+            int tmp = arr[i];
+            arr[i] = rightMax;
+            rightMax = Math.max(rightMax, tmp);
+        }
+        return arr;
+    }
+
+    /**
+     * 1550. 存在连续三个奇数的数组
+     * 给你一个整数数组 arr，请你判断数组中是否存在连续三个元素都是奇数的情况：如果存在，请返回 true ；否则，返回 false 。
+     * 示例 1：
+     * 输入：arr = [2,6,4,1]
+     * 输出：false
+     * 解释：不存在连续三个元素都是奇数的情况。
+     * 示例 2：
+     * 输入：arr = [1,2,34,3,4,5,7,23,12]
+     * 输出：true
+     * 解释：存在连续三个元素都是奇数的情况，即 [5,7,23] 。
+     * 提示：
+     * 1 <= arr.length <= 1000
+     * 1 <= arr[i] <= 1000
+     */
+    public boolean threeConsecutiveOdds(int[] arr) {
+        int oddCnt = 0;
+        for (int i : arr) {
+            if ((i & 1) == 1) {
+                if (oddCnt == 2) {
+                    return true;
+                }
+                oddCnt++;
+            } else {
+                oddCnt = 0;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println(maximumTripletValue(new int[]{8, 6, 3, 13, 2, 12, 19, 5, 19, 6, 10, 11, 9}));
+        System.out.println(reorderSpaces(" practice   makes   perfect"));
     }
 }
