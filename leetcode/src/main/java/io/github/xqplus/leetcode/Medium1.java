@@ -1526,10 +1526,353 @@ public class Medium1 {
     }
 
     /**
+     * 2875. 无限数组的最短子数组
+     * 给你一个下标从 0 开始的数组 nums 和一个整数 target 。
+     * 下标从 0 开始的数组 infinite_nums 是通过无限地将 nums 的元素追加到自己之后生成的。
+     * 请你从 infinite_nums 中找出满足 元素和 等于 target 的 最短 子数组，并返回该子数组的长度。如果不存在满足条件的子数组，返回 -1 。
+     * 示例 1：
+     * 输入：nums = [1,2,3], target = 5  1x 12x 123x 2x 23x 231x 3x 31x 312x
+     * 输出：2
+     * 解释：在这个例子中 infinite_nums = [1,2,3,1,2,3,1,2,...] 。
+     * 区间 [1,2] 内的子数组的元素和等于 target = 5 ，且长度 length = 2 。
+     * 可以证明，当元素和等于目标值 target = 5 时，2 是子数组的最短长度。
+     * 示例 2：
+     * 输入：nums = [1,1,1,2,3], target = 4  1 11 11 12 13 111 112 113 112 113 12
+     * 输出：2
+     * 解释：在这个例子中 infinite_nums = [1,1,1,2,3,1,1,1,2,3,1,1,...].
+     * 区间 [4,5] 内的子数组的元素和等于 target = 4 ，且长度 length = 2 。
+     * 可以证明，当元素和等于目标值 target = 4 时，2 是子数组的最短长度。
+     * 示例 3：
+     * 输入：nums = [2,4,6,8], target = 3
+     * 输出：-1
+     * 解释：在这个例子中 infinite_nums = [2,4,6,8,2,4,6,8,...] 。
+     * 可以证明，不存在元素和等于目标值 target = 3 的子数组。
+     * 提示：
+     * 1 <= nums.length <= 10^5
+     * 1 <= nums[i] <= 10^5
+     * 1 <= target <= 10^9
+     */
+    public int minSizeSubarray(int[] nums, int target) {
+        // 在两个数组nums中滑动窗口找等于target最短路径
+        long total = 0;
+        for (int num : nums) {
+            total += num;
+        }
+        int n = nums.length, l = 0, ans = 100001;
+        long sum = 0, t = target % total;
+        for (int r = 0; r < n * 2; r++) {
+            sum += nums[r % n];
+            while (sum > t) {
+                sum -= nums[l % n];
+                l++;
+            }
+            if (sum == t) {
+                ans = Math.min(ans, r - l + 1);
+            }
+        }
+        return ans == 100001 ? -1 : ans + (int) (target / total) * n;
+    }
+
+    /**
+     * 2901. 最长相邻不相等子序列 II
+     * 给定一个字符串数组 words ，和一个数组 groups ，两个数组长度都是 n 。
+     * 两个长度相等字符串的 汉明距离 定义为对应位置字符 不同 的数目。
+     * 你需要从下标 [0, 1, ..., n - 1] 中选出一个 最长子序列 ，将这个子序列记作长度为 k 的 [i0, i1, ..., ik - 1] ，它需要满足以下条件：
+     * 相邻 下标对应的 groups 值 不同。即，对于所有满足 0 < j + 1 < k 的 j 都有 groups[ij] != groups[ij + 1] 。
+     * 对于所有 0 < j + 1 < k 的下标 j ，都满足 words[ij] 和 words[ij + 1] 的长度 相等 ，且两个字符串之间的 汉明距离 为 1 。
+     * 请你返回一个字符串数组，它是下标子序列 依次 对应 words 数组中的字符串连接形成的字符串数组。如果有多个答案，返回任意一个。
+     * 子序列 指的是从原数组中删掉一些（也可能一个也不删掉）元素，剩余元素不改变相对位置得到的新的数组。
+     * 注意：words 中的字符串长度可能 不相等 。
+     * 示例 1：
+     * 输入：words = ["bab","dab","cab"], groups = [1,2,2]
+     * 输出：["bab","cab"]
+     * 解释：一个可行的子序列是 [0,2] 。
+     * - groups[0] != groups[2]
+     * - words[0].length == words[2].length 且它们之间的汉明距离为 1 。
+     * 所以一个可行的答案是 [words[0],words[2]] = ["bab","cab"] 。
+     * 另一个可行的子序列是 [0,1] 。
+     * - groups[0] != groups[1]
+     * - words[0].length = words[1].length 且它们之间的汉明距离为 1 。
+     * 所以另一个可行的答案是 [words[0],words[1]] = ["bab","dab"] 。
+     * 符合题意的最长子序列的长度为 2 。
+     * 示例 2：
+     * 输入：words = ["a","b","c","d"], groups = [1,2,3,4]
+     * 输出：["a","b","c","d"]
+     * 解释：我们选择子序列 [0,1,2,3] 。
+     * 它同时满足两个条件。
+     * 所以答案为 [words[0],words[1],words[2],words[3]] = ["a","b","c","d"] 。
+     * 它是所有下标子序列里最长且满足所有条件的。
+     * 所以它是唯一的答案。
+     * 提示：
+     * 1 <= n == words.length == groups.length <= 1000
+     * 1 <= words[i].length <= 10
+     * 1 <= groups[i] <= n
+     * words 中的字符串 互不相同 。
+     * words[i] 只包含小写英文字母。
+     */
+    public static List<String> getWordsInLongestSubsequence(String[] words, int[] groups) {
+        int n = words.length;
+        ArrayList<Integer>[] dp = new ArrayList[n];
+        ArrayList<Integer> max = new ArrayList<>();
+        max.add(0);
+        dp[0] = max;
+        for (int i = 1; i < n; i++) {
+            int maxIdx = -1;
+            for (int j = 0; j < i; j++) {
+                if (isWordEquals(words, groups, i, j)) {
+                    if (maxIdx == -1 || dp[j].size() > dp[maxIdx].size()) {
+                        maxIdx = j;
+                    }
+                }
+            }
+            ArrayList<Integer> cur = new ArrayList<>();
+            if (maxIdx != -1) {
+                cur.addAll(dp[maxIdx]);
+            }
+            cur.add(i);
+            dp[i] = cur;
+            if (dp[i].size() > max.size()) {
+                max = dp[i];
+            }
+        }
+        List<String> ans = new ArrayList<>();
+        for (Integer idx : max) {
+            ans.add(words[idx]);
+        }
+        return ans;
+    }
+
+    private static boolean isWordEquals(String[] words, int[] groups, int i, int j) {
+        if (words[i].length() != words[j].length() || groups[i] == groups[j]) {
+            return false;
+        }
+        int hmDis = 0;
+        for (int k = 0; k < words[i].length(); k++) {
+            if (words[i].charAt(k) != words[j].charAt(k)) {
+                if (hmDis == 1) {
+                    return false;
+                }
+                hmDis++;
+            }
+        }
+        return hmDis == 1;
+    }
+
+    /**
+     * 1391. 检查网格中是否存在有效路径
+     * https://leetcode.cn/problems/check-if-there-is-a-valid-path-in-a-grid/
+     * 给你一个 m x n 的网格 grid。网格里的每个单元都代表一条街道。grid[i][j] 的街道可以是：
+     * 1 表示连接左单元格和右单元格的街道。
+     * 2 表示连接上单元格和下单元格的街道。
+     * 3 表示连接左单元格和下单元格的街道。
+     * 4 表示连接右单元格和下单元格的街道。
+     * 5 表示连接左单元格和上单元格的街道。
+     * 6 表示连接右单元格和上单元格的街道。
+     * 你最开始从左上角的单元格 (0,0) 开始出发，网格中的「有效路径」是指从左上方的单元格 (0,0) 开始、一直到右下方的 (m-1,n-1) 结束的路径。该路径必须只沿着街道走。
+     * 注意：你 不能 变更街道。
+     * 如果网格中存在有效的路径，则返回 true，否则返回 false 。
+     * 示例 1：
+     * 2 4 3
+     * 6 5 2
+     * 输入：grid = [[2,4,3],[6,5,2]]
+     * 输出：true
+     * 解释：如图所示，你可以从 (0, 0) 开始，访问网格中的所有单元格并到达 (m - 1, n - 1) 。
+     * 示例 2：
+     * 输入：grid = [[1,2,1],[1,2,1]]
+     * 输出：false
+     * 解释：如图所示，单元格 (0, 0) 上的街道没有与任何其他单元格上的街道相连，你只会停在 (0, 0) 处。
+     * 示例 3：
+     * 输入：grid = [[1,1,2]]
+     * 输出：false
+     * 解释：你会停在 (0, 1)，而且无法到达 (0, 2) 。
+     * 示例 4：
+     * 输入：grid = [[1,1,1,1,1,1,3]]
+     * 输出：true
+     * 示例 5：
+     * 输入：grid = [[2],[2],[2],[2],[2],[2],[6]]
+     * 输出：true
+     * 提示：
+     * m == grid.length
+     * n == grid[i].length
+     * 1 <= m, n <= 300
+     * 1 <= grid[i][j] <= 6
+     */
+    private static final int[][] PATHS = {{1, 3}, {0, 2}, {2, 3}, {1, 2}, {0, 3}, {0, 1}}; // 街道定义
+    private static final int[][] DIRS = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; // 上右下左 0123
+    private static final int[] OPP_DIR = {2, 3, 0, 1}; // 相反方向对应关系
+    public boolean hasValidPath(int[][] grid) {
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        return arriveEnd(grid, visited, 0, 0);
+        // 1 1 2
+    }
+
+    private boolean arriveEnd(int[][] grid, boolean[][] visited, int x, int y) {
+        if (x == grid.length - 1 && y == grid[0].length - 1) { // 到达终点
+            return true;
+        }
+        visited[x][y] = true; // 标识当前格已访问
+        for (int p : PATHS[grid[x][y] - 1]) { // p表示方向DIR
+            int nx = x + DIRS[p][0], ny = y + DIRS[p][1];
+            if (nx >= 0 && nx < grid.length && ny >= 0 && ny < grid[0].length && !visited[nx][ny]) { // 排除越界和已访问格子
+                int[] np = PATHS[grid[nx][ny] - 1];
+                // 前半截表示能够走nx,ny这格，方向上下相反，左右相反，假设能够到达，那么下一格必有一个方向是将要走向得反方向
+                if ((np[0] == OPP_DIR[p] || np[1] == OPP_DIR[p]) && arriveEnd(grid, visited, nx, ny)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 3211. 生成不含相邻零的二进制字符串
+     * 给你一个正整数 n。
+     * 如果一个二进制字符串 x 的所有长度为 2 的子字符串中包含 至少 一个 "1"，则称 x 是一个 有效 字符串。
+     * 返回所有长度为 n 的 有效 字符串，可以以任意顺序排列。
+     * 示例 1：
+     * 输入： n = 3
+     * 输出： ["010","011","101","110","111"]
+     * 解释：
+     * 长度为 3 的有效字符串有："010"、"011"、"101"、"110" 和 "111"。
+     * 示例 2：
+     * 输入： n = 1
+     * 输出： ["0","1"]
+     * 解释：
+     * 长度为 1 的有效字符串有："0" 和 "1"。
+     * 提示：
+     * 1 <= n <= 18
+     */
+    public static List<String> validStrings(int n) {
+        List<String> ans = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        backtrack(ans, sb, n);
+        return ans;
+    }
+
+    private static void backtrack(List<String> list, StringBuilder sb, int n) {
+        if (sb.length() == n) {
+            list.add(sb.toString());
+            return;
+        }
+        // 前一位是0，则当前只能是1，前一位是1，当前可以是0或1
+        sb.append('1');
+        backtrack(list, sb, n);
+        sb.deleteCharAt(sb.length() - 1);
+
+        if (sb.length() == 0 || sb.charAt(sb.length() - 1) == '1') {
+            sb.append('0');
+            backtrack(list, sb, n);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+    }
+
+    /**
+     * 394. 字符串解码
+     * 给定一个经过编码的字符串，返回它解码后的字符串。
+     * 编码规则为: k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次。注意 k 保证为正整数。
+     * 你可以认为输入字符串总是有效的；输入字符串中没有额外的空格，且输入的方括号总是符合格式要求的。
+     * 此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。
+     * 示例 1：
+     * 输入：s = "3[a]2[bc]"
+     * 输出："aaabcbc"
+     * 示例 2：
+     * 输入：s = "3[a2[c]]"
+     * 输出："accaccacc"
+     * 示例 3：
+     * 输入：s = "2[abc]3[cd]ef"
+     * 输出："abcabccdcdcdef"
+     * 示例 4：
+     * 输入：s = "abc3[cd]xyz"
+     * 输出："abccdcdcdxyz"
+     * 提示：
+     * 1 <= s.length <= 30
+     * s 由小写英文字母、数字和方括号 '[]' 组成
+     * s 保证是一个 有效 的输入。
+     * s 中所有整数的取值范围为 [1, 300]
+     */
+    public static String decodeString(String s) {
+        Deque<Character> stack = new LinkedList<>();
+        for (char c : s.toCharArray()) {
+            if (c != ']') {
+                stack.push(c);
+                continue;
+            }
+            // 获取[]内的字符
+            StringBuilder sb = new StringBuilder();
+            char p;
+            while (!stack.isEmpty() && (p = stack.pop()) != '[') {
+                sb.append(p);
+            }
+            // 获取[]前的数字
+            int num = 0, pow = 1;
+            while (!stack.isEmpty() && (p = stack.peek()) >= '0' && p <= '9') {
+                // 296
+                num += (stack.pop() - '0') * pow;
+                pow *= 10;
+            }
+            // 将解码后的结果继续放进栈中，反序是为了统一栈中字符的顺序
+            for (int i = 0; i < num; i++) {
+                for (int j = sb.length() - 1; j >= 0; j--) {
+                    stack.push(sb.charAt(j));
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            sb.append(stack.pop());
+        }
+        return sb.reverse().toString();
+    }
+
+    /**
+     * 3020. 子集中元素的最大数量
+     * 给你一个 正整数 数组 nums 。
+     * 你需要从数组中选出一个满足下述条件的子集：
+     * 你可以将选中的元素放置在一个下标从 0 开始的数组中，并使其遵循以下模式：[x, x^2, x^4, ..., x^k/2, x^k, x^k/2, ..., x^4, x^2, x]
+     * （注意，k 可以是任何 非负 的 2 的幂）。例如，[2, 4, 16, 4, 2] 和 [3, 9, 3] 都符合这一模式，而 [2, 4, 8, 4, 2] 则不符合。
+     * 返回满足这些条件的子集中，元素数量的 最大值 。
+     * 示例 1：
+     * 输入：nums = [5,4,1,2,2]
+     * 输出：3
+     * 解释：选择子集 {4,2,2} ，将其放在数组 [2,4,2] 中，它遵循该模式，且 2^2 == 4 。因此答案是 3 。
+     * 示例 2：
+     * 输入：nums = [1,3,2,4]
+     * 输出：1
+     * 解释：选择子集 {1}，将其放在数组 [1] 中，它遵循该模式。因此答案是 1 。注意我们也可以选择子集 {2} 、{4} 或 {3} ，可能存在多个子集都能得到相同的答案。
+     * 提示：
+     * 2 <= nums.length <= 10^5
+     * 1 <= nums[i] <= 10^9
+     */
+    public static int maximumLength(int[] nums) {
+        // 选定x:必须是在nums中出现至少2次的数
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        int max = map.containsKey(1) ? (map.remove(1) + 1) / 2 : 1;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            if (entry.getValue() < 2) {
+                continue;
+            }
+            int cnt = 0, num = entry.getKey();
+            while (map.containsKey(num)) {
+                cnt++;
+                // ==1表示最中间的数，>=31623 避免平方后越界 31623^2刚好大于10^9
+                if (map.get(num) == 1 || num >= 31623) {
+                    break;
+                }
+                num *= num;
+            }
+            max = Math.max(max, cnt);
+        }
+        return max * 2 - 1;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[][] rides = {{1, 6, 1}, {3, 10, 2}, {10, 12, 3}, {11, 12, 2}, {12, 15, 2}, {13, 18, 1}};
-        System.out.println(maxTaxiEarnings(20, rides));
+        int[] nums = {5,4,1,2,2};
+        System.out.println(maximumLength(nums));
     }
 }

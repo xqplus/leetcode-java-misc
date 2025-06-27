@@ -914,9 +914,191 @@ public class DailyQuestion {
     }
 
     /**
+     * 2311. 小于等于 K 的最长二进制子序列
+     * 给你一个二进制字符串 s 和一个正整数 k 。
+     * 请你返回 s 的 最长 子序列的长度，且该子序列对应的 二进制 数字小于等于 k 。
+     * 注意：
+     * 子序列可以有 前导 0 。
+     * 空字符串视为 0 。
+     * 子序列 是指从一个字符串中删除零个或者多个字符后，不改变顺序得到的剩余字符序列。
+     * 示例 1：
+     * 输入：s = "1001010", k = 5
+     * 输出：5
+     * 解释：s 中小于等于 5 的最长子序列是 "00010" ，对应的十进制数字是 2 。
+     * 注意 "00100" 和 "00101" 也是可行的最长子序列，十进制分别对应 4 和 5 。
+     * 最长子序列的长度为 5 ，所以返回 5 。
+     * 示例 2：
+     * 输入：s = "00101001", k = 1
+     * 输出：6
+     * 解释："000001" 是 s 中小于等于 1 的最长子序列，对应的十进制数字是 1 。
+     * 最长子序列的长度为 6 ，所以返回 6 。
+     * 提示：
+     * 1 <= s.length <= 1000
+     * s[i] 要么是 '0' ，要么是 '1' 。
+     * 1 <= k <= 10^9
+     */
+    public static int longestSubsequence(String s, int k) {
+        // 1001010 5
+        int n = s.length();
+        int ans = 0;
+        long sum = 0, pow = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            int bit = s.charAt(i) - '0';
+            if (sum > k || n - i > 32) {
+                if (bit == 0) {
+                    ans++;
+                }
+                continue;
+            }
+            sum += bit * pow;
+            pow <<= 1;
+            if (sum <= k) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2014. 重复 K 次的最长子序列
+     * 给你一个长度为 n 的字符串 s ，和一个整数 k 。请你找出字符串 s 中 重复 k 次的 最长子序列 。
+     * 子序列 是由其他字符串删除某些（或不删除）字符派生而来的一个字符串。
+     * 如果 seq * k 是 s 的一个子序列，其中 seq * k 表示一个由 seq 串联 k 次构造的字符串，那么就称 seq 是字符串 s 中一个 重复 k 次 的子序列。
+     * 举个例子，"bba" 是字符串 "bababcba" 中的一个重复 2 次的子序列，因为字符串 "bbabba" 是由 "bba" 串联 2 次构造的，而 "bbabba" 是字符串 "bababcba" 的一个子序列。
+     * 返回字符串 s 中 重复 k 次的最长子序列  。如果存在多个满足的子序列，则返回 字典序最大 的那个。如果不存在这样的子序列，返回一个 空 字符串。
+     * 示例 1：
+     * 输入：s = "letsleetcode", k = 2
+     * 输出："let"
+     * 解释：存在两个最长子序列重复 2 次：let" 和 "ete" 。
+     * "let" 是其中字典序最大的一个。
+     * 示例 2：
+     * 输入：s = "bb", k = 2
+     * 输出："b"
+     * 解释：重复 2 次的最长子序列是 "b" 。
+     * 示例 3：
+     * 输入：s = "ab", k = 2
+     * 输出：""
+     * 解释：不存在重复 2 次的最长子序列。返回空字符串。
+     * 提示：
+     * n == s.length
+     * 2 <= k <= 2000
+     * 2 <= n < k * 8
+     * s 由小写英文字母组成
+     */
+    private char[] ans2014;
+    private int ansLen = 0;
+
+    public String longestSubsequenceRepeatedK(String s, int k) {
+        char[] cs = s.toCharArray();
+
+        // 392. 判断子序列（进阶做法）
+        int n = cs.length;
+        int[] cnt = new int[26];
+        int[][] nxt = new int[n + 1][];
+        nxt[n] = new int[26];
+        Arrays.fill(nxt[n], n);
+        for (int i = n - 1; i >= 0; i--) {
+            int c = cs[i] - 'a';
+            nxt[i] = nxt[i + 1].clone();
+            nxt[i][c] = i;
+            cnt[c]++;
+        }
+
+        StringBuilder tmp = new StringBuilder();
+        // 倒序，这样我们可以优先枚举字典序大的排列
+        for (int i = 25; i >= 0; i--) {
+            int m = cnt[i] / k;
+            if (m > 0) {
+                char c = (char) ('a' + i);
+                for (int j = 0; j < m; j++) {
+                    tmp.append(c);
+                }
+            }
+        }
+        char[] a = tmp.toString().toCharArray();
+
+        ans2014 = new char[a.length];
+        permute(a, k, nxt);
+
+        return new String(ans2014, 0, ansLen);
+    }
+
+    // 47. 全排列 II
+    // 枚举从 nums 中选任意个数的所有排列，处理枚举的排列
+    private void permute(char[] nums, int k, int[][] nxt) {
+        int n = nums.length;
+        char[] path = new char[n];
+        boolean[] onPath = new boolean[n]; // onPath[j] 表示 nums[j] 是否已经填入排列
+        dfs(0, nums, path, onPath, k, nxt);
+    }
+
+    private void dfs(int i, char[] nums, char[] path, boolean[] onPath, int k, int[][] nxt) {
+        // 处理当前排列 path
+        process(path, i, k, nxt);
+
+        if (i == nums.length) {
+            return;
+        }
+
+        // 枚举 nums[j] 填入 path[pathLen]
+        for (int j = 0; j < nums.length; j++) {
+            // 如果 nums[j] 已填入排列，continue
+            // 如果 nums[j] 和前一个数 nums[j-1] 相等，且 nums[j-1] 没填入排列，continue
+            if (onPath[j] || j > 0 && nums[j] == nums[j - 1] && !onPath[j - 1]) {
+                continue;
+            }
+            path[i] = nums[j]; // 填入排列
+            onPath[j] = true; // nums[j] 已填入排列（注意标记的是下标，不是值）
+            dfs(i + 1, nums, path, onPath, k, nxt); // 填排列的下一个数
+            onPath[j] = false; // 恢复现场
+            // 注意 path 无需恢复现场，直接覆盖 path[i] 就行
+        }
+    }
+
+    private void process(char[] seq, int seqLen, int k, int[][] nxt) {
+        // 先比大小（时间复杂度低），再判断是否为子序列（时间复杂度高）
+        if (seqLen > ansLen || seqLen == ansLen && compare(seq, ans2014, ansLen) > 0) {
+            if (isSubsequence(seq, seqLen, k, nxt)) {
+                System.arraycopy(seq, 0, ans2014, 0, seqLen);
+                ansLen = seqLen;
+            }
+        }
+    }
+
+    // 比较 a 和 b 的字典序大小
+    private int compare(char[] a, char[] b, int n) {
+        for (int i = 0; i < n; i++) {
+            if (a[i] != b[i]) {
+                return a[i] - b[i];
+            }
+        }
+        return 0;
+    }
+
+    // 392. 判断子序列
+    // 返回 seq*k 是否为 s 的子序列
+    private boolean isSubsequence(char[] seq, int n, int k, int[][] nxt) {
+        int i = -1;
+        while (k-- > 0) {
+            for (int j = 0; j < n; j++) {
+                char c = seq[j];
+                i = nxt[i + 1][c - 'a'];
+                if (i + 1 == nxt.length) { // c 不在 s 中，说明 seq*k 不是 s 的子序列
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+//    作者：灵茶山艾府
+//    链接：https://leetcode.cn/problems/longest-subsequence-repeated-k-times/solutions/1006067/mei-ju-pai-lie-zi-xu-lie-pi-pei-by-endle-oi2h/
+//    来源：力扣（LeetCode）
+//    著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println(countGoodArrays(10, 9, 0));
+
     }
 }

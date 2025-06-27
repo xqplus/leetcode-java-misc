@@ -1847,6 +1847,146 @@ public class Simple2 {
     }
 
     /**
+     * 575. 分糖果
+     * Alice 有 n 枚糖，其中第 i 枚糖的类型为 candyType[i] 。Alice 注意到她的体重正在增长，所以前去拜访了一位医生。
+     * 医生建议 Alice 要少摄入糖分，只吃掉她所有糖的 n / 2 即可（n 是一个偶数）。Alice 非常喜欢这些糖，她想要在遵循医生建议的情况下，
+     * 尽可能吃到最多不同种类的糖。
+     * 给你一个长度为 n 的整数数组 candyType ，返回： Alice 在仅吃掉 n / 2 枚糖的情况下，可以吃到糖的 最多 种类数。
+     * 示例 1：
+     * 输入：candyType = [1,1,2,2,3,3]
+     * 输出：3
+     * 解释：Alice 只能吃 6 / 2 = 3 枚糖，由于只有 3 种糖，她可以每种吃一枚。
+     * 示例 2：
+     * 输入：candyType = [1,1,2,3]
+     * 输出：2
+     * 解释：Alice 只能吃 4 / 2 = 2 枚糖，不管她选择吃的种类是 [1,2]、[1,3] 还是 [2,3]，她只能吃到两种不同类的糖。
+     * 示例 3：
+     * 输入：candyType = [6,6,6,6]
+     * 输出：1
+     * 解释：Alice 只能吃 4 / 2 = 2 枚糖，尽管她能吃 2 枚，但只能吃到 1 种糖。
+     * 提示：
+     * n == candyType.length
+     * 2 <= n <= 10^4
+     * n 是一个偶数
+     * -10^5 <= candyType[i] <= 10^5
+     */
+    public int distributeCandies(int[] candyType) {
+        int k = candyType.length >> 1;
+        Set<Integer> set = new HashSet<>();
+        for (int type : candyType) {
+            set.add(type);
+            if (set.size() == k) {
+                return k;
+            }
+        }
+        return set.size();
+    }
+
+    /**
+     * 1217. 玩筹码
+     * 有 n 个筹码。第 i 个筹码的位置是 position[i] 。
+     * 我们需要把所有筹码移到同一个位置。在一步中，我们可以将第 i 个筹码的位置从 position[i] 改变为:
+     * position[i] + 2 或 position[i] - 2 ，此时 cost = 0
+     * position[i] + 1 或 position[i] - 1 ，此时 cost = 1
+     * 返回将所有筹码移动到同一位置上所需要的 最小代价 。
+     * 示例 1：
+     * 输入：position = [1,2,3]
+     * 输出：1
+     * 解释：第一步:将位置3的筹码移动到位置1，成本为0。
+     * 第二步:将位置2的筹码移动到位置1，成本= 1。
+     * 总成本是1。
+     * 示例 2：
+     * 输入：position = [2,2,2,3,3]
+     * 输出：2
+     * 解释：我们可以把位置3的两个筹码移到位置2。每一步的成本为1。总成本= 2。
+     * 示例 3:
+     * 输入：position = [1,1000000000]
+     * 输出：1
+     * 提示：
+     * 1 <= position.length <= 100
+     * 1 <= position[i] <= 10^9
+     */
+    public int minCostToMoveChips(int[] position) {
+        // 偶数->奇数 or 奇数->偶数 都得花费1，
+        // 所以以奇偶性划为两个集合，数量较多的集合中任取一个作目标位置，那么答案就是另一集合的数量
+        int odd = 0, even = 0;
+        for (int pos : position) {
+            if ((pos & 1) == 1) {
+                odd++;
+            } else {
+                even++;
+            }
+        }
+        return Math.min(odd, even);
+    }
+
+    /**
+     * LCS 02. 完成一半题目
+     * 有 N 位扣友参加了微软与力扣举办了「以扣会友」线下活动。主办方提供了 2*N 道题目，整型数组 questions 中每个数字对应了每道题目所涉及的知识点类型。
+     * 若每位扣友选择不同的一题，请返回被选的 N 道题目至少包含多少种知识点类型。
+     * 示例 1：
+     * 输入：questions = [2,1,6,2]
+     * 输出：1
+     * 解释：有 2 位扣友在 4 道题目中选择 2 题。 可选择完成知识点类型为 2 的题目时，此时仅一种知识点类型 因此至少包含 1 种知识点类型。
+     * 示例 2：
+     * 输入：questions = [1,5,1,3,4,5,2,5,3,3,8,6]
+     * 输出：2
+     * 解释：有 6 位扣友在 12 道题目中选择题目，需要选择 6 题。 选择完成知识点类型为 3、5 的题目，因此至少包含 2 种知识点类型。
+     * 提示：
+     * questions.length == 2*n
+     * 2 <= questions.length <= 10^5
+     * 1 <= questions[i] <= 1000
+     */
+    public int halfQuestions(int[] questions) {
+        int[] counts = new int[1001];
+        for (int q : questions) {
+            counts[q]++;
+        }
+        Arrays.sort(counts);
+        int n = questions.length >> 1, sum = 0, ans = 0;
+        for (int i = 1000; i >= 0; i--) {
+            sum += counts[i];
+            ans++;
+            if (sum >= n) {
+                break;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2520. 统计能整除数字的位数
+     * 给你一个整数 num ，返回 num 中能整除 num 的数位的数目。
+     * 如果满足 nums % val == 0 ，则认为整数 val 可以整除 nums 。
+     * 示例 1：
+     * 输入：num = 7
+     * 输出：1
+     * 解释：7 被自己整除，因此答案是 1 。
+     * 示例 2：
+     * 输入：num = 121
+     * 输出：2
+     * 解释：121 可以被 1 整除，但无法被 2 整除。由于 1 出现两次，所以返回 2 。
+     * 示例 3：
+     * 输入：num = 1248
+     * 输出：4
+     * 解释：1248 可以被它每一位上的数字整除，因此答案是 4 。
+     * 提示：
+     * 1 <= num <= 10^9
+     * num 的数位中不含 0
+     */
+    public int countDigits(int num) {
+        int digit = num, ans = 0;
+        while (digit > 0) {
+            int d = digit % 10;
+            if (num % d == 0) {
+                ans++;
+            }
+            digit /= 10;
+        }
+        return ans;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
