@@ -1700,6 +1700,7 @@ public class Medium1 {
     private static final int[][] PATHS = {{1, 3}, {0, 2}, {2, 3}, {1, 2}, {0, 3}, {0, 1}}; // 街道定义
     private static final int[][] DIRS = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; // 上右下左 0123
     private static final int[] OPP_DIR = {2, 3, 0, 1}; // 相反方向对应关系
+
     public boolean hasValidPath(int[][] grid) {
         boolean[][] visited = new boolean[grid.length][grid[0].length];
         return arriveEnd(grid, visited, 0, 0);
@@ -1869,10 +1870,123 @@ public class Medium1 {
     }
 
     /**
+     * LCR 083. 全排列
+     * 给定一个不含重复数字的整数数组 nums ，返回其 所有可能的全排列 。可以 按任意顺序 返回答案。
+     * 示例 1：
+     * 输入：nums = [1,2,3]
+     * 输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+     * 示例 2：
+     * 输入：nums = [0,1]
+     * 输出：[[0,1],[1,0]]
+     * 示例 3：
+     * 输入：nums = [1]
+     * 输出：[[1]]
+     * 提示：
+     * 1 <= nums.length <= 6
+     * -10 <= nums[i] <= 10 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1 0 1 2 3 4 5 6 7 8 9 10
+     * nums 中的所有整数 互不相同
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+        boolean[] visited = new boolean[21];
+        backtrack1(ans, path, visited, nums);
+        return ans;
+    }
+
+    private void backtrack1(List<List<Integer>> ans, List<Integer> path, boolean[] visited, int[] nums) {
+        if (path.size() == nums.length) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        for (int num : nums) {
+            if (!visited[num + 10]) {
+                visited[num + 10] = true;
+                path.add(num);
+                backtrack1(ans, path, visited, nums);
+                path.remove(path.size() - 1);
+                visited[num + 10] = false;
+            }
+        }
+    }
+
+    /**
+     * 1041. 困于环中的机器人
+     * 在无限的平面上，机器人最初位于 (0, 0) 处，面朝北方。注意:
+     * 北方向 是y轴的正方向。
+     * 南方向 是y轴的负方向。
+     * 东方向 是x轴的正方向。
+     * 西方向 是x轴的负方向。
+     * 机器人可以接受下列三条指令之一：
+     * "G"：直走 1 个单位
+     * "L"：左转 90 度
+     * "R"：右转 90 度
+     * 机器人按顺序执行指令 instructions，并一直重复它们。
+     * 只有在平面中存在环使得机器人永远无法离开时，返回 true。否则，返回 false。
+     * 示例 1：
+     * 输入：instructions = "GGLLGG"
+     * 输出：true
+     * 解释：机器人最初在(0,0)处，面向北方。
+     * “G”:移动一步。位置:(0,1)方向:北。
+     * “G”:移动一步。位置:(0,2).方向:北。
+     * “L”:逆时针旋转90度。位置:(0,2).方向:西。
+     * “L”:逆时针旋转90度。位置:(0,2)方向:南。
+     * “G”:移动一步。位置:(0,1)方向:南。
+     * “G”:移动一步。位置:(0,0)方向:南。
+     * 重复指令，机器人进入循环:(0,0)——>(0,1)——>(0,2)——>(0,1)——>(0,0)。
+     * 在此基础上，我们返回true。
+     * 示例 2：
+     * 输入：instructions = "GG"
+     * 输出：false
+     * 解释：机器人最初在(0,0)处，面向北方。
+     * “G”:移动一步。位置:(0,1)方向:北。
+     * “G”:移动一步。位置:(0,2).方向:北。
+     * 重复这些指示，继续朝北前进，不会进入循环。
+     * 在此基础上，返回false。
+     * 示例 3：
+     * 输入：instructions = "GL"
+     * 输出：true
+     * 解释：机器人最初在(0,0)处，面向北方。
+     * “G”:移动一步。位置:(0,1)方向:北。
+     * “L”:逆时针旋转90度。位置:(0,1).方向:西。
+     * “G”:移动一步。位置:(- 1,1)方向:西。
+     * “L”:逆时针旋转90度。位置:(- 1,1)方向:南。
+     * “G”:移动一步。位置:(- 1,0)方向:南。
+     * “L”:逆时针旋转90度。位置:(- 1,0)方向:东方。
+     * “G”:移动一步。位置:(0,0)方向:东方。
+     * “L”:逆时针旋转90度。位置:(0,0)方向:北。
+     * 重复指令，机器人进入循环:(0,0)——>(0,1)——>(- 1,1)——>(- 1,0)——>(0,0)。
+     * 在此基础上，我们返回true。
+     * 提示：
+     * 1 <= instructions.length <= 100
+     * instructions[i] 仅包含 'G', 'L', 'R'
+     */
+    public boolean isRobotBounded(String instructions) {
+        // 推导能够进入循环的依据：执行指令后，机器人需要回到原点或者方向不能向北
+        int[][] dir = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // 上右下左
+        int x = 0, y = 0, d = 0;
+        for (int i = 0; i < instructions.length(); i++) {
+            switch (instructions.charAt(i)) {
+                case 'G':
+                    x += dir[d][0];
+                    y += dir[d][1];
+                    break;
+                case 'L':
+                    d = d == 0 ? 3 : d - 1;
+                    break;
+                case 'R':
+                    d = d == 3 ? 0 : d + 1;
+                    break;
+            }
+        }
+        return (x == 0 && y == 0) || d != 0;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[] nums = {5,4,1,2,2};
+        int[] nums = {5, 4, 1, 2, 2};
         System.out.println(maximumLength(nums));
     }
 }

@@ -1096,6 +1096,152 @@ public class DailyQuestion {
 //    著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
     /**
+     * 594. 最长和谐子序列
+     * 和谐数组是指一个数组里元素的最大值和最小值之间的差别 正好是 1 。
+     * 给你一个整数数组 nums ，请你在所有可能的 子序列 中找到最长的和谐子序列的长度。
+     * 数组的 子序列 是一个由数组派生出来的序列，它可以通过删除一些元素或不删除元素、且不改变其余元素的顺序而得到。
+     * 示例 1：
+     * 输入：nums = [1,3,2,2,5,2,3,7]  1 2 2 2 3 3 7
+     * 输出：5
+     * 解释：
+     * 最长和谐子序列是 [3,2,2,2,3]。
+     * 示例 2：
+     * 输入：nums = [1,2,3,4]
+     * 输出：2
+     * 解释：
+     * 最长和谐子序列是 [1,2]，[2,3] 和 [3,4]，长度都为 2。
+     * 示例 3：
+     * 输入：nums = [1,1,1,1]
+     * 输出：0
+     * 解释：
+     * 不存在和谐子序列。
+     * 提示：
+     * 1 <= nums.length <= 2 * 10^4
+     * -10^9 <= nums[i] <= 10^9
+     */
+    public int findLHS(int[] nums) {
+        Map<Integer, Integer> map = new TreeMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+        int ans = 0;
+        for (Integer num : map.keySet()) {
+            // 将当前值看作最小值
+            if (!map.containsKey(num + 1)) continue;
+            ans = Math.max(ans, map.get(num) + map.get(num + 1));
+        }
+        return ans;
+    }
+
+    /**
+     * 3330. 找到初始输入字符串 I
+     * Alice 正在她的电脑上输入一个字符串。但是她打字技术比较笨拙，她 可能 在一个按键上按太久，导致一个字符被输入 多次 。
+     * 尽管 Alice 尽可能集中注意力，她仍然可能会犯错 至多 一次。
+     * 给你一个字符串 word ，它表示 最终 显示在 Alice 显示屏上的结果。
+     * 请你返回 Alice 一开始可能想要输入字符串的总方案数。
+     * 示例 1：
+     * 输入：word = "abbcccc"
+     * 输出：5
+     * 解释：
+     * 可能的字符串包括："abbcccc" ，"abbccc" ，"abbcc" ，"abbc" 和 "abcccc" 。
+     * 示例 2：
+     * 输入：word = "abcd"
+     * 输出：1
+     * 解释：
+     * 唯一可能的字符串是 "abcd" 。
+     * 示例 3：
+     * 输入：word = "aaaa"
+     * 输出：4
+     * 提示：
+     * 1 <= word.length <= 100
+     * word 只包含小写英文字母。
+     */
+    public int possibleStringCount(String word) {
+        int ans = 1;
+        char[] cs = word.toCharArray();
+        for (int i = 1; i < cs.length; i++) {
+            if (cs[i] == cs[i - 1]) {
+                ans++;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 3333. 找到初始输入字符串 II
+     * Alice 正在她的电脑上输入一个字符串。但是她打字技术比较笨拙，她 可能 在一个按键上按太久，导致一个字符被输入 多次 。
+     * 给你一个字符串 word ，它表示 最终 显示在 Alice 显示屏上的结果。同时给你一个 正 整数 k ，表示一开始 Alice 输入字符串的长度 至少 为 k 。
+     * 请你返回 Alice 一开始可能想要输入字符串的总方案数。
+     * 由于答案可能很大，请你将它对 109 + 7 取余 后返回。
+     * 示例 1：
+     * 输入：word = "aabbccdd", k = 7 abcd a1b1c1d1 3  0aC33
+     * 输出：5
+     * 解释：
+     * 可能的字符串包括："aabbccdd" ，"aabbccd" ，"aabbcdd" ，"aabccdd" 和 "abbccdd" 。
+     * 示例 2：
+     * 输入：word = "aabbccdd", k = 8
+     * 输出：1
+     * 解释：
+     * 唯一可能的字符串是 "aabbccdd" 。
+     * 示例 3：
+     * 输入：word = "aaabbb", k = 3
+     * 输出：8
+     * 提示：
+     * 1 <= word.length <= 5 * 10^5
+     * word 只包含小写英文字母。
+     * 1 <= k <= 2000
+     */
+    public int possibleStringCount(String word, int k) {
+        int n = word.length();
+        if (n < k) {
+            return 0;
+        }
+
+        final int MOD = 1_000_000_007;
+        List<Integer> cnts = new ArrayList<>();
+        long ans = 1;
+        int cnt = 0;
+        for (int i = 0; i < n; i++) {
+            cnt++;
+            if (i == n - 1 || word.charAt(i) != word.charAt(i + 1)) {
+                // 如果 cnt = 1，这组字符串必选，无需参与计算
+                if (cnt > 1) {
+                    if (k > 0) { // 保证空间复杂度为 O(k)
+                        cnts.add(cnt - 1);
+                    }
+                    ans = ans * cnt % MOD;
+                }
+                k--; // 注意这里把 k 减小了
+                cnt = 0;
+            }
+        }
+
+        if (k <= 0) {
+            return (int) ans;
+        }
+
+        int[] f = new int[k];
+        Arrays.fill(f, 1);
+        for (int c : cnts) {
+            // 原地计算 f 的前缀和
+            for (int j = 1; j < k; j++) {
+                f[j] = (f[j] + f[j - 1]) % MOD;
+            }
+            // 计算子数组和
+            for (int j = k - 1; j > c; j--) {
+                f[j] = (f[j] - f[j - c - 1]) % MOD;
+            }
+        }
+
+        return (int) ((ans - f[k - 1] + MOD) % MOD); // 保证结果非负
+
+//        作者：灵茶山艾府
+//        链接：https://leetcode.cn/problems/find-the-original-typed-string-ii/solutions/2966856/zheng-nan-ze-fan-qian-zhui-he-you-hua-dp-5mi9/
+//        来源：力扣（LeetCode）
+//        著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
