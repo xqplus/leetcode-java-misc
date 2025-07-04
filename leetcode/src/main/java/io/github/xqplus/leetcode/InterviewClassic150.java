@@ -250,24 +250,24 @@ public class InterviewClassic150 {
      */
     private static Map<Node, Node> visited = new HashMap<>();
 
-    public static Node cloneGraph(Node node) {
-        if (node == null) return null;
-
-        // 边界条件：搜索到已拷贝的节点
-        if (visited.containsKey(node)) {
-            return visited.get(node);
-        }
-
-        // 深拷贝
-        Node deepCloneNode = new Node(node.val);
-        visited.put(node, deepCloneNode);
-
-        for (Node neighbor : node.neighbors) {
-            deepCloneNode.neighbors.add(cloneGraph(neighbor));
-        }
-
-        return deepCloneNode;
-    }
+//    public static Node cloneGraph(Node node) {
+//        if (node == null) return null;
+//
+//        // 边界条件：搜索到已拷贝的节点
+//        if (visited.containsKey(node)) {
+//            return visited.get(node);
+//        }
+//
+//        // 深拷贝
+//        Node deepCloneNode = new Node(node.val);
+//        visited.put(node, deepCloneNode);
+//
+//        for (Node neighbor : node.neighbors) {
+//            deepCloneNode.neighbors.add(cloneGraph(neighbor));
+//        }
+//
+//        return deepCloneNode;
+//    }
 
     /**
      * <2>
