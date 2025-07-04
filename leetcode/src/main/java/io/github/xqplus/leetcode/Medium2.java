@@ -275,10 +275,179 @@ public class Medium2 {
     }
 
     /**
+     * 3107. 使数组中位数等于 K 的最少操作数
+     * 给你一个整数数组 nums 和一个 非负 整数 k 。一次操作中，你可以选择任一元素 加 1 或者减 1 。
+     * 请你返回将 nums 中位数 变为 k 所需要的 最少 操作次数。
+     * 一个数组的中位数指的是数组按非递减顺序排序后最中间的元素。如果数组长度为偶数，我们选择中间两个数的较大值为中位数。
+     * 示例 1：
+     * 输入：nums = [2,5,6,8,5], k = 4   2 5 6 10 23
+     * 输出：2
+     * 解释：我们将 nums[1] 和 nums[4] 减 1 得到 [2, 4, 6, 8, 4] 。现在数组的中位数等于 k 。
+     * 示例 2：
+     * 输入：nums = [2,5,6,8,5], k = 7
+     * 输出：3
+     * 解释：我们将 nums[1] 增加 1 两次，并且将 nums[2] 增加 1 一次，得到 [2, 7, 7, 8, 5] 。
+     * 示例 3：
+     * 输入：nums = [1,2,3,4,5,6], k = 4
+     * 输出：0
+     * 解释：数组中位数已经等于 k 了。
+     * 提示：
+     * 1 <= nums.length <= 2 * 10^5
+     * 1 <= nums[i] <= 10^9
+     * 1 <= k <= 10^9
+     */
+    public long minOperationsToMakeMedianK(int[] nums, int k) {
+        Arrays.sort(nums);
+        int mid = nums.length >> 1;
+        long ans = 0;
+        if (nums[mid] > k) {
+            for (int i = mid; i >= 0 && nums[i] > k; i--) {
+                ans += nums[i] - k;
+            }
+        } else if (nums[mid] < k) {
+            for (int i = mid; i < nums.length && nums[i] < k; i++) {
+                ans += k - nums[i];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 2261. 含最多 K 个可整除元素的子数组
+     * 给你一个整数数组 nums 和两个整数 k 和 p ，找出并返回满足要求的不同的子数组数，要求子数组中最多 k 个可被 p 整除的元素。
+     * 如果满足下述条件之一，则认为数组 nums1 和 nums2 是 不同 数组：
+     * 两数组长度 不同 ，或者
+     * 存在 至少 一个下标 i 满足 nums1[i] != nums2[i] 。
+     * 子数组 定义为：数组中的连续元素组成的一个 非空 序列。
+     * 示例 1：
+     * 输入：nums = [2,3,3,2,2], k = 2, p = 2
+     * 输出：11
+     * 解释：
+     * 位于下标 0、3 和 4 的元素都可以被 p = 2 整除。
+     * 共计 11 个不同子数组都满足最多含 k = 2 个可以被 2 整除的元素：
+     * [2]、[2,3]、[2,3,3]、[2,3,3,2]、[3]、[3,3]、[3,3,2]、[3,3,2,2]、[3,2]、[3,2,2] 和 [2,2] 。
+     * 注意，尽管子数组 [2] 和 [3] 在 nums 中出现不止一次，但统计时只计数一次。
+     * 子数组 [2,3,3,2,2] 不满足条件，因为其中有 3 个元素可以被 2 整除。
+     * 示例 2：
+     * 输入：nums = [1,2,3,4], k = 4, p = 1
+     * 输出：10
+     * 解释：
+     * nums 中的所有元素都可以被 p = 1 整除。
+     * 此外，nums 中的每个子数组都满足最多 4 个元素可以被 1 整除。
+     * 因为所有子数组互不相同，因此满足所有限制条件的子数组总数为 10 。
+     * 提示：
+     * 1 <= nums.length <= 200
+     * 1 <= nums[i], p <= 200
+     * 1 <= k <= nums.length
+     * 进阶：
+     * 你可以设计并实现时间复杂度为 O(n^2) 的算法解决此问题吗？
+     */
+    public static int countDistinct(int[] nums, int k, int p) {
+        // 遍历的同时统计能被p整除的个数，还要讨论是否重复子数组
+        int n = nums.length;
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            int cnt = 0;
+            StringBuilder sb = new StringBuilder();
+            for (int j = i; j < n; j++) {
+                if (nums[j] % p == 0 && ++cnt > k) {
+                    break;
+                }
+                set.add(sb.append(nums[j]).append('#').toString());
+            }
+        }
+        return set.size();
+    }
+
+    /**
+     * 200. 岛屿数量
+     * 给你一个由 '1'（陆地）和 '0'（水）组成的的二维网格，请你计算网格中岛屿的数量。
+     * 岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。
+     * 此外，你可以假设该网格的四条边均被水包围。
+     * 示例 1：
+     * 输入：grid = [
+     *   ["1","1","1","1","0"],
+     *   ["1","1","0","1","0"],
+     *   ["1","1","0","0","0"],
+     *   ["0","0","0","0","0"]
+     * ]
+     * 输出：1
+     * 示例 2：
+     * 输入：grid = [
+     *   ["1","1","0","0","0"],
+     *   ["1","1","0","0","0"],
+     *   ["0","0","1","0","0"],
+     *   ["0","0","0","1","1"]
+     * ]
+     * 输出：3
+     *
+     *
+     * 提示：
+     *
+     * m == grid.length
+     * n == grid[i].length
+     * 1 <= m, n <= 300
+     * grid[i][j] 的值为 '0' 或 '1'
+     */
+    private static final int[][] DIRS = {{-1, 0}, {0, 1}, {1, 0}, {0, -1}}; // 二维平面 上右下左
+
+    private static int m;
+    private static int n;
+    public int numIslands(char[][] grid) {
+        // bfs 遍历矩阵，遇到1且 !visited[i][j]的点 ans+1，然后从这点bfs,维护visited（用修改grid[i][j]来替代visited）
+//        int ans = 0, m = grid.length, n = grid[0].length;
+//        Queue<int[]> queue = new LinkedList<>();
+//        for (int i = 0; i < m; i++) {
+//            for (int j = 0; j < n; j++) {
+//                if (grid[i][j] == '1') {
+//                    ans++;
+//                    queue.add(new int[]{i, j});
+//                    while (!queue.isEmpty()) {
+//                        int[] d = queue.poll();
+//                        grid[d[0]][d[1]] = '0';
+//                        for (int[] dir : DIRS) {
+//                            int x = d[0] + dir[0], y = d[1] + dir[1];
+//                            if (x >= 0 && x < m && y >= 0 && y < n && grid[x][y] == '1') {
+//                                queue.add(new int[]{x, y});
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return ans;
+
+        // dfs
+        m = grid.length;
+        n = grid[0].length;
+        int ans = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    ans++;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+        return ans;
+    }
+
+    private void dfs(char[][] grid, int x, int y) {
+        if (x < 0 || x >= m || y < 0 || y >= n || grid[x][y] == '0') {
+            return;
+        }
+        grid[x][y] = '0';
+        dfs(grid, x - 1, y);
+        dfs(grid, x, y + 1);
+        dfs(grid, x + 1, y);
+        dfs(grid, x, y - 1);
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[] nums = {1, 2};
-        System.out.println(topKFrequent(nums, 2));
+        int[] nums = {14,9,14,1,1,18,5,11};
+        System.out.println(countDistinct(nums, 8, 4));
     }
 }

@@ -467,24 +467,150 @@ public class Difficult1 {
     }
 
     /**
+     * 2147. 分隔长廊的方案数
+     * 在一个图书馆的长廊里，有一些座位和装饰植物排成一列。给你一个下标从 0 开始，长度为 n 的字符串 corridor ，它包含字母 'S' 和 'P' ，
+     * 其中每个 'S' 表示一个座位，每个 'P' 表示一株植物。
+     * 在下标 0 的左边和下标 n - 1 的右边 已经 分别各放了一个屏风。你还需要额外放置一些屏风。每一个位置 i - 1 和 i 之间（1 <= i <= n - 1），
+     * 至多能放一个屏风。
+     * 请你将走廊用屏风划分为若干段，且每一段内都 恰好有两个座位 ，而每一段内植物的数目没有要求。可能有多种划分方案，
+     * 如果两个方案中有任何一个屏风的位置不同，那么它们被视为 不同 方案。
+     * 请你返回划分走廊的方案数。由于答案可能很大，请你返回它对 109 + 7 取余 的结果。如果没有任何方案，请返回 0 。
+     * 示例 1：
+     * 输入：corridor = "SSPPSPS"   0 1 4 6
+     * 输出：3
+     * 解释：总共有 3 种不同分隔走廊的方案。
+     * 上图中黑色的竖线表示已经放置好的屏风。
+     * 上图每种方案中，每一段都恰好有 两个 座位。
+     * 示例 2：
+     * 输入：corridor = "PPSPSP"
+     * 输出：1
+     * 解释：只有 1 种分隔走廊的方案，就是不放置任何屏风。
+     * 放置任何的屏风都会导致有一段无法恰好有 2 个座位。
+     * 示例 3：
+     * 输入：corridor = "S"
+     * 输出：0
+     * 解释：没有任何方案，因为总是有一段无法恰好有 2 个座位。
+     * 提示：
+     * n == corridor.length
+     * 1 <= n <= 10^5
+     * corridor[i] 要么是 'S' ，要么是 'P' 。
+     */
+    public int numberOfWays(String corridor) {
+        // SSPPSPS  idx: 0 1 4 6
+        List<Integer> idxList = new ArrayList<>();
+        for (int i = 0; i < corridor.length(); i++) {
+            if (corridor.charAt(i) == 'S') {
+                idxList.add(i);
+            }
+        }
+        int n = idxList.size();
+        if (n == 0 || (n & 1) == 1) {
+            return 0;
+        }
+        long ans = 1, mod = 1000000007;
+        for (int i = 1; i < n; i += 2) {
+            if (i + 1 < n) {
+                ans *= idxList.get(i + 1) - idxList.get(i);
+                ans %= mod;
+            }
+        }
+        return (int) ans;
+    }
+
+    /**
+     * 1289. 下降路径最小和 II
+     * 给你一个 n x n 整数矩阵 grid ，请你返回 非零偏移下降路径 数字和的最小值。
+     * 非零偏移下降路径 定义为：从 grid 数组中的每一行选择一个数字，且按顺序选出来的数字中，相邻数字不在原数组的同一列。
+     * 示例 1：
+     * 1 2 3    6 10 11  21 8 19
+     * 4 9 10
+     * 11 2 13
+     * 输入：grid = [[1,2,3],[4,5,6],[7,8,9]]
+     * 输出：13
+     * 解释：
+     * 所有非零偏移下降路径包括：
+     * [1,5,9], [1,5,7], [1,6,7], [1,6,8],
+     * [2,4,8], [2,4,9], [2,6,7], [2,6,8],
+     * [3,4,8], [3,4,9], [3,5,7], [3,5,9]
+     * 下降路径中数字和最小的是 [1,5,7] ，所以答案是 13 。
+     * 示例 2：
+     * 输入：grid = [[7]]
+     * 输出：7
+     * 提示：
+     * n == grid.length == grid[i].length
+     * 1 <= n <= 200
+     * -99 <= grid[i][j] <= 99
+     */
+    public static int minFallingPathSum(int[][] grid) {
+        int sumMin1 = 0, sumMin2 = 0, sumMin1Idx = -1;
+        for (int[] row : grid) {
+            int rowMin1 = Integer.MAX_VALUE, rowMin2 = Integer.MAX_VALUE, rowMin1Idx = -1;
+            for (int j = 0; j < row.length; j++) {
+                int sum = row[j] + (j == sumMin1Idx ? sumMin2 : sumMin1);
+                if (sum < rowMin1) {
+                    rowMin2 = rowMin1;
+                    rowMin1 = sum;
+                    rowMin1Idx = j;
+                } else if (sum < rowMin2) {
+                    rowMin2 = sum;
+                }
+            }
+            sumMin1 = rowMin1;
+            sumMin2 = rowMin2;
+            sumMin1Idx = rowMin1Idx;
+        }
+        return sumMin1;
+    }
+
+    /**
+     * 2935. 找出强数对的最大异或值 II
+     * 给你一个下标从 0 开始的整数数组 nums 。如果一对整数 x 和 y 满足以下条件，则称其为 强数对 ：
+     * |x - y| <= min(x, y)
+     * 00 11 12 22 23 24 33 34 35 36
+     * 你需要从 nums 中选出两个整数，且满足：这两个整数可以形成一个强数对，并且它们的按位异或（XOR）值是在该数组所有强数对中的 最大值 。
+     * 返回数组 nums 所有可能的强数对中的 最大 异或值。
+     * 注意，你可以选择同一个整数两次来形成一个强数对。
+     * 示例 1：
+     * 输入：nums = [1,2,3,4,5]
+     * 输出：7
+     * 解释：数组 nums 中有 11 个强数对：(1, 1), (1, 2), (2, 2), (2, 3), (2, 4), (3, 3), (3, 4), (3, 5), (4, 4), (4, 5) 和 (5, 5) 。
+     * 这些强数对中的最大异或值是 3 XOR 4 = 7 。 11 100 111
+     * 示例 2：
+     * 输入：nums = [10,100]
+     * 输出：0
+     * 解释：数组 nums 中有 2 个强数对：(10, 10) 和 (100, 100) 。
+     * 这些强数对中的最大异或值是 10 XOR 10 = 0 ，数对 (100, 100) 的异或值也是 100 XOR 100 = 0 。
+     * 示例 3：
+     * 输入：nums = [500,520,2500,3000]
+     * 输出：1020
+     * 解释：数组 nums 中有 6 个强数对：(500, 500), (500, 520), (520, 520), (2500, 2500), (2500, 3000) 和 (3000, 3000) 。
+     * 这些强数对中的最大异或值是 500 XOR 520 = 1020 ；另一个异或值非零的数对是 (5, 6) ，其异或值是 2500 XOR 3000 = 636 。
+     * 提示：
+     * 1 <= nums.length <= 5 * 10^4
+     * 1 <= nums[i] <= 2^20 - 1
+     */
+    public static int maximumStrongPairXor(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length, ans = 0;
+        for (int i = 0; i < n; i++) {
+            int end = 2 * nums[i];
+            for (int j = i + 1; j < n && nums[j] <= end; j++) {
+                ans = Math.max(ans, nums[i] ^ nums[j]);
+            }
+        }
+        return ans;
+
+        // 3: 011  100
+        // 110
+        // 5: 101  010
+        // 1010
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[] status = {1, 0, 1, 0}, candies = {7, 5, 4, 100};
-
-        int[][] keys = new int[4][];
-        keys[0] = new int[0];
-        keys[1] = new int[0];
-        keys[2] = new int[]{1};
-        keys[3] = new int[0];
-
-        int[][] containedBoxes = new int[4][];
-        containedBoxes[0] = new int[]{1, 2};
-        containedBoxes[1] = new int[]{3};
-        containedBoxes[2] = new int[0];
-        containedBoxes[3] = new int[0];
-
-        int[] initialBoxes = {0};
-        System.out.println(maxCandies(status, candies, keys, containedBoxes, initialBoxes));
+        int[] nums = {1, 2, 3, 4, 5};
+        System.out.println(maximumStrongPairXor(nums));
     }
 }
