@@ -599,11 +599,6 @@ public class Difficult1 {
             }
         }
         return ans;
-
-        // 3: 011  100
-        // 110
-        // 5: 101  010
-        // 1010
     }
 
     /**
