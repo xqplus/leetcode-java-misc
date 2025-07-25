@@ -1461,10 +1461,225 @@ public class DailyQuestion {
     }
 
     /**
+     * 1695. 删除子数组的最大得分
+     * 给你一个正整数数组 nums ，请你从中删除一个含有 若干不同元素 的子数组。删除子数组的 得分 就是子数组各元素之 和 。
+     * 返回 只删除一个 子数组可获得的 最大得分 。
+     * 如果数组 b 是数组 a 的一个连续子序列，即如果它等于 a[l],a[l+1],...,a[r] ，那么它就是 a 的一个子数组。
+     * 示例 1：
+     * 输入：nums = [4,2,4,5,6]
+     * 输出：17
+     * 解释：最优子数组是 [2,4,5,6]
+     * 示例 2：
+     * 输入：nums = [5,2,1,2,5,2,1,2,5]
+     * 输出：8
+     * 解释：最优子数组是 [5,2,1] 或 [1,2,5]
+     * 提示：
+     * 1 <= nums.length <= 10^5
+     * 1 <= nums[i] <= 10^4
+     */
+    public int maximumUniqueSubarray(int[] nums) {
+//        int[] counts = new int[10001];
+        boolean[] f = new boolean[10001];
+        int ans = 0, sum = 0, p = 0;
+        for (int num : nums) {
+            if (f[num]) {
+                ans = Math.max(ans, sum);
+                while (nums[p] != num) {
+                    f[nums[p]] = false;
+                    sum -= nums[p];
+                    p++;
+                }
+                p++; // 跳过重复点
+            } else {
+                f[num] = true;
+                sum += num;
+            }
+        }
+        return Math.max(ans, sum);
+    }
+
+    /**
+     * 1717. 删除子字符串的最大得分
+     * 给你一个字符串 s 和两个整数 x 和 y 。你可以执行下面两种操作任意次。
+     * 删除子字符串 "ab" 并得到 x 分。
+     * 比方说，从 "cabxbae" 删除 ab ，得到 "cxbae" 。
+     * 删除子字符串"ba" 并得到 y 分。
+     * 比方说，从 "cabxbae" 删除 ba ，得到 "cabxe" 。
+     * 请返回对 s 字符串执行上面操作若干次能得到的最大得分。
+     * 示例 1：
+     * 输入：s = "cdbcbbaaabab", x = 4, y = 5
+     * 输出：19
+     * 解释：
+     * - 删除 "cdbcbbaaa[ba]b" 中加粗的 "ba" ，得到 s = "cdbcbbaaab" ，加 5 分。
+     * - 删除 "cdbcbbaa[ab]" 中加粗的 "ab" ，得到 s = "cdbcbbaa" ，加 4 分。
+     * - 删除 "cdbcb[ba]a" 中加粗的 "ba" ，得到 s = "cdbcba" ，加 5 分。
+     * - 删除 "cdbc[ba]" 中加粗的 "ba" ，得到 s = "cdbc" ，加 5 分。
+     * 总得分为 5 + 4 + 5 + 5 = 19 。
+     * 示例 2：
+     * 输入：s = "aabbaaxybbaabb", x = 5, y = 4
+     * 输出：20
+     * 提示：
+     * 1 <= s.length <= 10^5
+     * 1 <= x, y <= 10^4
+     * s 只包含小写英文字母。
+     */
+    public static int maximumGain(String s, int x, int y) {
+//        return x >= y ? calcScore(s, 'a', 'b', x, y) : calcScore(s, 'b', 'a', y, x);
+
+        char a = 'a', b = 'b';
+        if (x < y) {
+            a = 'b';
+            b = 'a';
+            x ^= y;
+            y ^= x;
+            x ^= y;
+        }
+        int n = s.length(), ans = 0, cntA = 0, cntB = 0;
+        for (int i = 0; i < n; i++) {
+            char c = s.charAt(i);
+            if (c == a) {
+                cntA++;
+            } else if (c == b) {
+                if (cntA > 0) {
+                    ans += x;
+                    cntA--;
+                } else {
+                    cntB++;
+                }
+            } else {
+                ans += Math.min(cntA, cntB) * y;
+                cntA = 0;
+                cntB = 0;
+            }
+        }
+        return ans + Math.min(cntA, cntB) * y;
+    }
+
+    private static int calcScore(String s, char a, char b, int c, int d) {
+        int sum = 0, n = s.length();
+        Deque<Character> stack = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) == b && !stack.isEmpty() && stack.peek() == a) {
+                sum += c;
+                stack.pop();
+            } else {
+                stack.push(s.charAt(i));
+            }
+        }
+        Deque<Character> stack2 = new LinkedList<>();
+        while (!stack.isEmpty()) {
+            if (stack.peek() == b && !stack2.isEmpty() && stack2.peek() == a) {
+                sum += d;
+                stack.pop();
+                stack2.pop();
+            } else {
+                stack2.push(stack.pop());
+            }
+        }
+        return sum;
+    }
+
+    /**
+     * 2322. 从树中删除边的最小分数
+     * 存在一棵无向连通树，树中有编号从 0 到 n - 1 的 n 个节点， 以及 n - 1 条边。
+     * 给你一个下标从 0 开始的整数数组 nums ，长度为 n ，其中 nums[i] 表示第 i 个节点的值。
+     * 另给你一个二维整数数组 edges ，长度为 n - 1 ，其中 edges[i] = [ai, bi] 表示树中存在一条位于节点 ai 和 bi 之间的边。
+     * 删除树中两条 不同 的边以形成三个连通组件。对于一种删除边方案，定义如下步骤以计算其分数：
+     * 分别获取三个组件 每个 组件中所有节点值的异或值。
+     * 最大 异或值和 最小 异或值的 差值 就是这一种删除边方案的分数。
+     * 例如，三个组件的节点值分别是：[4,5,7]、[1,9] 和 [3,3,3] 。三个异或值分别是 4 ^ 5 ^ 7 = 6、1 ^ 9 = 8 和 3 ^ 3 ^ 3 = 3 。
+     * 最大异或值是 8 ，最小异或值是 3 ，分数是 8 - 3 = 5 。
+     * 返回在给定树上执行任意删除边方案可能的 最小 分数。
+     * 示例 1：
+     * 输入：nums = [1,5,5,4,11], edges = [[0,1],[1,2],[1,3],[3,4]]
+     * 输出：9
+     * 解释：上图展示了一种删除边方案。
+     * - 第 1 个组件的节点是 [1,3,4] ，值是 [5,4,11] 。异或值是 5 ^ 4 ^ 11 = 10 。
+     * - 第 2 个组件的节点是 [0] ，值是 [1] 。异或值是 1 = 1 。
+     * - 第 3 个组件的节点是 [2] ，值是 [5] 。异或值是 5 = 5 。
+     * 分数是最大异或值和最小异或值的差值，10 - 1 = 9 。
+     * 可以证明不存在分数比 9 小的删除边方案。
+     * 示例 2：
+     * 输入：nums = [5,5,2,4,4,2], edges = [[0,1],[1,2],[5,2],[4,3],[1,3]]
+     * 输出：0
+     * 解释：上图展示了一种删除边方案。
+     * - 第 1 个组件的节点是 [3,4] ，值是 [4,4] 。异或值是 4 ^ 4 = 0 。
+     * - 第 2 个组件的节点是 [1,0] ，值是 [5,5] 。异或值是 5 ^ 5 = 0 。
+     * - 第 3 个组件的节点是 [2,5] ，值是 [2,2] 。异或值是 2 ^ 2 = 0 。
+     * 分数是最大异或值和最小异或值的差值，0 - 0 = 0 。
+     * 无法获得比 0 更小的分数 0 。
+     * 提示：
+     * n == nums.length
+     * 3 <= n <= 1000
+     * 1 <= nums[i] <= 108
+     * edges.length == n - 1
+     * edges[i].length == 2
+     * 0 <= ai, bi < n
+     * ai != bi
+     * edges 表示一棵有效的树
+     */
+    int res = Integer.MAX_VALUE;
+
+    public int minimumScore(int[] nums, int[][] edges) {
+        int n = nums.length;
+        List<List<Integer>> e = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            e.add(new ArrayList<>());
+        }
+        for (int[] v : edges) {
+            e.get(v[0]).add(v[1]);
+            e.get(v[1]).add(v[0]);
+        }
+
+        int sum = 0;
+        for (int x : nums) {
+            sum ^= x;
+        }
+
+        dfs(0, -1, nums, e, sum);
+        return res;
+    }
+
+    private int calc(int part1, int part2, int part3) {
+        return Math.max(part1, Math.max(part2, part3)) - Math.min(part1, Math.min(part2, part3));
+    }
+
+    private int dfs(int x, int f, int[] nums, List<List<Integer>> e, int sum) {
+        int son = nums[x];
+        for (int y : e.get(x)) {
+            if (y == f) {
+                continue;
+            }
+            son ^= dfs(y, x, nums, e, sum);
+        }
+
+        for (int y : e.get(x)) {
+            if (y == f) {
+                dfs2(y, x, son, x, nums, e, sum);
+            }
+        }
+        return son;
+    }
+
+    private int dfs2(int x, int f, int oth, int anc, int[] nums, List<List<Integer>> e, int sum) {
+        int son = nums[x];
+        for (int y : e.get(x)) {
+            if (y == f) {
+                continue;
+            }
+            son ^= dfs2(y, x, oth, anc, nums, e, sum);
+        }
+        if (f == anc) {
+            return son;
+        }
+        res = Math.min(res, calc(oth, son, sum ^ oth ^ son));
+        return son;
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-        int[][] nums = {{3,49},{23,44},{21,56},{26,55},{23,52},{2,9},{1,48},{3,31}};
-        System.out.println(countDays(57, nums));
+
     }
 }
