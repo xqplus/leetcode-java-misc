@@ -1677,9 +1677,195 @@ public class DailyQuestion {
     }
 
     /**
+     * 2411. 按位或最大的最小子数组长度
+     * 中等
+     * 相关标签
+     * premium lock icon
+     * 相关企业
+     * 提示
+     * 给你一个长度为 n 下标从 0 开始的数组 nums ，数组中所有数字均为非负整数。对于 0 到 n - 1 之间的每一个下标 i ，
+     * 你需要找出 nums 中一个 最小 非空子数组，它的起始位置为 i （包含这个位置），同时有 最大 的 按位或运算值 。
+     *
+     * 换言之，令 Bij 表示子数组 nums[i...j] 的按位或运算的结果，你需要找到一个起始位置为 i 的最小子数组，这个子数组的按位或运算的结果等于 max(Bik) ，其中 i <= k <= n - 1 。
+     * 一个数组的按位或运算值是这个数组里所有数字按位或运算的结果。
+     *
+     * 请你返回一个大小为 n 的整数数组 answer，其中 answer[i]是开始位置为 i ，按位或运算结果最大，且 最短 子数组的长度。
+     *
+     * 子数组 是数组里一段连续非空元素组成的序列。
+     *
+     *
+     *
+     * 示例 1：
+     *
+     * 输入：nums = [1,0,2,1,3]
+     * 输出：[3,3,2,2,1]
+     * 解释：
+     * 任何位置开始，最大按位或运算的结果都是 3 。
+     * - 下标 0 处，能得到结果 3 的最短子数组是 [1,0,2] 。
+     * - 下标 1 处，能得到结果 3 的最短子数组是 [0,2,1] 。
+     * - 下标 2 处，能得到结果 3 的最短子数组是 [2,1] 。
+     * - 下标 3 处，能得到结果 3 的最短子数组是 [1,3] 。
+     * - 下标 4 处，能得到结果 3 的最短子数组是 [3] 。
+     * 所以我们返回 [3,3,2,2,1] 。
+     * 示例 2：
+     *
+     * 输入：nums = [1,2]
+     * 输出：[2,1]
+     * 解释：
+     * 下标 0 处，能得到最大按位或运算值的最短子数组长度为 2 。
+     * 下标 1 处，能得到最大按位或运算值的最短子数组长度为 1 。
+     * 所以我们返回 [2,1] 。
+     *
+     *
+     * 提示：
+     *
+     * n == nums.length
+     * 1 <= n <= 10^5
+     * 0 <= nums[i] <= 10^9
+     */
+    public int[] smallestSubarrays(int[] nums) {
+        int n = nums.length;
+        int[] pos = new int[31];
+        Arrays.fill(pos, -1);
+        int[] ans = new int[n];
+        for (int i = n - 1; i >= 0; --i) {
+            int j = i;
+            for (int bit = 0; bit < 31; ++bit) {
+                if ((nums[i] & (1 << bit)) == 0) {
+                    if (pos[bit] != -1) {
+                        j = Math.max(j, pos[bit]);
+                    }
+                } else {
+                    pos[bit] = i;
+                }
+            }
+            ans[i] = j - i + 1;
+        }
+        return ans;
+    }
+
+    /**
+     * 2419. 按位与最大的最长子数组
+     * 中等
+     * 相关标签
+     * premium lock icon
+     * 相关企业
+     * 提示
+     * 给你一个长度为 n 的整数数组 nums 。
+     *
+     * 考虑 nums 中进行 按位与（bitwise AND）运算得到的值 最大 的 非空 子数组。
+     *
+     * 换句话说，令 k 是 nums 任意 子数组执行按位与运算所能得到的最大值。那么，只需要考虑那些执行一次按位与运算后等于 k 的子数组。
+     * 返回满足要求的 最长 子数组的长度。
+     *
+     * 数组的按位与就是对数组中的所有数字进行按位与运算。
+     *
+     * 子数组 是数组中的一个连续元素序列。
+     *
+     *
+     *
+     * 示例 1：
+     *
+     * 输入：nums = [1,2,3,3,2,2]
+     * 输出：2
+     * 解释：
+     * 子数组按位与运算的最大值是 3 。
+     * 能得到此结果的最长子数组是 [3,3]，所以返回 2 。
+     * 示例 2：
+     *
+     * 输入：nums = [1,2,3,4]
+     * 输出：1
+     * 解释：
+     * 子数组按位与运算的最大值是 4 。
+     * 能得到此结果的最长子数组是 [4]，所以返回 1 。
+     *
+     *
+     * 提示：
+     *
+     * 1 <= nums.length <= 105
+     * 1 <= nums[i] <= 106
+     */
+    public int longestSubarray(int[] nums) {
+        // &运算：求最大值，从最大元素开始
+        int max = 0;
+        for (int n : nums) {
+            max = Math.max(max, n);
+        }
+        int maxCnt = 0, cnt = 0;
+        for (int n : nums) {
+            if (n == max) {
+                cnt++;
+            } else {
+                maxCnt = Math.max(maxCnt, cnt);
+                cnt = 0;
+            }
+        }
+        return Math.max(maxCnt, cnt);
+    }
+
+    /**
+     * 2683. 相邻值的按位异或
+     * 中等
+     * 相关标签
+     * premium lock icon
+     * 相关企业
+     * 提示
+     * 下标从 0 开始、长度为 n 的数组 derived 是由同样长度为 n 的原始 二进制数组 original 通过计算相邻值的 按位异或（⊕）派生而来。
+     *
+     * 特别地，对于范围 [0, n - 1] 内的每个下标 i ：
+     *
+     * 如果 i = n - 1 ，那么 derived[i] = original[i] ⊕ original[0]
+     * 否则 derived[i] = original[i] ⊕ original[i + 1]
+     * 给你一个数组 derived ，请判断是否存在一个能够派生得到 derived 的 有效原始二进制数组 original 。
+     *
+     * 如果存在满足要求的原始二进制数组，返回 true ；否则，返回 false 。
+     *
+     * 二进制数组是仅由 0 和 1 组成的数组。
+     *
+     *
+     * 示例 1：
+     *
+     * 输入：derived = [1,1,0]
+     * 输出：true
+     * 解释：能够派生得到 [1,1,0] 的有效原始二进制数组是 [0,1,0] ：
+     * derived[0] = original[0] ⊕ original[1] = 0 ⊕ 1 = 1
+     * derived[1] = original[1] ⊕ original[2] = 1 ⊕ 0 = 1
+     * derived[2] = original[2] ⊕ original[0] = 0 ⊕ 0 = 0
+     * 示例 2：
+     *
+     * 输入：derived = [1,1]
+     * 输出：true
+     * 解释：能够派生得到 [1,1] 的有效原始二进制数组是 [0,1] ：
+     * derived[0] = original[0] ⊕ original[1] = 1
+     * derived[1] = original[1] ⊕ original[0] = 1
+     * 示例 3：
+     *
+     * 输入：derived = [1,0]
+     * 输出：false
+     * 解释：不存在能够派生得到 [1,0] 的有效原始二进制数组。
+     *
+     *
+     * 提示：
+     *
+     * n == derived.length
+     * 1 <= n <= 105
+     * derived 中的值不是 0 就是 1 。
+     */
+    public static boolean doesValidArrayExist(int[] derived) {
+        int n = derived.length, cur = 0;
+        for (int i = 0; i < n - 1; i++) {
+            if (derived[i] == 1) {
+                cur++;
+                cur %= 2;
+            }
+        }
+        return (derived[n - 1] == 0 && cur == 0) || (derived[n - 1] == 1 && cur == 1);
+    }
+
+    /**
      * @param args
      */
     public static void main(String[] args) {
-
+        System.out.println(doesValidArrayExist(new int[]{1, 0}));
     }
 }
