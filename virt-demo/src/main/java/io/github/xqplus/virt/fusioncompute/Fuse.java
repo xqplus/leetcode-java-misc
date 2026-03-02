@@ -12,8 +12,8 @@ import java.nio.charset.StandardCharsets;
 public class Fuse {
 
     public static void main(String[] args) throws IOException {
-        addDiskLink();
-//        removeDiskLink();
+//        addDiskLink();
+        removeDiskLink();
     }
 
     private static void addDiskLink() throws IOException {
@@ -86,13 +86,13 @@ public class Fuse {
     private static void removeDiskLink() throws IOException {
         Socket socket = new Socket();
         socket.setKeepAlive(true);
-        socket.connect(new InetSocketAddress("192.168.8.151", 1999), 5000);
+        socket.connect(new InetSocketAddress("192.168.8.152", 1999), 5000);
         OutputStream outputStream = socket.getOutputStream();
         InputStream inputStream = socket.getInputStream();
         byte[] head = new byte[]{0, 0, 0, 0, 0, 0, 2, 0}; // REMOVE_DISK
 
         // 第一块盘
-        String diskPath = "/c7/c7_0.raw";
+        String diskPath = "/arv/fusioncompute/vol/vol_aa7f8e1d-592b-44d2-9fd1-869bb2c8cce1/vol_aa7f8e1d-592b-44d2-9fd1-869bb2c8cce1.img";
         intToBytes(diskPath.length(), head);
         outputStream.write(head);
         outputStream.flush();
@@ -102,22 +102,6 @@ public class Fuse {
         byte[] buffer = new byte[8];
         inputStream.read(buffer);
         int length;
-        if ((length = bytesToInt(buffer, 0)) != 0) { // 错误信息长度不为0，链接失败
-            buffer = new byte[length];
-            inputStream.read(buffer);
-            System.err.println(new String(buffer, StandardCharsets.UTF_8));
-            return;
-        }
-
-        diskPath = "/c7/c7_1.raw";
-        intToBytes(diskPath.length(), head);
-        outputStream.write(head);
-        outputStream.flush();
-        outputStream.write(diskPath.getBytes(StandardCharsets.UTF_8));
-        outputStream.flush();
-
-        buffer = new byte[8];
-        inputStream.read(buffer);
         if ((length = bytesToInt(buffer, 0)) != 0) { // 错误信息长度不为0，链接失败
             buffer = new byte[length];
             inputStream.read(buffer);

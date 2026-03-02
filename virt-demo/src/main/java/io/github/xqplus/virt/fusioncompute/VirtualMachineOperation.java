@@ -15,15 +15,15 @@ import java.security.NoSuchAlgorithmException;
 
 public class VirtualMachineOperation {
 
-    private static final String TOKEN = "352732EE-173C-4428-AE41-54D449DED2FD0";
+    private static final String TOKEN = "473AA9D8-4BB9-4EE0-A573-F4477D0C58AB0";
     private static final String SITE_URI = "/service/sites/367C0709";
     private static final String HOST_URN = "urn:sites:367C0709:hosts:105";
 
     public static void main(String[] args) throws Exception {
 //        System.out.println(getToken());
 
-//        get(SITE_URI + "/portgroups");
-        get("/service/sites/367C0709/dvswitchs/7/portgroups/20");
+        // 虚拟机
+        delete(SITE_URI + "/vms/i-00000418");
     }
 
     private static void powerOffVm() throws IOException, NoSuchAlgorithmException, KeyManagementException {
